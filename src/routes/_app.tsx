@@ -11,15 +11,12 @@ export const Route = createFileRoute('/_app')({
 
 function RouteComponent() {
   return <SidebarProvider>
-    <AppSidebar collapsible="hidden" />
+    <AppSidebar collapsible="dock" />
     <SidebarInset>
       <AppSidebarNav />
       <div className="p-4 lg:p-6">
-        <Outlet />
-
+        <Outlet />5
       </div>
-
-
     </SidebarInset>
   </SidebarProvider>
 }
