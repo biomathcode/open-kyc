@@ -38,12 +38,13 @@ function Home() {
           </button>
           <button
             type="button"
+            className="bg-dark dark:bg-light text-light dark:text-dark text-sm px-4 py-2 rounded-md border-2"
             onClick={() => {
               throw new Error("Sentry Test TEST TEST ");
             }}
           >
             Break the world
-          </button>;
+          </button>
         </p>
         <p>
           Numbers:{' '}
