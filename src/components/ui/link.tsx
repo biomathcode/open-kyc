@@ -1,28 +1,20 @@
-import { Link as LinkPrimitive } from "react-aria-components"
-import type { LinkProps as LinkPrimitiveProps } from "react-aria-components";
+// import { Link as LinkPrimitive } from "react-aria-components"
+import { Link as RouterLink } from "@tanstack/react-router";
+import type { LinkComponentProps } from "@tanstack/react-router";
 import { cx } from "~/lib/primitive"
 
-interface LinkProps extends LinkPrimitiveProps {
-  ref?: React.RefObject<HTMLAnchorElement>
-}
 
-const Link = ({ className, ref, ...props }: LinkProps) => {
+const Link = ({ className, ref, ...props }: LinkComponentProps) => {
   return (
-    <LinkPrimitive
+    <RouterLink
       ref={ref}
-      className={cx(
-        [
-          "font-medium text-(--text)",
-          "outline-0 outline-offset-2 focus-visible:outline-2 focus-visible:outline-ring forced-colors:outline-[Highlight]",
-          "disabled:cursor-default disabled:text-muted-fg forced-colors:disabled:text-[GrayText]",
-          "href" in props && "cursor-pointer",
-        ],
-        className,
-      )}
+
+      className={
+        className}
       {...props}
     />
   )
 }
 
-export type { LinkProps }
+export type { LinkComponentProps as LinkProps }
 export { Link }

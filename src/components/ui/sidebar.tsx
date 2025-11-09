@@ -26,6 +26,7 @@ import type {
   LinkRenderProps,
   SeparatorProps as SidebarSeparatorProps,
 } from "react-aria-components"
+import type { LinkComponentProps } from "@tanstack/react-router"
 import { cx } from "~/lib/primitive"
 import { useMediaQuery } from "~/hooks/use-media-query"
 import { SheetContent } from "~/components/ui/sheet"
@@ -372,7 +373,7 @@ interface SidebarItemProps extends Omit<React.ComponentProps<typeof Link>, "chil
   children?:
   | React.ReactNode
   | ((
-    values: LinkRenderProps & { defaultChildren: React.ReactNode; isCollapsed: boolean },
+    values: LinkComponentProps & { defaultChildren: React.ReactNode; isCollapsed: boolean },
   ) => React.ReactNode)
   badge?: string | number | undefined
   tooltip?: string | React.ComponentProps<typeof TooltipContent>
@@ -393,36 +394,17 @@ const SidebarItem = ({
     <Link
       ref={ref}
       data-slot="sidebar-item"
+      slot={undefined}
       aria-current={isCurrent ? "page" : undefined}
-      className={composeRenderProps(
-        className,
-        (className, { isPressed, isFocusVisible, isHovered, isDisabled }) =>
-          twMerge([
-            "href" in props ? "cursor-pointer" : "cursor-default",
-            "w-full min-w-0 items-center rounded-lg text-left font-medium text-base/6 text-sidebar-fg",
-            "group/sidebar-item relative col-span-full overflow-hidden focus-visible:outline-hidden",
-            "**:data-[slot=icon]:shrink-0 [&_[data-slot='icon']:not([class*='size-'])]:size-5 sm:[&_[data-slot='icon']:not([class*='size-'])]:size-4 [&_[data-slot='icon']:not([class*='text-'])]:text-muted-fg",
-            "**:last:data-[slot=icon]:size-5 sm:**:last:data-[slot=icon]:size-4",
-            "[&_[data-slot='icon']:not([class*='size-'])]:size-4 [&_[data-slot='icon']:not([class*='size-'])]:*:size-5",
-            "*:data-[slot=avatar]:*:size-5 *:data-[slot=avatar]:size-5",
-            "has-[[data-slot=avatar]]:has-[[data-slot=sidebar-label]]:gap-x-2 has-[[data-slot=icon]]:has-[[data-slot=sidebar-label]]:gap-x-2",
-            "grid grid-cols-[auto_1fr_1.5rem_0.5rem_auto] **:last:data-[slot=icon]:ml-auto supports-[grid-template-columns:subgrid]:grid-cols-subgrid sm:text-sm/5",
-            "p-2 has-[a]:p-0",
-            " [--sidebar-current-bg:var(--color-sidebar-primary)] [--sidebar-current-fg:var(--color-sidebar-primary-fg)] ",
-            isCurrent &&
-            "font-medium text-(--sidebar-current-fg) hover:bg-(--sidebar-current-bg) hover:text-(--sidebar-current-fg) [&_.text-muted-fg]:text-fg/80 [&_[data-slot='icon']:not([class*='text-'])]:text-(--sidebar-current-fg) hover:[&_[data-slot='icon']:not([class*='text-'])]:text-(--sidebar-current-fg)",
-            isFocusVisible && "inset-ring inset-ring-sidebar-ring outline-hidden",
-            (isPressed || isHovered) &&
-            "bg-sidebar-accent text-sidebar-accent-fg [&_[data-slot='icon']:not([class*='text-'])]:text-sidebar-accent-fg",
-            isDisabled && "opacity-50",
-            className,
-          ]),
-      )}
+      className={className}
       {...props}
     >
       {(values) => (
         <>
-          {typeof children === "function" ? children({ ...values, isCollapsed }) : children}
+          {typeof children === "function" ? children({
+            ...values, isCollapsed,
+            defaultChildren: undefined
+          }) : children}
 
           {badge &&
             (state !== "collapsed" ? (
@@ -467,15 +449,15 @@ interface SidebarLinkProps extends LinkProps {
   ref?: React.RefObject<HTMLAnchorElement>
 }
 
-const SidebarLink = ({ className, ref, ...props }: SidebarLinkProps) => {
+const SidebarLink = ({ className, ref, ...props }: LinkComponentProps) => {
   return (
     <Link
       ref={ref}
-      className={cx(
+      className={String(cx(
         "col-span-full min-w-0 shrink-0 items-center p-2 focus:outline-hidden",
         "grid grid-cols-[auto_1fr_1.5rem_0.5rem_auto] supports-[grid-template-columns:subgrid]:grid-cols-subgrid",
         className,
-      )}
+      ))}
       {...props}
     />
   )

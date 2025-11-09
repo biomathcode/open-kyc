@@ -15,6 +15,7 @@ import { Route as AnotherPageRouteImport } from './routes/anotherPage'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthServerRouteImport } from './routes/_auth/server'
 import { Route as AuthClientOnlyRouteImport } from './routes/_auth/client-only'
 import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
 import { Route as AppVerificationsRouteImport } from './routes/_app/verifications'
@@ -53,6 +54,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthServerRoute = AuthServerRouteImport.update({
+  id: '/server',
+  path: '/server',
+  getParentRoute: () => AuthRoute,
 } as any)
 const AuthClientOnlyRoute = AuthClientOnlyRouteImport.update({
   id: '/client-only',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/verifications': typeof AppVerificationsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
+  '/server': typeof AuthServerRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/verifications': typeof AppVerificationsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
+  '/server': typeof AuthServerRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/_app/verifications': typeof AppVerificationsRoute
   '/_app/workflow': typeof AppWorkflowRoute
   '/_auth/client-only': typeof AuthClientOnlyRoute
+  '/_auth/server': typeof AuthServerRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
@@ -172,6 +181,7 @@ export interface FileRouteTypes {
     | '/verifications'
     | '/workflow'
     | '/client-only'
+    | '/server'
     | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/verifications'
     | '/workflow'
     | '/client-only'
+    | '/server'
     | '/api/auth/$'
   id:
     | '__root__'
@@ -206,6 +217,7 @@ export interface FileRouteTypes {
     | '/_app/verifications'
     | '/_app/workflow'
     | '/_auth/client-only'
+    | '/_auth/server'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
@@ -262,6 +274,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_auth/server': {
+      id: '/_auth/server'
+      path: '/server'
+      fullPath: '/server'
+      preLoaderRoute: typeof AuthServerRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/_auth/client-only': {
       id: '/_auth/client-only'
@@ -362,10 +381,12 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 interface AuthRouteChildren {
   AuthClientOnlyRoute: typeof AuthClientOnlyRoute
+  AuthServerRoute: typeof AuthServerRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthClientOnlyRoute: AuthClientOnlyRoute,
+  AuthServerRoute: AuthServerRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)

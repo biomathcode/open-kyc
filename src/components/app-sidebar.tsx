@@ -1,5 +1,6 @@
 "use client"
 
+import { convexQuery } from "@convex-dev/react-query"
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline"
 import {
     ArrowRightStartOnRectangleIcon,
@@ -7,6 +8,9 @@ import {
     HomeIcon,
     ShieldCheckIcon,
 } from "@heroicons/react/24/solid"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { useNavigate } from "@tanstack/react-router"
+import { api } from "convex/_generated/api"
 import { BanIcon, ChartPieIcon, IdCardIcon, ListTodoIcon, LucideHome, Settings2Icon, SwatchBookIcon, WorkflowIcon } from 'lucide-react'
 import { Avatar } from "~/components/ui/avatar"
 import { Link } from "~/components/ui/link"
@@ -36,59 +40,103 @@ import {
     SidebarSection,
     SidebarSectionGroup,
 } from "~/components/ui/sidebar"
+import { authClient } from "~/lib/auth-client"
 
-export const NavItem = [
+type AllowedRoutes =
+    | "/sign-up"
+    | "/sign-in"
+    | "/anotherPage"
+    | "/"
+    | "/api/auth/$"
+    | "/server"
+    | "/client-only"
+    | "."
+    | ".."
+    | "/analytics"
+    | "/blocklist"
+    | "/customization"
+    | "/dashboard"
+    | "/questionnaries"
+    | "/settings"
+    | "/verifications"
+    | "/workflow"
+
+interface NavItemType {
+    href: AllowedRoutes
+    icon: React.ElementType
+    description: string
+    label: string
+}
+
+export const NavItem: Array<NavItemType> = [
     {
-        label: "Dashboard",
         href: "/dashboard",
         icon: LucideHome,
         description: "Overview of your entire workspace and stats",
+        label: "Dashboard",
     },
     {
-        label: "Workflow",
         href: "/workflow",
         icon: WorkflowIcon,
         description: "Manage and automate your organization’s workflows",
+        label: "Workflow",
+
     },
     {
-        label: "Customization",
         href: "/customization",
         icon: SwatchBookIcon,
         description: "Configure branding, themes, and user preferences",
+        label: "Customization",
+
     },
     {
-        label: "Verifications",
         href: "/verifications",
         icon: IdCardIcon,
         description: "View and manage verification requests and statuses",
+        label: "Verifications",
+
     },
     {
-        label: "Analytics",
         href: "/analytics",
         icon: ChartPieIcon,
         description: "Visualize and analyze key performance metrics",
+        label: "Analytics",
+
     },
     {
-        label: "Questionnaries",
         href: "/questionnaries",
         icon: ListTodoIcon,
         description: "Create and manage user questionnaires and surveys",
+        label: "Questionnaries",
+
     },
     {
-        label: "Blocklist",
         href: "/blocklist",
         icon: BanIcon,
         description: "Monitor and update restricted entities or users",
+        label: "Blocklist",
+
     },
     {
-        label: "Settings",
         href: "/settings",
         icon: Settings2Icon,
         description: "Adjust account and application configuration",
+        label: "Settings",
+
     },
 ]
 
 export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+    const user = useSuspenseQuery(convexQuery(api.auth.getCurrentUser, {}))
+
+    const navigate = useNavigate()
+
+
+    const handleSignOut = async () => {
+        await authClient.signOut()
+        void navigate({ to: '/sign-in' })
+    }
+
     return (
         <Sidebar {...props} className="">
             <SidebarHeader>
@@ -108,11 +156,31 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
                 <SidebarSectionGroup>
                     <SidebarSection label="Overview">
 
-
                         {
                             NavItem.map(({ href, label, icon: Icon }) => {
                                 return (
-                                    <SidebarItem className="flex gap-2" key={href} tooltip={label} href={href}>
+                                    <SidebarItem className="
+                                                group/sidebar-item relative col-span-full overflow-hidden focus-visible:outline-hidden 
+                                                **:last:data-[slot=icon]:size-5 sm:**:last:data-[slot=icon]:size-4
+                                                [&_[data-slot='icon']:not([class*='size-'])]:size-4 [&_[data-slot='icon']:not([class*='size-'])]:*:size-5
+                                                w-full min-w-0 items-center rounded-lg text-left font-medium text-base/6 text-sidebar-fg
+                                                grid grid-cols-[auto_1fr_1.5rem_0.5rem_auto] **:last:data-[slot=icon]:ml-auto supports-[grid-template-columns:subgrid]:grid-cols-subgrid sm:text-sm/5 gap-2 
+                                                p-2 has-[a]:p-0
+                                                hover:bg-sidebar-accent hover:text-sidebar-accent-fg hover:[&_[data-slot='icon']:not([class*='text-'])]:text-sidebar-accent-fg
+
+                                                
+                                                 " key={href} tooltip={label} to={href}
+                                        activeProps={{
+                                            "className": `   !font-semibold 
+                                                            text-sidebar-primary-fg
+                                                            hover:bg-sidebar-primary-bg
+                                                            hover:text-sidebar-primary-fg
+                                                            [&_.text-muted-fg]:text-fg/80
+                                                            [&_[data-slot='icon']:not([class*='text-'])]:text-sidebar-primary-fg
+                                                            hover:[&_[data-slot='icon']:not([class*='text-'])]:text-sidebar-primary-fg`,
+                                        }}
+                                        activeOptions={{ includeHash: true }}
+                                    >
                                         <Icon size={16} />
                                         <SidebarLabel>{label}</SidebarLabel>
                                     </SidebarItem>
@@ -132,11 +200,11 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
                             <Avatar
                                 className="size-8 *:size-8 group-data-[state=collapsed]:size-6 group-data-[state=collapsed]:*:size-6"
                                 isSquare
-                                src="https://intentui.com/images/avatar/cobain.jpg"
+                                src={user.data.image}
                             />
                             <div className="in-data-[collapsible=dock]:hidden text-sm">
-                                <SidebarLabel>Kurt Cobain</SidebarLabel>
-                                <span className="-mt-0.5 block text-muted-fg">kurt@domain.com</span>
+                                <SidebarLabel>{user.data.name}</SidebarLabel>
+                                <span className="-mt-0.5 block text-muted-fg">{user.data.email}</span>
                             </div>
                         </div>
                         <ChevronUpDownIcon data-slot="chevron" />
@@ -147,8 +215,8 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
                     >
                         <MenuSection>
                             <MenuHeader separator>
-                                <span className="block">Kurt Cobain</span>
-                                <span className="font-normal text-muted-fg">@cobain</span>
+                                <span className="block">{user.data.name}</span>
+                                <span className="font-normal text-muted-fg">{user.data.email}</span>
                             </MenuHeader>
                         </MenuSection>
 
@@ -167,7 +235,7 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
                         <MenuSeparator />
 
                         <MenuSeparator />
-                        <MenuItem href="#logout">
+                        <MenuItem onClick={handleSignOut}>
                             <ArrowRightStartOnRectangleIcon />
                             Log out
                         </MenuItem>
