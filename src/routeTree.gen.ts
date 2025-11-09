@@ -9,9 +9,13 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AnotherPageRouteImport } from './routes/anotherPage'
+import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthClientOnlyRouteImport } from './routes/_auth/client-only'
 import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
 import { Route as AppVerificationsRouteImport } from './routes/_app/verifications'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
@@ -22,9 +26,23 @@ import { Route as AppBlocklistRouteImport } from './routes/_app/blocklist'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
+const SignUpRoute = SignUpRouteImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnotherPageRoute = AnotherPageRouteImport.update({
   id: '/anotherPage',
   path: '/anotherPage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -35,6 +53,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthClientOnlyRoute = AuthClientOnlyRouteImport.update({
+  id: '/client-only',
+  path: '/client-only',
+  getParentRoute: () => AuthRoute,
 } as any)
 const AppWorkflowRoute = AppWorkflowRouteImport.update({
   id: '/workflow',
@@ -85,6 +108,8 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/anotherPage': typeof AnotherPageRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/analytics': typeof AppAnalyticsRoute
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
@@ -93,11 +118,14 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AppSettingsRoute
   '/verifications': typeof AppVerificationsRoute
   '/workflow': typeof AppWorkflowRoute
+  '/client-only': typeof AuthClientOnlyRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/anotherPage': typeof AnotherPageRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/analytics': typeof AppAnalyticsRoute
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
@@ -106,13 +134,17 @@ export interface FileRoutesByTo {
   '/settings': typeof AppSettingsRoute
   '/verifications': typeof AppVerificationsRoute
   '/workflow': typeof AppWorkflowRoute
+  '/client-only': typeof AuthClientOnlyRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
+  '/_auth': typeof AuthRouteWithChildren
   '/anotherPage': typeof AnotherPageRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/blocklist': typeof AppBlocklistRoute
   '/_app/customization': typeof AppCustomizationRoute
@@ -121,6 +153,7 @@ export interface FileRoutesById {
   '/_app/settings': typeof AppSettingsRoute
   '/_app/verifications': typeof AppVerificationsRoute
   '/_app/workflow': typeof AppWorkflowRoute
+  '/_auth/client-only': typeof AuthClientOnlyRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
@@ -128,6 +161,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/anotherPage'
+    | '/sign-in'
+    | '/sign-up'
     | '/analytics'
     | '/blocklist'
     | '/customization'
@@ -136,11 +171,14 @@ export interface FileRouteTypes {
     | '/settings'
     | '/verifications'
     | '/workflow'
+    | '/client-only'
     | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/anotherPage'
+    | '/sign-in'
+    | '/sign-up'
     | '/analytics'
     | '/blocklist'
     | '/customization'
@@ -149,12 +187,16 @@ export interface FileRouteTypes {
     | '/settings'
     | '/verifications'
     | '/workflow'
+    | '/client-only'
     | '/api/auth/$'
   id:
     | '__root__'
     | '/'
     | '/_app'
+    | '/_auth'
     | '/anotherPage'
+    | '/sign-in'
+    | '/sign-up'
     | '/_app/analytics'
     | '/_app/blocklist'
     | '/_app/customization'
@@ -163,23 +205,48 @@ export interface FileRouteTypes {
     | '/_app/settings'
     | '/_app/verifications'
     | '/_app/workflow'
+    | '/_auth/client-only'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
   AnotherPageRoute: typeof AnotherPageRoute
+  SignInRoute: typeof SignInRoute
+  SignUpRoute: typeof SignUpRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sign-up': {
+      id: '/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof SignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/anotherPage': {
       id: '/anotherPage'
       path: '/anotherPage'
       fullPath: '/anotherPage'
       preLoaderRoute: typeof AnotherPageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -195,6 +262,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_auth/client-only': {
+      id: '/_auth/client-only'
+      path: '/client-only'
+      fullPath: '/client-only'
+      preLoaderRoute: typeof AuthClientOnlyRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/_app/workflow': {
       id: '/_app/workflow'
@@ -286,10 +360,23 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface AuthRouteChildren {
+  AuthClientOnlyRoute: typeof AuthClientOnlyRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthClientOnlyRoute: AuthClientOnlyRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
   AnotherPageRoute: AnotherPageRoute,
+  SignInRoute: SignInRoute,
+  SignUpRoute: SignUpRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

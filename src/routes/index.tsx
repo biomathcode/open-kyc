@@ -72,6 +72,13 @@ function Home() {
           >
             another page
           </Link>{' '}
+
+          <Link
+            to="/sign-in"
+            className="text-blue-600 underline hover:no-underline"
+          >
+            Page to Sign-in
+          </Link>{' '}
           to send an action.
         </p>
         <div className="flex flex-col">

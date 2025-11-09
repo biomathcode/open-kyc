@@ -10,6 +10,7 @@
 
 import type * as auth from "../auth.js";
 import type * as functions_backgroundCheck from "../functions/backgroundCheck.js";
+import type * as functions_users from "../functions/users.js";
 import type * as http from "../http.js";
 import type * as index from "../index.js";
 import type * as myFunctions from "../myFunctions.js";
@@ -31,6 +32,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   "functions/backgroundCheck": typeof functions_backgroundCheck;
+  "functions/users": typeof functions_users;
   http: typeof http;
   index: typeof index;
   myFunctions: typeof myFunctions;
