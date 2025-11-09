@@ -96,11 +96,11 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
                     <Avatar
                         isSquare
                         size="sm"
-                        className="outline-hidden"
-                        src="https://design.intentui.com/logo?color=155DFC"
+                        className=""
+                        src="/logo.svg"
                     />
                     <SidebarLabel className="font-medium">
-                        Intent <span className="text-muted-fg">UI</span>
+                        Open<span className="text-muted-fg">KYC</span>
                     </SidebarLabel>
                 </Link>
             </SidebarHeader>

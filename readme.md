@@ -24,3 +24,8 @@ KYC platform powered by Convex, tanstack start, react-aria,
 
 ### References
 - https://github.com/mikecann/port-geo-christmas-lights-cruise/tree/the-video-release
+- https://convex-better-auth.netlify.app/framework-guides/tanstack-start
+  
+- https://github.com/firecrawl/firecrawl/tree/main/examples
+- https://github.com/ericciarla/trendFinder
+- https://github.com/tanstack/router/tree/main/examples
