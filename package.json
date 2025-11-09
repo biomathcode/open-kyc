@@ -14,8 +14,6 @@
     "lint": "tsc && eslint .  --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
-    "@auth/core": "^0.37.0",
-    "@convex-dev/auth": "^0.0.90",
     "@convex-dev/better-auth": "^0.9.7",
     "@convex-dev/crons": "^0.1.9",
     "@convex-dev/geospatial": "^0.1.9",

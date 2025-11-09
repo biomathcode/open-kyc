@@ -1,5 +1,4 @@
 import { defineSchema, defineTable } from "convex/server";
-import { authTables } from "@convex-dev/auth/server";
 
 import { v } from "convex/values";
 
@@ -8,7 +7,6 @@ import { v } from "convex/values";
 // app will continue to work.
 // The schema provides more precise TypeScript types.
 export default defineSchema({
-  ...authTables,
 
   users: defineTable({
     email: v.string(),
@@ -49,6 +47,15 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   }).index("status", ["status"]),
+
+  documents: defineTable({
+    name: v.string(),
+    fileId: v.id("_storage"), // Convex file reference
+    createdAt: v.number(),
+  }).searchIndex("search_name", {
+    searchField: "name",
+    staged: false,
+  }),
 });
 
 

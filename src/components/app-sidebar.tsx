@@ -11,7 +11,10 @@ import {
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { api } from "convex/_generated/api"
-import { BanIcon, ChartPieIcon, IdCardIcon, ListTodoIcon, LucideHome, Settings2Icon, SwatchBookIcon, WorkflowIcon } from 'lucide-react'
+import {
+    BanIcon, ChartPieIcon, IdCardIcon, ListTodoIcon, LucideHome, Settings2Icon, SwatchBookIcon, WorkflowIcon,
+    BookOpenIcon
+} from 'lucide-react'
 import { Avatar } from "~/components/ui/avatar"
 import { Link } from "~/components/ui/link"
 import {
@@ -60,6 +63,7 @@ type AllowedRoutes =
     | "/settings"
     | "/verifications"
     | "/workflow"
+    | "/documents"
 
 interface NavItemType {
     href: AllowedRoutes
@@ -108,7 +112,12 @@ export const NavItem: Array<NavItemType> = [
         icon: ListTodoIcon,
         description: "Create and manage user questionnaires and surveys",
         label: "Questionnaries",
-
+    },
+    {
+        href: "/documents",
+        icon: BookOpenIcon,
+        description: "Search and File Uploaded Documents",
+        label: "Documents",
     },
     {
         href: "/blocklist",

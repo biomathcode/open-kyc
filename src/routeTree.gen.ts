@@ -21,6 +21,7 @@ import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
 import { Route as AppVerificationsRouteImport } from './routes/_app/verifications'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppQuestionnariesRouteImport } from './routes/_app/questionnaries'
+import { Route as AppDocumentsRouteImport } from './routes/_app/documents'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppCustomizationRouteImport } from './routes/_app/customization'
 import { Route as AppBlocklistRouteImport } from './routes/_app/blocklist'
@@ -85,6 +86,11 @@ const AppQuestionnariesRoute = AppQuestionnariesRouteImport.update({
   path: '/questionnaries',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDocumentsRoute = AppDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
+  '/documents': typeof AppDocumentsRoute
   '/questionnaries': typeof AppQuestionnariesRoute
   '/settings': typeof AppSettingsRoute
   '/verifications': typeof AppVerificationsRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
+  '/documents': typeof AppDocumentsRoute
   '/questionnaries': typeof AppQuestionnariesRoute
   '/settings': typeof AppSettingsRoute
   '/verifications': typeof AppVerificationsRoute
@@ -156,6 +164,7 @@ export interface FileRoutesById {
   '/_app/blocklist': typeof AppBlocklistRoute
   '/_app/customization': typeof AppCustomizationRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/documents': typeof AppDocumentsRoute
   '/_app/questionnaries': typeof AppQuestionnariesRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/verifications': typeof AppVerificationsRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/blocklist'
     | '/customization'
     | '/dashboard'
+    | '/documents'
     | '/questionnaries'
     | '/settings'
     | '/verifications'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/blocklist'
     | '/customization'
     | '/dashboard'
+    | '/documents'
     | '/questionnaries'
     | '/settings'
     | '/verifications'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/_app/blocklist'
     | '/_app/customization'
     | '/_app/dashboard'
+    | '/_app/documents'
     | '/_app/questionnaries'
     | '/_app/settings'
     | '/_app/verifications'
@@ -317,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppQuestionnariesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/documents': {
+      id: '/_app/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof AppDocumentsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -360,6 +379,7 @@ interface AppRouteChildren {
   AppBlocklistRoute: typeof AppBlocklistRoute
   AppCustomizationRoute: typeof AppCustomizationRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppDocumentsRoute: typeof AppDocumentsRoute
   AppQuestionnariesRoute: typeof AppQuestionnariesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppVerificationsRoute: typeof AppVerificationsRoute
@@ -371,6 +391,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppBlocklistRoute: AppBlocklistRoute,
   AppCustomizationRoute: AppCustomizationRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppDocumentsRoute: AppDocumentsRoute,
   AppQuestionnariesRoute: AppQuestionnariesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppVerificationsRoute: AppVerificationsRoute,
