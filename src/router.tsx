@@ -3,10 +3,18 @@ import { routerWithQueryClient } from '@tanstack/react-router-with-query'
 import { ConvexProvider, ConvexReactClient } from 'convex/react'
 import { ConvexQueryClient } from '@convex-dev/react-query'
 import { QueryClient } from '@tanstack/react-query'
+import * as Sentry from "@sentry/tanstackstart-react";
+
+import { useEffect } from 'react'
 import { routeTree } from './routeTree.gen'
 
 
+
+
 export function getRouter() {
+
+
+
   const CONVEX_URL = (import.meta as any).env.VITE_CONVEX_URL!
   if (!CONVEX_URL) {
     throw new Error('missing VITE_CONVEX_URL envar')
@@ -28,6 +36,19 @@ export function getRouter() {
 
   const router = routerWithQueryClient(
     createRouter({
+      defaultErrorComponent: ({ error }) => {
+        useEffect(() => {
+          Sentry.captureException(error)
+        }, [error])
+
+        return (
+          <div>
+            Error occurred: {error.message}
+          </div>
+        )
+      },
+
+
       routeTree,
       defaultPreload: 'intent',
       scrollRestoration: true,
@@ -39,7 +60,18 @@ export function getRouter() {
       ),
     }),
     queryClient,
+
   )
+
+
+  if (!router.isServer) {
+    Sentry.init({
+      dsn: "https://b1728c20e4ac827cae3162eaf89aad7c@o4504789994373120.ingest.us.sentry.io/4510331224129536",
+      sendDefaultPii: true,
+      integrations: [
+      ],
+    });
+  }
 
   return router
 }

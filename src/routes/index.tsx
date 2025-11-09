@@ -20,6 +20,7 @@ function Home() {
       <h1 className="text-4xl font-bold text-center">
         Convex + Tanstack Start
       </h1>
+
       <div className="flex flex-col gap-8 max-w-lg mx-auto">
         <p>Welcome {viewer ?? 'Anonymous'}!</p>
         <p>
@@ -35,6 +36,14 @@ function Home() {
           >
             Add a random number
           </button>
+          <button
+            type="button"
+            onClick={() => {
+              throw new Error("Sentry Test TEST TEST ");
+            }}
+          >
+            Break the world
+          </button>;
         </p>
         <p>
           Numbers:{' '}

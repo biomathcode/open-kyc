@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "npx convex dev --once && concurrently -r npm:dev:web npm:dev:convex",
-    "dev:web": "vite dev",
+    "dev:web": "NODE_OPTIONS='--import ./instrument.server.mjs' vite dev --port 3000",
     "dev:ts": "tsc -b -w",
     "dev:convex": "npx convex dev",
-    "build": "vite build && tsc --noEmit",
-    "start": "node .output/server/index.mjs",
+    "build": "vite build &&  tsc --noEmit && cp instrument.server.mjs .output/server",
+    "start": "node --import ./.output/server/instrument.server.mjs .output/server/index.mjs",
     "format": "prettier --write .",
     "lint": "tsc && eslint .  --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
