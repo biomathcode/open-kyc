@@ -1,10 +1,13 @@
 import { createClient } from "@convex-dev/better-auth";
 import { convex } from "@convex-dev/better-auth/plugins";
 import { betterAuth } from "better-auth";
+import { anonymous } from 'better-auth/plugins'
+
 import { components } from "./_generated/api";
 import { query } from "./_generated/server";
-import type { GenericCtx } from "@convex-dev/better-auth";
 import type { DataModel } from "./_generated/dataModel";
+import type { GenericCtx } from "@convex-dev/better-auth";
+
 
 const siteUrl = process.env.SITE_URL!;
 
@@ -29,8 +32,16 @@ export const createAuth = (
             enabled: true,
             requireEmailVerification: false,
         },
+        socialProviders: {
+            github: {
+                clientId: process.env.GITHUB_CLIENT_ID as string,
+                clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+            }
+        },
+
         plugins: [
             // The Convex plugin is required for Convex compatibility
+            anonymous(),
             convex(),
         ],
     });

@@ -22,7 +22,8 @@ export const SignIn = () => {
     const [otp, setOtp] = useState('')
     const [magicLinkLoading, setMagicLinkLoading] = useState(false)
     const [otpLoading, setOtpLoading] = useState(false)
-    const [anonymousLoading, setAnonymousLoading] = useState(false)
+
+
     const [forgotLoading, setForgotLoading] = useState(false)
     const [signInMethod, setSignInMethod] = useState<'password' | 'passwordless'>(
         'passwordless',
@@ -72,45 +73,9 @@ export const SignIn = () => {
         }
     }
 
-    const handleMagicLinkSignIn = async () => {
-        await authClient.signIn.magicLink(
-            {
-                email,
-            },
-            {
-                onRequest: () => {
-                    setMagicLinkLoading(true)
-                },
-                onSuccess: () => {
-                    setMagicLinkLoading(false)
-                    alert('Check your email for the magic link!')
-                },
-                onError: (ctx) => {
-                    setMagicLinkLoading(false)
-                    alert(ctx.error.message)
-                },
-            },
-        )
-    }
 
-    const handleAnonymousSignIn = async () => {
-        await authClient.signIn.anonymous(
-            {},
-            {
-                onRequest: () => {
-                    setAnonymousLoading(true)
-                },
-                onSuccess: async () => {
-                    setAnonymousLoading(false)
-                    await navigate({ to: '/client-only' })
-                },
-                onError: (ctx) => {
-                    setAnonymousLoading(false)
-                    alert(ctx.error.message)
-                },
-            },
-        )
-    }
+
+
 
     const handleGithubSignIn = async () => {
         await authClient.signIn.social(
@@ -149,49 +114,6 @@ export const SignIn = () => {
         )
     }
 
-    const handleOtpSignIn = async () => {
-        if (!otpSent) {
-            await authClient.emailOtp.sendVerificationOtp(
-                {
-                    email,
-                    type: 'sign-in',
-                },
-                {
-                    onRequest: () => {
-                        setOtpLoading(true)
-                    },
-                    onSuccess: () => {
-                        setOtpLoading(false)
-                        setOtpSent(true)
-                    },
-                    onError: (ctx) => {
-                        setOtpLoading(false)
-                        alert(ctx.error.message)
-                    },
-                },
-            )
-        } else {
-            await authClient.signIn.emailOtp(
-                {
-                    email,
-                    otp,
-                },
-                {
-                    onRequest: () => {
-                        setOtpLoading(true)
-                    },
-                    onSuccess: async () => {
-                        setOtpLoading(false)
-                        await navigate({ to: '/client-only' })
-                    },
-                    onError: (ctx) => {
-                        setOtpLoading(false)
-                        alert(ctx.error.message)
-                    },
-                },
-            )
-        }
-    }
     return (
         <Container>
             <Card className="max-w-md">
@@ -207,8 +129,6 @@ export const SignIn = () => {
                             e.preventDefault()
                             if (signInMethod === 'password') {
                                 void handleSignIn()
-                            } else if (otpSent) {
-                                void handleOtpSignIn()
                             }
                         }}
                         className="grid gap-4"
@@ -232,12 +152,11 @@ export const SignIn = () => {
                                 <div className="flex items-center justify-between">
                                     <Label htmlFor="password">Password</Label>
                                     <Button
-                                        variant="link"
                                         size="sm"
                                         type="button"
                                         onClick={handleResetPassword}
                                         className="cursor-pointer"
-                                        disabled={forgotLoading || !email}
+                                        isDisabled={forgotLoading || !email}
                                     >
                                         {forgotLoading ? (
                                             <Loader2 size={14} className="animate-spin mr-1" />
@@ -257,77 +176,13 @@ export const SignIn = () => {
                             </div>
                         )}
 
-                        {signInMethod === 'passwordless' && otpSent && (
-                            <div className="grid gap-2">
-                                <Label htmlFor="otp">Verification Code</Label>
-                                <Input
-                                    id="otp"
-                                    type="text"
-                                    placeholder="Enter verification code"
-                                    required
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value)}
-                                    pattern="[0-9]*"
-                                    inputMode="numeric"
-                                    maxLength={6}
-                                />
-                            </div>
-                        )}
+
 
                         <div className="flex flex-col gap-2">
                             {signInMethod === 'password' && (
-                                <Button type="submit" className="w-full" disabled={otpLoading}>
+                                <Button type="submit" className="w-full" isDisabled={otpLoading}>
                                     Sign in with Password
                                 </Button>
-                            )}
-                            {signInMethod === 'passwordless' && !otpSent && (
-                                <div className="flex flex-col gap-2">
-                                    <Button
-                                        type="button"
-                                        className="w-full"
-                                        disabled={
-                                            magicLinkLoading || otpLoading || anonymousLoading
-                                        }
-                                        onClick={handleMagicLinkSignIn}
-                                    >
-                                        {magicLinkLoading ? (
-                                            <Loader2 size={16} className="animate-spin" />
-                                        ) : (
-                                            'Send Magic Link'
-                                        )}
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        className="w-full"
-                                        variant="outline"
-                                        disabled={
-                                            magicLinkLoading || otpLoading || anonymousLoading
-                                        }
-                                        onClick={handleOtpSignIn}
-                                    >
-                                        {otpLoading ? (
-                                            <Loader2 size={16} className="animate-spin" />
-                                        ) : (
-                                            'Send Verification Code'
-                                        )}
-                                    </Button>
-
-                                    <Button
-                                        type="button"
-                                        className="w-full"
-                                        // variant="outline"
-                                        disabled={
-                                            magicLinkLoading || otpLoading || anonymousLoading
-                                        }
-                                        onClick={handleAnonymousSignIn}
-                                    >
-                                        {anonymousLoading ? (
-                                            <Loader2 size={16} className="animate-spin" />
-                                        ) : (
-                                            'Sign in anonymously'
-                                        )}
-                                    </Button>
-                                </div>
                             )}
                             {signInMethod === 'passwordless' && otpSent && (
                                 <Button type="submit" className="w-full" isDisabled={otpLoading}>
@@ -373,7 +228,7 @@ export const SignIn = () => {
                             type="button"
                             // variant="outline"
                             className="w-full gap-2"
-                            disabled={otpLoading}
+                            isDisabled={otpLoading}
                             onClick={handleGithubSignIn}
                         >
                             <svg
@@ -394,7 +249,7 @@ export const SignIn = () => {
                             type="button"
                             // variant="outline"
                             className="w-full gap-2"
-                            disabled={otpLoading}
+                            isDisabled={otpLoading}
                             onClick={handleGoogleSignIn}
                         >
                             <svg

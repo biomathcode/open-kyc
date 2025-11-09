@@ -26,6 +26,7 @@
     "@convex-dev/workpool": "^0.2.19",
     "@heroicons/react": "^2.2.0",
     "@mendable/firecrawl-js": "^4.5.0",
+    "@react-email/components": "^1.0.0",
     "@sentry/tanstackstart-react": "^10.23.0",
     "@tanstack/react-form": "^1.23.8",
     "@tanstack/react-query": "^5.90.7",
@@ -43,8 +44,9 @@
     "react-aria-components": "^1.13.0",
     "react-dom": "^19.1.1",
     "recharts": "^3.3.0",
+    "resend": "^6.4.2",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^3.3.1",
+    "tailwind-merge": "^3.4.0",
     "tailwind-variants": "^3.1.1",
     "tailwindcss-react-aria-components": "^2.0.1",
     "uuid": "^13.0.0"

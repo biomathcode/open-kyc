@@ -11,10 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
-import { Route as AnotherPageRouteImport } from './routes/anotherPage'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SessionSessionidRouteImport } from './routes/session/$sessionid'
 import { Route as AuthServerRouteImport } from './routes/_auth/server'
 import { Route as AuthClientOnlyRouteImport } from './routes/_auth/client-only'
 import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
@@ -37,11 +37,6 @@ const SignInRoute = SignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AnotherPageRoute = AnotherPageRouteImport.update({
-  id: '/anotherPage',
-  path: '/anotherPage',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
@@ -53,6 +48,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SessionSessionidRoute = SessionSessionidRouteImport.update({
+  id: '/session/$sessionid',
+  path: '/session/$sessionid',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthServerRoute = AuthServerRouteImport.update({
@@ -113,7 +113,6 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/anotherPage': typeof AnotherPageRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/analytics': typeof AppAnalyticsRoute
@@ -126,11 +125,11 @@ export interface FileRoutesByFullPath {
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
   '/server': typeof AuthServerRoute
+  '/session/$sessionid': typeof SessionSessionidRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/anotherPage': typeof AnotherPageRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/analytics': typeof AppAnalyticsRoute
@@ -143,6 +142,7 @@ export interface FileRoutesByTo {
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
   '/server': typeof AuthServerRoute
+  '/session/$sessionid': typeof SessionSessionidRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRoutesById {
@@ -150,7 +150,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
-  '/anotherPage': typeof AnotherPageRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/_app/analytics': typeof AppAnalyticsRoute
@@ -163,13 +162,13 @@ export interface FileRoutesById {
   '/_app/workflow': typeof AppWorkflowRoute
   '/_auth/client-only': typeof AuthClientOnlyRoute
   '/_auth/server': typeof AuthServerRoute
+  '/session/$sessionid': typeof SessionSessionidRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/anotherPage'
     | '/sign-in'
     | '/sign-up'
     | '/analytics'
@@ -182,11 +181,11 @@ export interface FileRouteTypes {
     | '/workflow'
     | '/client-only'
     | '/server'
+    | '/session/$sessionid'
     | '/api/auth/$'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/anotherPage'
     | '/sign-in'
     | '/sign-up'
     | '/analytics'
@@ -199,13 +198,13 @@ export interface FileRouteTypes {
     | '/workflow'
     | '/client-only'
     | '/server'
+    | '/session/$sessionid'
     | '/api/auth/$'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_auth'
-    | '/anotherPage'
     | '/sign-in'
     | '/sign-up'
     | '/_app/analytics'
@@ -218,6 +217,7 @@ export interface FileRouteTypes {
     | '/_app/workflow'
     | '/_auth/client-only'
     | '/_auth/server'
+    | '/session/$sessionid'
     | '/api/auth/$'
   fileRoutesById: FileRoutesById
 }
@@ -225,9 +225,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
-  AnotherPageRoute: typeof AnotherPageRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
+  SessionSessionidRoute: typeof SessionSessionidRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -245,13 +245,6 @@ declare module '@tanstack/react-router' {
       path: '/sign-in'
       fullPath: '/sign-in'
       preLoaderRoute: typeof SignInRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/anotherPage': {
-      id: '/anotherPage'
-      path: '/anotherPage'
-      fullPath: '/anotherPage'
-      preLoaderRoute: typeof AnotherPageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
@@ -273,6 +266,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/session/$sessionid': {
+      id: '/session/$sessionid'
+      path: '/session/$sessionid'
+      fullPath: '/session/$sessionid'
+      preLoaderRoute: typeof SessionSessionidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/server': {
@@ -395,9 +395,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
-  AnotherPageRoute: AnotherPageRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
+  SessionSessionidRoute: SessionSessionidRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

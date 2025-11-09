@@ -15,7 +15,7 @@ function RouteComponent() {
     <SidebarInset>
       <AppSidebarNav />
       <div className="p-4 lg:p-6">
-        <Outlet />5
+        <Outlet />
       </div>
     </SidebarInset>
   </SidebarProvider>

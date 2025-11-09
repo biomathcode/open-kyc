@@ -19,6 +19,7 @@ import { SignOutButton } from '~/components/client'
 
 
 export const Route = createFileRoute('/_auth/client-only')({
+
     component: ClientOnlyComponent,
 })
 
