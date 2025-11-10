@@ -20,13 +20,16 @@ import { Route as AuthClientOnlyRouteImport } from './routes/_auth/client-only'
 import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
 import { Route as AppVerificationsRouteImport } from './routes/_app/verifications'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
-import { Route as AppQuestionnariesRouteImport } from './routes/_app/questionnaries'
 import { Route as AppDocumentsRouteImport } from './routes/_app/documents'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppCustomizationRouteImport } from './routes/_app/customization'
 import { Route as AppBlocklistRouteImport } from './routes/_app/blocklist'
+import { Route as AppBackgroundcheckRouteImport } from './routes/_app/backgroundcheck'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
+import { Route as AppQuestionnairesIndexRouteImport } from './routes/_app/questionnaires/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AppQuestionnairesIdRouteImport } from './routes/_app/questionnaires/$id'
+import { Route as AppAnalysisIdRouteImport } from './routes/_app/analysis.$id'
 
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
@@ -81,11 +84,6 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
-const AppQuestionnariesRoute = AppQuestionnariesRouteImport.update({
-  id: '/questionnaries',
-  path: '/questionnaries',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppDocumentsRoute = AppDocumentsRouteImport.update({
   id: '/documents',
   path: '/documents',
@@ -106,9 +104,19 @@ const AppBlocklistRoute = AppBlocklistRouteImport.update({
   path: '/blocklist',
   getParentRoute: () => AppRoute,
 } as any)
+const AppBackgroundcheckRoute = AppBackgroundcheckRouteImport.update({
+  id: '/backgroundcheck',
+  path: '/backgroundcheck',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQuestionnairesIndexRoute = AppQuestionnairesIndexRouteImport.update({
+  id: '/questionnaires/',
+  path: '/questionnaires/',
   getParentRoute: () => AppRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -116,42 +124,58 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppQuestionnairesIdRoute = AppQuestionnairesIdRouteImport.update({
+  id: '/questionnaires/$id',
+  path: '/questionnaires/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnalysisIdRoute = AppAnalysisIdRouteImport.update({
+  id: '/analysis/$id',
+  path: '/analysis/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/analytics': typeof AppAnalyticsRoute
+  '/backgroundcheck': typeof AppBackgroundcheckRoute
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
   '/documents': typeof AppDocumentsRoute
-  '/questionnaries': typeof AppQuestionnariesRoute
   '/settings': typeof AppSettingsRoute
   '/verifications': typeof AppVerificationsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
   '/server': typeof AuthServerRoute
   '/session/$sessionid': typeof SessionSessionidRoute
+  '/analysis/$id': typeof AppAnalysisIdRoute
+  '/questionnaires/$id': typeof AppQuestionnairesIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/questionnaires': typeof AppQuestionnairesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/analytics': typeof AppAnalyticsRoute
+  '/backgroundcheck': typeof AppBackgroundcheckRoute
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
   '/documents': typeof AppDocumentsRoute
-  '/questionnaries': typeof AppQuestionnariesRoute
   '/settings': typeof AppSettingsRoute
   '/verifications': typeof AppVerificationsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
   '/server': typeof AuthServerRoute
   '/session/$sessionid': typeof SessionSessionidRoute
+  '/analysis/$id': typeof AppAnalysisIdRoute
+  '/questionnaires/$id': typeof AppQuestionnairesIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/questionnaires': typeof AppQuestionnairesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -161,18 +185,21 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/_app/analytics': typeof AppAnalyticsRoute
+  '/_app/backgroundcheck': typeof AppBackgroundcheckRoute
   '/_app/blocklist': typeof AppBlocklistRoute
   '/_app/customization': typeof AppCustomizationRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/documents': typeof AppDocumentsRoute
-  '/_app/questionnaries': typeof AppQuestionnariesRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/verifications': typeof AppVerificationsRoute
   '/_app/workflow': typeof AppWorkflowRoute
   '/_auth/client-only': typeof AuthClientOnlyRoute
   '/_auth/server': typeof AuthServerRoute
   '/session/$sessionid': typeof SessionSessionidRoute
+  '/_app/analysis/$id': typeof AppAnalysisIdRoute
+  '/_app/questionnaires/$id': typeof AppQuestionnairesIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_app/questionnaires/': typeof AppQuestionnairesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,36 +208,42 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/analytics'
+    | '/backgroundcheck'
     | '/blocklist'
     | '/customization'
     | '/dashboard'
     | '/documents'
-    | '/questionnaries'
     | '/settings'
     | '/verifications'
     | '/workflow'
     | '/client-only'
     | '/server'
     | '/session/$sessionid'
+    | '/analysis/$id'
+    | '/questionnaires/$id'
     | '/api/auth/$'
+    | '/questionnaires'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/sign-in'
     | '/sign-up'
     | '/analytics'
+    | '/backgroundcheck'
     | '/blocklist'
     | '/customization'
     | '/dashboard'
     | '/documents'
-    | '/questionnaries'
     | '/settings'
     | '/verifications'
     | '/workflow'
     | '/client-only'
     | '/server'
     | '/session/$sessionid'
+    | '/analysis/$id'
+    | '/questionnaires/$id'
     | '/api/auth/$'
+    | '/questionnaires'
   id:
     | '__root__'
     | '/'
@@ -219,18 +252,21 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/_app/analytics'
+    | '/_app/backgroundcheck'
     | '/_app/blocklist'
     | '/_app/customization'
     | '/_app/dashboard'
     | '/_app/documents'
-    | '/_app/questionnaries'
     | '/_app/settings'
     | '/_app/verifications'
     | '/_app/workflow'
     | '/_auth/client-only'
     | '/_auth/server'
     | '/session/$sessionid'
+    | '/_app/analysis/$id'
+    | '/_app/questionnaires/$id'
     | '/api/auth/$'
+    | '/_app/questionnaires/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -322,13 +358,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/questionnaries': {
-      id: '/_app/questionnaries'
-      path: '/questionnaries'
-      fullPath: '/questionnaries'
-      preLoaderRoute: typeof AppQuestionnariesRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/documents': {
       id: '/_app/documents'
       path: '/documents'
@@ -357,11 +386,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBlocklistRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/backgroundcheck': {
+      id: '/_app/backgroundcheck'
+      path: '/backgroundcheck'
+      fullPath: '/backgroundcheck'
+      preLoaderRoute: typeof AppBackgroundcheckRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/analytics': {
       id: '/_app/analytics'
       path: '/analytics'
       fullPath: '/analytics'
       preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/questionnaires/': {
+      id: '/_app/questionnaires/'
+      path: '/questionnaires'
+      fullPath: '/questionnaires'
+      preLoaderRoute: typeof AppQuestionnairesIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/api/auth/$': {
@@ -371,31 +414,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/questionnaires/$id': {
+      id: '/_app/questionnaires/$id'
+      path: '/questionnaires/$id'
+      fullPath: '/questionnaires/$id'
+      preLoaderRoute: typeof AppQuestionnairesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/analysis/$id': {
+      id: '/_app/analysis/$id'
+      path: '/analysis/$id'
+      fullPath: '/analysis/$id'
+      preLoaderRoute: typeof AppAnalysisIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppAnalyticsRoute: typeof AppAnalyticsRoute
+  AppBackgroundcheckRoute: typeof AppBackgroundcheckRoute
   AppBlocklistRoute: typeof AppBlocklistRoute
   AppCustomizationRoute: typeof AppCustomizationRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppDocumentsRoute: typeof AppDocumentsRoute
-  AppQuestionnariesRoute: typeof AppQuestionnariesRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppVerificationsRoute: typeof AppVerificationsRoute
   AppWorkflowRoute: typeof AppWorkflowRoute
+  AppAnalysisIdRoute: typeof AppAnalysisIdRoute
+  AppQuestionnairesIdRoute: typeof AppQuestionnairesIdRoute
+  AppQuestionnairesIndexRoute: typeof AppQuestionnairesIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppAnalyticsRoute: AppAnalyticsRoute,
+  AppBackgroundcheckRoute: AppBackgroundcheckRoute,
   AppBlocklistRoute: AppBlocklistRoute,
   AppCustomizationRoute: AppCustomizationRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppDocumentsRoute: AppDocumentsRoute,
-  AppQuestionnariesRoute: AppQuestionnariesRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppVerificationsRoute: AppVerificationsRoute,
   AppWorkflowRoute: AppWorkflowRoute,
+  AppAnalysisIdRoute: AppAnalysisIdRoute,
+  AppQuestionnairesIdRoute: AppQuestionnairesIdRoute,
+  AppQuestionnairesIndexRoute: AppQuestionnairesIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

@@ -6,6 +6,8 @@ import {
   useRouteContext
 } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
+import { Toaster } from "sonner";
+
 
 
 import * as React from 'react'
@@ -113,6 +115,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <Toaster position="top-right" richColors />
         {children}
         <Scripts />
       </body>

@@ -13,8 +13,12 @@ import type * as documents from "../documents.js";
 import type * as functions_backgroundCheck from "../functions/backgroundCheck.js";
 import type * as functions_users from "../functions/users.js";
 import type * as functions_workflows from "../functions/workflows.js";
+import type * as helpers from "../helpers.js";
 import type * as http from "../http.js";
 import type * as index from "../index.js";
+import type * as questionnaires from "../questionnaires.js";
+import type * as questions from "../questions.js";
+import type * as tools from "../tools.js";
 
 import type {
   ApiFromModules,
@@ -36,8 +40,12 @@ declare const fullApi: ApiFromModules<{
   "functions/backgroundCheck": typeof functions_backgroundCheck;
   "functions/users": typeof functions_users;
   "functions/workflows": typeof functions_workflows;
+  helpers: typeof helpers;
   http: typeof http;
   index: typeof index;
+  questionnaires: typeof questionnaires;
+  questions: typeof questions;
+  tools: typeof tools;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

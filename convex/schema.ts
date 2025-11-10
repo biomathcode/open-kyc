@@ -56,6 +56,39 @@ export default defineSchema({
     searchField: "name",
     staged: false,
   }),
+
+
+
+  questionnaires: defineTable({
+    title: v.string(),
+    description: v.optional(v.string()),
+    // createdBy:  v.optional(v.string()),
+    isPublished: v.boolean(),
+    createdAt: v.number(),
+  }),
+
+
+  questions: defineTable({
+    questionnaireId: v.id("questionnaires"),
+    text: v.string(),
+    required: v.boolean(),
+    order: v.number(),
+  }),
+
+  feedback: defineTable({
+    questionnaireId: v.id("questionnaires"),
+    questionId: v.id("questions"),
+    value: v.string(), // user’s text input
+    submittedAt: v.number(),
+  }),
+
+  siteAnalysis: defineTable({
+    siteUrl: v.string(),
+    workflowId: v.string(),
+    analysis: v.string(),
+  }).index("by_workflowId", ["workflowId"]),
+
 });
+
 
 

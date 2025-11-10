@@ -14,6 +14,7 @@
     "lint": "tsc && eslint .  --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
     "@convex-dev/better-auth": "^0.9.7",
     "@convex-dev/crons": "^0.1.9",
     "@convex-dev/geospatial": "^0.1.9",
@@ -22,6 +23,7 @@
     "@convex-dev/resend": "^0.1.13",
     "@convex-dev/workflow": "^0.2.7",
     "@convex-dev/workpool": "^0.2.19",
+    "@google/genai": "^1.29.0",
     "@heroicons/react": "^2.2.0",
     "@mendable/firecrawl-js": "^4.5.0",
     "@react-email/components": "^1.0.0",
@@ -38,6 +40,7 @@
     "convex": "^1.28.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.552.0",
+    "openai": "^6.8.1",
     "react": "^19.1.1",
     "react-aria-components": "^1.13.0",
     "react-dom": "^19.1.1",

@@ -12,8 +12,9 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { api } from "convex/_generated/api"
 import {
-    BanIcon, ChartPieIcon, IdCardIcon, ListTodoIcon, LucideHome, Settings2Icon, SwatchBookIcon, WorkflowIcon,
-    BookOpenIcon
+    BanIcon, BookOpenIcon, ChartPieIcon, IdCardIcon, ListTodoIcon, LucideHome, ScanFaceIcon, Settings2Icon,
+    SwatchBookIcon,
+    WorkflowIcon
 } from 'lucide-react'
 import { Avatar } from "~/components/ui/avatar"
 import { Link } from "~/components/ui/link"
@@ -59,11 +60,12 @@ type AllowedRoutes =
     | "/blocklist"
     | "/customization"
     | "/dashboard"
-    | "/questionnaries"
+    | "/questionnaires"
     | "/settings"
     | "/verifications"
     | "/workflow"
     | "/documents"
+    | "/backgroundcheck"
 
 interface NavItemType {
     href: AllowedRoutes
@@ -108,7 +110,7 @@ export const NavItem: Array<NavItemType> = [
 
     },
     {
-        href: "/questionnaries",
+        href: "/questionnaires",
         icon: ListTodoIcon,
         description: "Create and manage user questionnaires and surveys",
         label: "Questionnaries",
@@ -127,11 +129,16 @@ export const NavItem: Array<NavItemType> = [
 
     },
     {
+        href: "/backgroundcheck",
+        icon: ScanFaceIcon,
+        description: "Perform background checks on users",
+        label: "Background Check",
+    },
+    {
         href: "/settings",
         icon: Settings2Icon,
         description: "Adjust account and application configuration",
         label: "Settings",
-
     },
 ]
 

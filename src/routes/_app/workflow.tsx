@@ -10,8 +10,9 @@ export const Route = createFileRoute('/_app/workflow')({
     component: RouteComponent,
     loader: async ({ context: { queryClient } }) => {
         await queryClient.ensureQueryData(convexQuery(api.functions.workflows.getWorkflows, {}))
+    },
+    pendingComponent: () => (<div>Loading...</div>),
 
-    }
 })
 // TODO: Create Model To add workflow 
 // Workflow create session link where user can enable or disable the features that he requires
