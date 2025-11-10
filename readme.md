@@ -34,3 +34,4 @@ KYC platform powered by Convex, tanstack start, react-aria,
 - https://github.com/tanstack/router/tree/main/examples
 - https://github.com/get-convex/better-auth/tree/main/examples/tanstack
 - https://github.com/abhik-99/Liveness-Detection
+- https://modal.com/docs/examples/doc_ocr_jobs
