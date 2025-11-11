@@ -46,6 +46,7 @@
     "openai": "^6.8.1",
     "react": "^19.1.1",
     "react-aria-components": "^1.13.0",
+    "react-camera-pro": "^1.4.0",
     "react-dom": "^19.1.1",
     "recharts": "^3.3.0",
     "resend": "^6.4.2",

@@ -10,7 +10,7 @@ export const autumn = new Autumn(components.autumn, {
         console.log("user", user)
 
         return {
-            customerId: user._id,
+            customerId: user.subject,
             customerData: {
                 name: user.name as string,
                 email: user.email as string,
