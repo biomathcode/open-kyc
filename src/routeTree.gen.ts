@@ -24,6 +24,7 @@ import { Route as AppDocumentsRouteImport } from './routes/_app/documents'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppCustomizationRouteImport } from './routes/_app/customization'
 import { Route as AppBlocklistRouteImport } from './routes/_app/blocklist'
+import { Route as AppBillingRouteImport } from './routes/_app/billing'
 import { Route as AppBackgroundcheckRouteImport } from './routes/_app/backgroundcheck'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
 import { Route as AppQuestionnairesIndexRouteImport } from './routes/_app/questionnaires/index'
@@ -104,6 +105,11 @@ const AppBlocklistRoute = AppBlocklistRouteImport.update({
   path: '/blocklist',
   getParentRoute: () => AppRoute,
 } as any)
+const AppBillingRoute = AppBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppBackgroundcheckRoute = AppBackgroundcheckRouteImport.update({
   id: '/backgroundcheck',
   path: '/backgroundcheck',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof SignUpRoute
   '/analytics': typeof AppAnalyticsRoute
   '/backgroundcheck': typeof AppBackgroundcheckRoute
+  '/billing': typeof AppBillingRoute
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof SignUpRoute
   '/analytics': typeof AppAnalyticsRoute
   '/backgroundcheck': typeof AppBackgroundcheckRoute
+  '/billing': typeof AppBillingRoute
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/sign-up': typeof SignUpRoute
   '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/backgroundcheck': typeof AppBackgroundcheckRoute
+  '/_app/billing': typeof AppBillingRoute
   '/_app/blocklist': typeof AppBlocklistRoute
   '/_app/customization': typeof AppCustomizationRoute
   '/_app/dashboard': typeof AppDashboardRoute
@@ -209,6 +218,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/analytics'
     | '/backgroundcheck'
+    | '/billing'
     | '/blocklist'
     | '/customization'
     | '/dashboard'
@@ -230,6 +240,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/analytics'
     | '/backgroundcheck'
+    | '/billing'
     | '/blocklist'
     | '/customization'
     | '/dashboard'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/_app/analytics'
     | '/_app/backgroundcheck'
+    | '/_app/billing'
     | '/_app/blocklist'
     | '/_app/customization'
     | '/_app/dashboard'
@@ -386,6 +398,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBlocklistRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/billing': {
+      id: '/_app/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof AppBillingRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/backgroundcheck': {
       id: '/_app/backgroundcheck'
       path: '/backgroundcheck'
@@ -434,6 +453,7 @@ declare module '@tanstack/react-router' {
 interface AppRouteChildren {
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppBackgroundcheckRoute: typeof AppBackgroundcheckRoute
+  AppBillingRoute: typeof AppBillingRoute
   AppBlocklistRoute: typeof AppBlocklistRoute
   AppCustomizationRoute: typeof AppCustomizationRoute
   AppDashboardRoute: typeof AppDashboardRoute
@@ -449,6 +469,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppBackgroundcheckRoute: AppBackgroundcheckRoute,
+  AppBillingRoute: AppBillingRoute,
   AppBlocklistRoute: AppBlocklistRoute,
   AppCustomizationRoute: AppCustomizationRoute,
   AppDashboardRoute: AppDashboardRoute,

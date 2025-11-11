@@ -6,6 +6,7 @@ import {
     ArrowRightStartOnRectangleIcon,
     Cog6ToothIcon,
     HomeIcon,
+    MusicalNoteIcon,
     ShieldCheckIcon,
 } from "@heroicons/react/24/solid"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -66,6 +67,7 @@ type AllowedRoutes =
     | "/workflow"
     | "/documents"
     | "/backgroundcheck"
+    | "/billing"
 
 interface NavItemType {
     href: AllowedRoutes
@@ -133,6 +135,12 @@ export const NavItem: Array<NavItemType> = [
         icon: ScanFaceIcon,
         description: "Perform background checks on users",
         label: "Background Check",
+    },
+    {
+        href: "/billing",
+        icon: MusicalNoteIcon,
+        description: "Manage your billing and subscription",
+        label: "Billing",
     },
     {
         href: "/settings",

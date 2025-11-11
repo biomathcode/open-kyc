@@ -20,6 +20,7 @@ import type { ConvexQueryClient } from '@convex-dev/react-query'
 import type { ConvexReactClient } from 'convex/react'
 import { authClient } from "~/lib/auth-client";
 import appCss from '~/styles/app.css?url'
+import { AutumnWrapper } from '~/providers/AutumnWrapper';
 
 
 const fetchAuth = createServerFn({ method: 'GET' }).handler(async () => {
@@ -99,9 +100,12 @@ function RootComponent() {
       client={context.convexQueryClient.convexClient}
       authClient={authClient}
     >
-      <RootDocument>
-        <Outlet />
-      </RootDocument>
+      <AutumnWrapper>
+
+        <RootDocument>
+          <Outlet />
+        </RootDocument>
+      </AutumnWrapper>
     </ConvexBetterAuthProvider>
   )
 }

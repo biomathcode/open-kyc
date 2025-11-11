@@ -9,6 +9,7 @@
  */
 
 import type * as auth from "../auth.js";
+import type * as autumn from "../autumn.js";
 import type * as documents from "../documents.js";
 import type * as functions_backgroundCheck from "../functions/backgroundCheck.js";
 import type * as functions_users from "../functions/users.js";
@@ -36,6 +37,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   auth: typeof auth;
+  autumn: typeof autumn;
   documents: typeof documents;
   "functions/backgroundCheck": typeof functions_backgroundCheck;
   "functions/users": typeof functions_users;
@@ -2158,6 +2160,7 @@ export declare const components: {
       updateMany: FunctionReference<"mutation", "internal", any, any>;
     };
   };
+  autumn: {};
   resend: {
     lib: {
       cancelEmail: FunctionReference<
