@@ -24,6 +24,14 @@ KYC platform powered by Convex, tanstack start, react-aria,
 
 
 
+## Netflify deploy -> 
+[DEMO URL](https://open-kyc.netlify.app)
+
+
+Build logs:         https://app.netlify.com/projects/open-kyc/deploys/691481d57606b96a7af7abcf
+Function logs:      https://app.netlify.com/projects/open-kyc/logs/functions
+Edge function Logs: https://app.netlify.com/projects/open-kyc/logs/edge-functions
+
 
 ### References
 - https://github.com/mikecann/port-geo-christmas-lights-cruise/tree/the-video-release

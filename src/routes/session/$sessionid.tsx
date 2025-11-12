@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { createFileRoute } from '@tanstack/react-router'
-import { ArrowBigLeft, InfoIcon, StepBackIcon } from 'lucide-react';
+import { ArrowBigLeft, InfoIcon } from 'lucide-react';
 
 
 import { Button } from '~/components/ui/button';
@@ -41,13 +41,13 @@ export const Route = createFileRoute('/session/$sessionid')({
 })
 
 function RouteComponent() {
-    const { sessionid: id } = Route.useParams();
+    // const { sessionid: id } = Route.useParams();
 
     const [flow, setFlow] = useState<flowStates>('start')
 
     return <div className='container w-full h-full backdrop-blur-3xl'>
         <div className="h-(--screenHeight) flex h-[--screenHeight] items-center justify-center md:p-2" data-testid="start-kyc-welcome" id="start-kyc-welcome"
-            style={{ "--screenHeight": "962px", "opacity": 1, "transform": "none" }}>
+            style={{ "--screenHeight": "962px", "opacity": 1, "transform": "none" } as React.CSSProperties}>
             <div className="overflow-hidden p-0 shadow-card flex size-full w-fit flex-col rounded-none bg-transparent md:max-h-fit md:overflow-hidden md:rounded-pnl-xl" data-testid="start-kyc-welcome" id="start-kyc-welcome">
                 {
                     flow === 'start' && <StartKycWelcome setFlow={setFlow} />

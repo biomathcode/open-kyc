@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "convex/react";
 import { useRef, useState } from "react";
 import { api } from "convex/_generated/api";
 import type { FormEvent } from "react";
+import type { Id } from 'convex/_generated/dataModel'
 import { Button } from "~/components/ui/button";
 
 export const Route = createFileRoute("/_app/documents")({
@@ -45,15 +46,11 @@ function RouteComponent() {
         setSelectedFile(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
     }
-
     // Delete Handler
-    async function handleDelete(id: string, fileId: string) {
+    async function handleDelete(id: string, fileId: string | Id<"_storage">) {
         if (!confirm("Are you sure you want to delete this document?")) return;
-        await deleteDocument({ id, fileId });
+        await deleteDocument({ id: (id as unknown) as Id<"documents">, fileId: (fileId as unknown) as Id<"_storage"> });
     }
-
-    // View Handler
-
 
     return (
         <div className="container  ">

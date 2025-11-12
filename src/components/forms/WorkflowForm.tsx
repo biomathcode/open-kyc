@@ -1,6 +1,4 @@
-"use client";
 
-import * as React from "react";
 import { useForm } from "@tanstack/react-form";
 import { useMutation } from "convex/react";
 import { v4 as uuid } from "uuid";

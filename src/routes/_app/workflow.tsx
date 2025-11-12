@@ -4,7 +4,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { api } from 'convex/_generated/api'
 import { WorkflowForm } from '~/components/forms/WorkflowForm'
 import { Button } from '~/components/ui/button'
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
+import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
 
 export const Route = createFileRoute('/_app/workflow')({
     component: RouteComponent,

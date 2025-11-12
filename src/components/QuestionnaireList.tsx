@@ -17,12 +17,12 @@ export default function QuestionnaireList() {
         return (
             <div className="flex flex-col items-center justify-center py-10 text-gray-500">
                 <p>No questionnaires yet.</p>
-                <Link
-                    to="/questionnaires/new"
+                <Button
+
                     className="mt-3 bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700"
                 >
                     + Create one
-                </Link>
+                </Button>
             </div>
         );
     }

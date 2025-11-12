@@ -15,7 +15,7 @@ export const scrapeSite = internalAction({
     },
 
     // Action implementation.
-    handler: async (ctx, args) => {
+    handler: async (_, args) => {
         const firecrawl = new Firecrawl({ apiKey: process.env.FIRECRAWL_API_KEY! });
 
         const doc = await firecrawl.scrape(args.siteUrl, { formats: ['markdown', 'html'] });
@@ -26,7 +26,7 @@ export const scrapeSite = internalAction({
 
 export const analyzeSite = internalAction({
     args: { siteContent: v.string() },
-    handler: async (ctx, args) => {
+    handler: async (_, args) => {
         const ai = new GoogleGenAI({
             apiKey: process.env.GEMINI_API_KEY,
         });

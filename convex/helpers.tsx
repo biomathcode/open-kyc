@@ -30,7 +30,7 @@ export const storeScrapeResult = internalMutation({
 })
 
 export const getScrapeResult = query({
-    handler: async (ctx, args) => {
+    handler: async (ctx) => {
         const result = await ctx.db.query("siteAnalysis").collect();
         return result
     },

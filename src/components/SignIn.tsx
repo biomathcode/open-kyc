@@ -19,8 +19,8 @@ export const SignIn = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [otp, setOtp] = useState('')
-    const [magicLinkLoading, setMagicLinkLoading] = useState(false)
+    const [_, setOtp] = useState('')
+    // const [magicLinkLoading, setMagicLinkLoading] = useState(false)
     const [otpLoading, setOtpLoading] = useState(false)
 
 

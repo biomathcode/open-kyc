@@ -1,7 +1,7 @@
 import { Avatar } from "../ui/avatar";
 import { Label } from "../ui/field";
 import { Link } from "../ui/link";
-import { SidebarLabel } from "../ui/sidebar";
+// import { SidebarLabel } from "../ui/sidebar";
 
 function Navbar() {
     return (

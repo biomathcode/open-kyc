@@ -23,7 +23,6 @@ import type {
   DisclosurePanelProps,
   DisclosureProps,
   LinkProps,
-  LinkRenderProps,
   SeparatorProps as SidebarSeparatorProps,
 } from "react-aria-components"
 import type { LinkComponentProps } from "@tanstack/react-router"

@@ -1,22 +1,22 @@
 import { v } from 'convex/values'
-import { action, mutation, query } from '../_generated/server'
+import { mutation } from '../_generated/server'
 
-export const createCandidate = mutation({
-    args: {
-        name: v.string(),
-        emails: v.array(v.string()),
-        profiles: v.array(v.string()),
-    },
-    handler: async (ctx, args) => {
-        // const candidateId = await ctx.db.insert("candidates", {
-        //     name: args.name,
-        //     emails: args.emails,
-        //     profiles: args.profiles,
-        //     createdAt: new Date().toISOString(),
-        // })
-        // return candidateId
-    },
-})
+// export const createCandidate = mutation({
+//     args: {
+//         name: v.string(),
+//         emails: v.array(v.string()),
+//         profiles: v.array(v.string()),
+//     },
+//     handler: async (ctx, args) => {
+//         // const candidateId = await ctx.db.insert("candidates", {
+//         //     name: args.name,
+//         //     emails: args.emails,
+//         //     profiles: args.profiles,
+//         //     createdAt: new Date().toISOString(),
+//         // })
+//         // return candidateId
+//     },
+// })
 
 export const saveBackgroundReport = mutation({
     args: {
@@ -36,7 +36,7 @@ export const saveBackgroundReport = mutation({
             })
         ),
     },
-    handler: async (ctx, args) => {
+    handler: async () => {
         // const reportId = await ctx.db.insert("reports", {
         //     candidateId: args.candidateId,
         //     summary: args.summary,

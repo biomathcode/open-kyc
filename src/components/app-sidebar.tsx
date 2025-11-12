@@ -31,16 +31,11 @@ import {
 import {
     Sidebar,
     SidebarContent,
-    SidebarDisclosure,
-    SidebarDisclosureGroup,
-    SidebarDisclosurePanel,
-    SidebarDisclosureTrigger,
+
     SidebarFooter,
     SidebarHeader,
     SidebarItem,
     SidebarLabel,
-    SidebarLink,
-    SidebarMenuTrigger,
     SidebarRail,
     SidebarSection,
     SidebarSectionGroup,
@@ -194,7 +189,7 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
 
                                                 
                                                  " key={href} tooltip={label}
-                                        to={href}
+                                        to={href as any}
                                         activeProps={{
                                             "className": `   !font-semibold 
                                                             text-sidebar-primary-fg

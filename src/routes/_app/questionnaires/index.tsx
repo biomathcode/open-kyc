@@ -1,4 +1,4 @@
-import { Link, createFileRoute, } from "@tanstack/react-router";
+import { createFileRoute, } from "@tanstack/react-router";
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "convex/_generated/api";
 import { Suspense } from "react";
@@ -26,12 +26,12 @@ function RouteComponent() {
       <div className="container mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Questionnaires</h1>
-          <Link
-            to="/questionnaires/new"
+          <button
+            // to="/questionnaires/new"
             className="bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700"
           >
             + Create
-          </Link>
+          </button>
         </div>
 
         <QuestionnaireList />

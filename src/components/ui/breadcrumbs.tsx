@@ -46,7 +46,16 @@ const BreadcrumbsItem = ({
     >
       {({ isCurrent }) => (
         <>
-          <Link href={href} {...props} />
+          <Link
+            href={href}
+            slot={props.slot ?? undefined}
+            className={typeof className === "function" ? className({
+              ...props,
+              defaultClassName: "",
+              isCurrent: false,
+              isDisabled: false // explicitly set to boolean
+            }) : className}
+          />
           {!isCurrent && separator !== false && <Separator separator={separatorValue} />}
         </>
       )}

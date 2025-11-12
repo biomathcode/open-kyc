@@ -35,10 +35,10 @@ function RouteComponent() {
     const { id } = Route.useParams();
 
     const { data: questionnaire } = useSuspenseQuery(
-        convexQuery(api.questionnaires.get, { id })
+        convexQuery(api.questionnaires.get, { id: id as Id<"questionnaires"> })
     );
     const { data: questions } = useSuspenseQuery(
-        convexQuery(api.questions.listByQuestionnaire, { questionnaireId: id })
+        convexQuery(api.questions.listByQuestionnaire, { questionnaireId: id as Id<"questionnaires"> })
     );
 
     const initialData = { ...questionnaire, questions };

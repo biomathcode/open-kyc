@@ -9,9 +9,11 @@ export function CameraFeed() {
     const [permissionGranted, setPermissionGranted] = useState<boolean | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [screenshot, setScreenshot] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     // 🔹 Request permission
     async function requestPermission() {
+        setLoading(true);
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
             setPermissionGranted(true);
@@ -21,6 +23,8 @@ export function CameraFeed() {
             console.error("Camera permission denied:", err);
             setPermissionGranted(false);
             setError("Camera access denied. Please enable permissions.");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -131,46 +135,60 @@ export function CameraFeed() {
     }
 
     return (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center justify-center p-4 w-full">
+            {/* 🔹 Permission request screen */}
             {permissionGranted === null && (
-                <button
-                    onClick={requestPermission}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md"
-                >
-                    Enable Camera
-                </button>
+                <div className="flex flex-col items-center text-center max-w-sm p-6 border rounded-lg shadow-md bg-gray-50 dark:bg-gray-900">
+                    <h2 className="text-lg font-semibold mb-2">Allow Camera Access</h2>
+                    <p className="text-sm text-gray-500 mb-4">
+                        We need permission to access your camera. Please click the button below
+                        and allow access in your browser popup.
+                    </p>
+                    <button
+                        onClick={requestPermission}
+                        disabled={loading}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-60"
+                    >
+                        {loading ? "Requesting..." : "Enable Camera"}
+                    </button>
+                </div>
             )}
 
+            {/* 🔹 Camera feed */}
             {permissionGranted && (
-                <>
-                    <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className="w-full max-w-md rounded-lg bg-black aspect-video object-cover"
-                    />
+                <div className="w-full max-w-md flex flex-col items-center gap-4">
+                    <div className="relative w-full aspect-video rounded-lg overflow-hidden bg-black">
+                        <video
+                            ref={videoRef}
+                            autoPlay
+                            playsInline
+                            muted
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
+                    </div>
+
                     <canvas ref={canvasRef} className="hidden" />
 
-                    <div className="flex gap-2">
+                    {/* 🔹 Controls */}
+                    <div className="flex flex-wrap justify-center gap-2 w-full">
                         {devices.length > 1 && (
                             <button
                                 onClick={toggleCamera}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md"
+                                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
                             >
                                 Switch Camera
                             </button>
                         )}
                         <button
                             onClick={captureScreenshot}
-                            className="px-4 py-2 bg-green-600 text-white rounded-md"
+                            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
                         >
                             Capture
                         </button>
                         <select
                             value={currentDeviceId ?? ""}
                             onChange={(e) => setCurrentDeviceId(e.target.value)}
-                            className="border rounded-md px-2 py-1"
+                            className="border rounded-md px-2 py-1 text-sm"
                         >
                             {devices.map((device, idx) => (
                                 <option key={device.deviceId} value={device.deviceId}>
@@ -180,26 +198,28 @@ export function CameraFeed() {
                         </select>
                     </div>
 
+                    {/* 🔹 Screenshot Preview */}
                     {screenshot && (
                         <div className="flex flex-col items-center gap-2 mt-4">
                             <img
                                 src={screenshot}
                                 alt="Captured"
-                                className="w-64 rounded-lg shadow-md"
+                                className="w-64 sm:w-72 rounded-lg shadow-md"
                             />
                             <button
                                 onClick={downloadScreenshot}
-                                className="px-4 py-2 bg-gray-800 text-white rounded-md"
+                                className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-900 transition"
                             >
                                 Download
                             </button>
                         </div>
                     )}
-                </>
+                </div>
             )}
 
+            {/* 🔹 Error message */}
             {error && (
-                <p className="text-red-600 text-sm text-center max-w-sm">{error}</p>
+                <p className="text-red-600 text-sm text-center mt-3 max-w-sm">{error}</p>
             )}
         </div>
     );
