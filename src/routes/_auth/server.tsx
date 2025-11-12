@@ -3,7 +3,7 @@ import { Toaster } from 'sonner'
 import { convexQuery } from '@convex-dev/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useTransition } from 'react'
-import { api } from '../../../convex/_generated/api'
+import { api } from 'convex/_generated/api'
 
 import {
     AppContainer,
@@ -30,7 +30,7 @@ function ServerComponent() {
                 isServer={true}
                 onSwitch={() => {
                     startTransition(() => {
-                        void navigate({ to: '/client-only' })
+                        void navigate({ to: '/dashboard' })
                     })
                 }}
                 isPending={isPending}

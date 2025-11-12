@@ -164,7 +164,7 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
     return (
         <Sidebar {...props} className="">
             <SidebarHeader>
-                <Link href="/docs/components/layouts/sidebar" className="flex items-center gap-x-2">
+                <Link href="/" className="flex items-center gap-x-2">
                     <Avatar
                         isSquare
                         size="sm"
