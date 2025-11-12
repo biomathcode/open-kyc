@@ -85,7 +85,7 @@ function AnalysisDetail() {
                     {/* Analysis Content */}
                     <div className="px-5 py-4">
                         <div className="prose prose-neutral prose-sm max-w-none font-mono leading-relaxed">
-                            <pre>{markdownContent}</pre>
+                            <pre className="scroll ">{markdownContent}</pre>
                         </div>
                     </div>
                 </article>

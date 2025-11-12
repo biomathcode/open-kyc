@@ -193,7 +193,8 @@ export default function AppSidebar(props: React.ComponentProps<typeof Sidebar>) 
                                                 hover:bg-sidebar-accent hover:text-sidebar-accent-fg hover:[&_[data-slot='icon']:not([class*='text-'])]:text-sidebar-accent-fg
 
                                                 
-                                                 " key={href} tooltip={label} to={href}
+                                                 " key={href} tooltip={label}
+                                        to={href}
                                         activeProps={{
                                             "className": `   !font-semibold 
                                                             text-sidebar-primary-fg
