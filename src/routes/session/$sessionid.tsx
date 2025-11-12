@@ -9,6 +9,8 @@ import { CameraView } from "~/components/session/CameraView";
 import ProgressStepper from "~/components/session/ProgressStepper";
 
 // TODO: Integrate workflow ID, session data, analytics, etc.
+// TODO: Add session events as well 
+
 
 export const Route = createFileRoute("/session/$sessionid")({
     component: RouteComponent,

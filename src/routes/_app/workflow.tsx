@@ -2,9 +2,22 @@ import { convexQuery, useConvexMutation } from '@convex-dev/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { api } from 'convex/_generated/api'
+import { PlusIcon, TrashIcon } from 'lucide-react'
 import { WorkflowForm } from '~/components/forms/WorkflowForm'
 import { Button } from '~/components/ui/button'
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
+
+import {
+    Modal,
+    ModalBody,
+    ModalClose,
+    ModalContent,
+    ModalDescription,
+    ModalFooter,
+    ModalHeader,
+    ModalTitle,
+    ModalTrigger,
+} from "~/components/ui/modal"
 
 export const Route = createFileRoute('/_app/workflow')({
     component: RouteComponent,
@@ -28,37 +41,52 @@ function RouteComponent() {
     const deleteWorkflow = useConvexMutation(api.functions.workflows.deleteWorkflow);
 
 
-    return <div className="container w-full h-full ">
+    return <div className="container w-full h-full flex flex-col gap-2 ">
+        <div className="flex justify-between h-10">
+            <div className="text-xl font-semibold">
+                Workflows
+            </div>
+            <Modal >
+                <ModalTrigger>
+                    <Button><PlusIcon /> Workflow</Button>
+                </ModalTrigger>
 
-        <div>
-            Hello Workflows
+                <ModalContent className="p-6" size="4xl"> <WorkflowForm /></ModalContent>
+
+            </Modal>
         </div>
 
-        <div className="flex flex-col gap-2">
+
+
+        <div className="flex flex-col gap-2  ">
 
             {
                 data.map((e) => {
-                    return <Card key={e._id} className="p-2 px-0">
-                        <CardHeader>
+                    return <Card key={e._id} className="p-4 flex justify-between border  px-2">
+                        <CardHeader >
                             <CardTitle>{e.name}</CardTitle>
                             <CardDescription>
                                 {e.description}
                             </CardDescription>
-                        </CardHeader>
-                        <CardFooter>
                             <CardAction>
                                 <Button
                                     intent="danger"
+                                    size="sm"
+                                    className=''
                                     onClick={() => { deleteWorkflow({ id: e._id }) }}>
-                                    Delete
+                                    <TrashIcon size="14" />
                                 </Button>
                             </CardAction>
-                        </CardFooter>
+                        </CardHeader>
+
+
+
                     </Card>
                 })
             }
         </div>
 
-        <WorkflowForm />
+
+
     </div>
 }

@@ -5,5 +5,5 @@ export const Route = createFileRoute('/_app/blocklist')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/blocklist"!</div>
+  return <div>Blocklist Coming Soon !!</div>
 }

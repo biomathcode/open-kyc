@@ -18,7 +18,6 @@ import { Route as SessionSessionidRouteImport } from './routes/session/$sessioni
 import { Route as AuthServerRouteImport } from './routes/_auth/server'
 import { Route as AuthClientOnlyRouteImport } from './routes/_auth/client-only'
 import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
-import { Route as AppVerificationsRouteImport } from './routes/_app/verifications'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppDocumentsRouteImport } from './routes/_app/documents'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
@@ -27,8 +26,10 @@ import { Route as AppBlocklistRouteImport } from './routes/_app/blocklist'
 import { Route as AppBillingRouteImport } from './routes/_app/billing'
 import { Route as AppBackgroundcheckRouteImport } from './routes/_app/backgroundcheck'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
+import { Route as AppVerificationsIndexRouteImport } from './routes/_app/verifications/index'
 import { Route as AppQuestionnairesIndexRouteImport } from './routes/_app/questionnaires/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AppVerificationsIdRouteImport } from './routes/_app/verifications/$id'
 import { Route as AppQuestionnairesIdRouteImport } from './routes/_app/questionnaires/$id'
 import { Route as AppAnalysisIdRouteImport } from './routes/_app/analysis.$id'
 
@@ -75,11 +76,6 @@ const AppWorkflowRoute = AppWorkflowRouteImport.update({
   path: '/workflow',
   getParentRoute: () => AppRoute,
 } as any)
-const AppVerificationsRoute = AppVerificationsRouteImport.update({
-  id: '/verifications',
-  path: '/verifications',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -120,6 +116,11 @@ const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
+const AppVerificationsIndexRoute = AppVerificationsIndexRouteImport.update({
+  id: '/verifications/',
+  path: '/verifications/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppQuestionnairesIndexRoute = AppQuestionnairesIndexRouteImport.update({
   id: '/questionnaires/',
   path: '/questionnaires/',
@@ -129,6 +130,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppVerificationsIdRoute = AppVerificationsIdRouteImport.update({
+  id: '/verifications/$id',
+  path: '/verifications/$id',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppQuestionnairesIdRoute = AppQuestionnairesIdRouteImport.update({
   id: '/questionnaires/$id',
@@ -153,15 +159,16 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRoute
   '/documents': typeof AppDocumentsRoute
   '/settings': typeof AppSettingsRoute
-  '/verifications': typeof AppVerificationsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
   '/server': typeof AuthServerRoute
   '/session/$sessionid': typeof SessionSessionidRoute
   '/analysis/$id': typeof AppAnalysisIdRoute
   '/questionnaires/$id': typeof AppQuestionnairesIdRoute
+  '/verifications/$id': typeof AppVerificationsIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/questionnaires': typeof AppQuestionnairesIndexRoute
+  '/verifications': typeof AppVerificationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -175,15 +182,16 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRoute
   '/documents': typeof AppDocumentsRoute
   '/settings': typeof AppSettingsRoute
-  '/verifications': typeof AppVerificationsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
   '/server': typeof AuthServerRoute
   '/session/$sessionid': typeof SessionSessionidRoute
   '/analysis/$id': typeof AppAnalysisIdRoute
   '/questionnaires/$id': typeof AppQuestionnairesIdRoute
+  '/verifications/$id': typeof AppVerificationsIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/questionnaires': typeof AppQuestionnairesIndexRoute
+  '/verifications': typeof AppVerificationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -200,15 +208,16 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/documents': typeof AppDocumentsRoute
   '/_app/settings': typeof AppSettingsRoute
-  '/_app/verifications': typeof AppVerificationsRoute
   '/_app/workflow': typeof AppWorkflowRoute
   '/_auth/client-only': typeof AuthClientOnlyRoute
   '/_auth/server': typeof AuthServerRoute
   '/session/$sessionid': typeof SessionSessionidRoute
   '/_app/analysis/$id': typeof AppAnalysisIdRoute
   '/_app/questionnaires/$id': typeof AppQuestionnairesIdRoute
+  '/_app/verifications/$id': typeof AppVerificationsIdRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_app/questionnaires/': typeof AppQuestionnairesIndexRoute
+  '/_app/verifications/': typeof AppVerificationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -224,15 +233,16 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documents'
     | '/settings'
-    | '/verifications'
     | '/workflow'
     | '/client-only'
     | '/server'
     | '/session/$sessionid'
     | '/analysis/$id'
     | '/questionnaires/$id'
+    | '/verifications/$id'
     | '/api/auth/$'
     | '/questionnaires'
+    | '/verifications'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -246,15 +256,16 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documents'
     | '/settings'
-    | '/verifications'
     | '/workflow'
     | '/client-only'
     | '/server'
     | '/session/$sessionid'
     | '/analysis/$id'
     | '/questionnaires/$id'
+    | '/verifications/$id'
     | '/api/auth/$'
     | '/questionnaires'
+    | '/verifications'
   id:
     | '__root__'
     | '/'
@@ -270,15 +281,16 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_app/documents'
     | '/_app/settings'
-    | '/_app/verifications'
     | '/_app/workflow'
     | '/_auth/client-only'
     | '/_auth/server'
     | '/session/$sessionid'
     | '/_app/analysis/$id'
     | '/_app/questionnaires/$id'
+    | '/_app/verifications/$id'
     | '/api/auth/$'
     | '/_app/questionnaires/'
+    | '/_app/verifications/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -356,13 +368,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWorkflowRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/verifications': {
-      id: '/_app/verifications'
-      path: '/verifications'
-      fullPath: '/verifications'
-      preLoaderRoute: typeof AppVerificationsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/settings': {
       id: '/_app/settings'
       path: '/settings'
@@ -419,6 +424,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/verifications/': {
+      id: '/_app/verifications/'
+      path: '/verifications'
+      fullPath: '/verifications'
+      preLoaderRoute: typeof AppVerificationsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/questionnaires/': {
       id: '/_app/questionnaires/'
       path: '/questionnaires'
@@ -432,6 +444,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/verifications/$id': {
+      id: '/_app/verifications/$id'
+      path: '/verifications/$id'
+      fullPath: '/verifications/$id'
+      preLoaderRoute: typeof AppVerificationsIdRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/questionnaires/$id': {
       id: '/_app/questionnaires/$id'
@@ -459,11 +478,12 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppDocumentsRoute: typeof AppDocumentsRoute
   AppSettingsRoute: typeof AppSettingsRoute
-  AppVerificationsRoute: typeof AppVerificationsRoute
   AppWorkflowRoute: typeof AppWorkflowRoute
   AppAnalysisIdRoute: typeof AppAnalysisIdRoute
   AppQuestionnairesIdRoute: typeof AppQuestionnairesIdRoute
+  AppVerificationsIdRoute: typeof AppVerificationsIdRoute
   AppQuestionnairesIndexRoute: typeof AppQuestionnairesIndexRoute
+  AppVerificationsIndexRoute: typeof AppVerificationsIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -475,11 +495,12 @@ const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppDocumentsRoute: AppDocumentsRoute,
   AppSettingsRoute: AppSettingsRoute,
-  AppVerificationsRoute: AppVerificationsRoute,
   AppWorkflowRoute: AppWorkflowRoute,
   AppAnalysisIdRoute: AppAnalysisIdRoute,
   AppQuestionnairesIdRoute: AppQuestionnairesIdRoute,
+  AppVerificationsIdRoute: AppVerificationsIdRoute,
   AppQuestionnairesIndexRoute: AppQuestionnairesIndexRoute,
+  AppVerificationsIndexRoute: AppVerificationsIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
