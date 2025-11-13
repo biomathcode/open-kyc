@@ -1,5 +1,6 @@
-import QRCode from "react-qr-code"
 import type { flowStates } from "."
+import { QRCode } from "~/components/kibo-ui/qr-code";
+
 import { Button } from "~/components/ui/button";
 import { Avatar } from "~/components/ui/avatar";
 import { Label } from "~/components/ui/field";
@@ -8,9 +9,7 @@ import { Link } from "~/components/ui/link";
 
 
 export const StartKycWelcome = ({ setFlow }: { setFlow: (flow: flowStates) => void }) => {
-
-
-    return <div className=" h-full flex-col justify-between grow overflow-auto rounded-b-pnl-xl bg-bc-background p-6 pb-4 text-center md:p-8 md:pb-6">
+    return <div className=" h-full flex-col justify-between grow overflow-auto rounded-b-pnl-xl bg-bc-background p-2 pb-4 text-center mt-4 ">
 
         <div className="flex flex-col gap-6 justify-between h-full">
             <div className="flex flex-col items-center gap-1 self-stretch">
@@ -27,22 +26,19 @@ export const StartKycWelcome = ({ setFlow }: { setFlow: (flow: flowStates) => vo
                         </Label>
                     </Link>
                 </div>
-                <div className="flex w-[700px] items-center justify-center gap-6 self-stretch px-10 py-8 [@media(max-width:750px)]:w-full">
+                <div className="flex items-center justify-center gap-6 self-stretch p-2  [@media(max-width:750px)]:w-full">
 
-                    <div className='flex max-w-[314px] flex-col items-start gap-2 self-stretch rounded-pnl-m border border-bc-surface-2/10 bg-bc-background p-4 font-bc-font'>
-                        <div className="flex flex-col items-start gap-1.5"><p className="text-sm font-medium leading-[90%] tracking-[-0.84px] text-bc-primary">Scan QR code</p><p className="text-start text-[14px] leading-[140%] tracking-[-0.78px] text-bc-secondary">Scan the code to start the process and continue to another device</p></div>
+                    <div className='flex max-w-[314px] justify-center flex-col  gap-2 self-stretch rounded-pnl-m border border-bc-surface-2/10 bg-bc-background p-4 font-bc-font'>
+                        <div className="flex flex-col items-start gap-1.5">
+                            <p className="text-sm font-medium leading-[90%] tracking-[-0.84px] text-bc-primary">Scan QR code</p><p className="text-start text-[14px] leading-[140%] tracking-[-0.78px] text-bc-secondary">Scan the code to start the process and continue to another device</p></div>
                         <div className="relative items-center justify-center rounded-pnl-m bg-white p-3">
-                            <div className="size-fit flex items-center justify-center relative overflow-hidden aspect-square text-primary
+                            <div className="size-fit flex items-center w-full justify-center relative overflow-hidden aspect-square text-primary
                         
                         ">
-                                <div style={{ height: "auto", margin: "0 auto", width: "100%" }}>
-                                    <QRCode
-                                        size={256}
-                                        style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                                        value={'value'}
-                                        viewBox={`0 0 256 256`}
-                                    />
-                                </div>
+                                <QRCode
+                                    className="size-48 rounded border bg-white p-4 shadow-xs"
+                                    data="https://www.haydenbleasel.com/"
+                                />
                             </div>
                         </div>
 

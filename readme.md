@@ -57,6 +57,14 @@ KYC platform powered by Convex, tanstack start, [react-aria](http://intentui.com
 * Id verification powered by gemini 
 
 
+## How it works 
+
+user will create custom workflow, workflows include age verification, address verification, etc, 
+then for verification users you can create custom session with workflow types, this session can be expired of live forever, one session can only collect information about one individual only. 
+
+
+
+
 
 ## Netflify deploy -> 
 [DEMO URL](https://open-kyc.netlify.app)

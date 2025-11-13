@@ -13,7 +13,7 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { api } from "convex/_generated/api"
 import {
-    BanIcon, BookOpenIcon, ChartPieIcon, IdCardIcon, ListTodoIcon, LucideHome, ScanFaceIcon, Settings2Icon,
+    BanIcon, BookOpenIcon, ChartPieIcon, IdCardIcon, ListTodoIcon, LucideHome, ReceiptIcon, ScanFaceIcon, Settings2Icon,
     SwatchBookIcon,
     WorkflowIcon
 } from 'lucide-react'
@@ -133,7 +133,7 @@ export const NavItem: Array<NavItemType> = [
     },
     {
         href: "/billing",
-        icon: MusicalNoteIcon,
+        icon: ReceiptIcon,
         description: "Manage your billing and subscription",
         label: "Billing",
     },

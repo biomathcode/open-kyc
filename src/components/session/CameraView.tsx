@@ -1,11 +1,9 @@
 
 import { useState } from 'react'
 import { InfoIcon } from 'lucide-react'
-import { country } from "./index";
 import type { flowStates } from './index'
 import { FileTrigger } from "~/components/ui/file-trigger"
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger } from '~/components/ui/select';
-import { Label } from "~/components/ui/field";
+import { Button } from '~/components/ui/button';
 
 
 
@@ -34,40 +32,11 @@ export const CameraView = ({ setFlow }: { setFlow: (flow: flowStates) => void })
                                 You will need to scan both sides of the ID. Make sure you capture a clean and complete image
                             </p>
                         </div>
-                        <div className="flex justify-between gap-2 text-start">
-                            <Select className="w-full" aria-label="Users" placeholder="Select a user">
-                                <Label>Select a language</Label>
-                                <SelectTrigger />
-                                <SelectContent items={country}>
-                                    {(item) => (
-                                        <SelectItem textValue={item.name}>
-                                            {/* <Avatar src={item.image_url} /> */}
-                                            <SelectLabel>{item.name}</SelectLabel>
-                                        </SelectItem>
-                                    )}
-                                </SelectContent>
-                            </Select>
-                            <Select className="w-full" aria-label="country" placeholder="Select Country">
-                                <Label className="font-semibold">
-                                    Country of origin:
-                                </Label>
-                                <SelectTrigger />
-                                <SelectContent items={[
-                                    { id: '1', name: 'USA' },
-                                    { id: '2', name: 'Canada' },
-                                    { id: '3', name: 'Mexico' },
-                                ]}>
-                                    {(item) => (
-                                        <SelectItem id={item.id} textValue={item.name}>
-                                            {item.name}
-                                        </SelectItem>
-                                    )}
-                                </SelectContent>
-                            </Select>
 
-                        </div>
 
-                        <FileTrigger className=" flex flex-col text-start  mt-3 w-full" onSelect={handleSelect} isPending={isLoading}>
+                        <FileTrigger
+
+                            className=" flex flex-col text-start  mt-3 w-full" onSelect={handleSelect} isPending={isLoading}>
                             <div className="flex items-center w-full ">
 
                                 <div className="flex flex-col gap-2">
@@ -98,12 +67,14 @@ export const CameraView = ({ setFlow }: { setFlow: (flow: flowStates) => void })
                             Your information is only used for identity verification
                         </p>
                     </div>
-                    <button
+                    <Button
+                        intent="primary"
                         onClick={() => setFlow('frontSide')}
-                        className="h-12 relative rounded-btn-m [@media(max-height:650px)]:h-10 [@media(min-height:700px)]:py-3 border leading-[1] px-3 [@media(min-width:450px)]:px-6 [@media(min-width:400px)]:px-4 py-2 border-bc-button-1 bg-bc-button-1 text-bc-button-text-1 font-bc-font mt-auto mx-auto w-full">
+                        className="w-full"
+                    >
                         Take a photo of a Front Side
 
-                    </button>
+                    </Button>
                 </div>
             </div>
 
