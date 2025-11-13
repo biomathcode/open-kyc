@@ -19,6 +19,7 @@ import type * as http from "../http.js";
 import type * as index from "../index.js";
 import type * as questionnaires from "../questionnaires.js";
 import type * as questions from "../questions.js";
+import type * as sessions from "../sessions.js";
 import type * as tools from "../tools.js";
 
 import type {
@@ -47,6 +48,7 @@ declare const fullApi: ApiFromModules<{
   index: typeof index;
   questionnaires: typeof questionnaires;
   questions: typeof questions;
+  sessions: typeof sessions;
   tools: typeof tools;
 }>;
 declare const fullApiWithMounts: typeof fullApi;

@@ -1,8 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { EllipsisVerticalIcon, PlusIcon } from "@heroicons/react/24/outline"
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline"
 import { use, useMemo } from "react"
 import { Autocomplete, AutocompleteStateContext, useFilter } from "react-aria-components"
+import { api } from 'convex/_generated/api'
+import { convexQuery } from '@convex-dev/react-query'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import type { Doc } from 'convex/_generated/dataModel'
+
+
 import { Button } from '~/components/ui/button'
 import { CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
 import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "~/components/ui/menu"
@@ -16,8 +22,10 @@ import {
   TableRow,
 } from "~/components/ui/table"
 import { Modal, ModalContent, ModalTrigger } from '~/components/ui/modal'
+import { SessionForm } from '~/components/forms/SessionForm'
 
-export function VerificationTable() {
+
+export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'>> }) {
   const { contains } = useFilter({
     sensitivity: "base",
   })
@@ -25,8 +33,8 @@ export function VerificationTable() {
     <div className="rounded-lg border p-4">
       <Autocomplete filter={contains}>
         <CardHeader>
-          <CardTitle>Users</CardTitle>
-          <CardDescription>A list of users with search functionality.</CardDescription>
+          <CardTitle>Sessions</CardTitle>
+          <CardDescription>Click on the Session to get more information</CardDescription>
         </CardHeader>
         <div className="flex justify-end">
           <SearchField aria-label="Search">
@@ -36,30 +44,30 @@ export function VerificationTable() {
         <Table className="mt-4" aria-label="Users">
           <TableHeader>
             <TableColumn className="w-0">#</TableColumn>
-            <TableColumn isRowHeader>Name</TableColumn>
+            <TableColumn isRowHeader>Username</TableColumn>
             <TableColumn>Email</TableColumn>
-            <TableColumn>Role</TableColumn>
+            {/* <TableColumn>Role</TableColumn> */}
             <TableColumn>Status</TableColumn>
             <TableColumn>Joined</TableColumn>
             <TableColumn />
           </TableHeader>
-          <TableBody items={users}>
-            {(item) => (
-              <TableRow id={item.id}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell textValue={item.name}>
-                  <AutocompleteHighlight>{item.name}</AutocompleteHighlight>
+          <TableBody items={sessions}>
+            {(item: Doc<'sessions'>) => (
+              <TableRow id={item._id}>
+                <TableCell>{item._id}</TableCell>
+                <TableCell textValue={item.username}>
+                  <AutocompleteHighlight>{item.username || ' '}</AutocompleteHighlight>
                 </TableCell>
                 <TableCell textValue={item.email}>
-                  <AutocompleteHighlight>{item.email}</AutocompleteHighlight>
+                  <AutocompleteHighlight>{item.email || ' '}</AutocompleteHighlight>
                 </TableCell>
-                <TableCell textValue={item.role}>
-                  <AutocompleteHighlight>{item.role}</AutocompleteHighlight>
-                </TableCell>
+                {/* <TableCell textValue={item.status}>
+                  <AutocompleteHighlight>{item.status}</AutocompleteHighlight>
+                </TableCell> */}
                 <TableCell textValue={item.status}>
                   <AutocompleteHighlight>{item.status}</AutocompleteHighlight>
                 </TableCell>
-                <TableCell>{item.joined}</TableCell>
+                <TableCell>{item.createdAt}</TableCell>
                 <TableCell>
                   <div className="flex justify-end">
                     <Menu>
@@ -84,88 +92,7 @@ export function VerificationTable() {
   )
 }
 
-const users = [
-  {
-    id: "1",
-    name: "Justice Larkin",
-    email: "justice.larkin@example.com",
-    role: "Admin",
-    status: "Active",
-    joined: "2022-01-15",
-  },
-  {
-    id: "2",
-    name: "Megan Smith",
-    email: "megan.smith@example.com",
-    role: "Editor",
-    status: "Active",
-    joined: "2022-03-12",
-  },
-  {
-    id: "3",
-    name: "Daniel Wu",
-    email: "daniel.wu@example.com",
-    role: "Viewer",
-    status: "Inactive",
-    joined: "2022-04-08",
-  },
-  {
-    id: "4",
-    name: "Sophia Hernandez",
-    email: "sophia.hernandez@example.com",
-    role: "Admin",
-    status: "Active",
-    joined: "2022-05-25",
-  },
-  {
-    id: "5",
-    name: "Liam Johnson",
-    email: "liam.johnson@example.com",
-    role: "Editor",
-    status: "Suspended",
-    joined: "2022-06-14",
-  },
-  {
-    id: "6",
-    name: "Emily Brown",
-    email: "emily.brown@example.com",
-    role: "Viewer",
-    status: "Active",
-    joined: "2022-07-09",
-  },
-  {
-    id: "7",
-    name: "Noah Miller",
-    email: "noah.miller@example.com",
-    role: "Admin",
-    status: "Active",
-    joined: "2022-08-02",
-  },
-  {
-    id: "8",
-    name: "Ava Wilson",
-    email: "ava.wilson@example.com",
-    role: "Editor",
-    status: "Inactive",
-    joined: "2022-09-19",
-  },
-  {
-    id: "9",
-    name: "Ethan Davis",
-    email: "ethan.davis@example.com",
-    role: "Viewer",
-    status: "Active",
-    joined: "2022-10-21",
-  },
-  {
-    id: "10",
-    name: "Olivia Martinez",
-    email: "olivia.martinez@example.com",
-    role: "Editor",
-    status: "Active",
-    joined: "2022-11-30",
-  },
-]
+
 
 function AutocompleteHighlight({ children }: { children: string }) {
   const state = use(AutocompleteStateContext)!
@@ -193,12 +120,21 @@ function AutocompleteHighlight({ children }: { children: string }) {
 
 export const Route = createFileRoute('/_app/verifications/')({
   component: RouteComponent,
+  loader: async ({ context: { queryClient } }) => {
+    await queryClient.ensureQueryData(convexQuery(api.sessions.getSessions, {}))
+  },
+  pendingComponent: () => (<div>Loading...</div>),
+
 })
 
 
 
 
 function RouteComponent() {
+  const { data } = useSuspenseQuery(convexQuery(api.sessions.getSessions, {}));
+
+  console.log('data', data)
+
   return <div>
     <div className="flex justify-between  items-center pb-4 px-2">
       <div className="text-xl font-semibold">
@@ -211,14 +147,14 @@ function RouteComponent() {
 
         <ModalContent className="p-6" size="4xl">
 
-          <div>
-            Add Create Session Modal here
-          </div>
+          <SessionForm />
+
         </ModalContent>
 
       </Modal>
     </div>
 
-    <VerificationTable />
+
+    <VerificationTable sessions={data} />
   </div>
 }

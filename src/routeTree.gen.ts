@@ -14,7 +14,7 @@ import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SessionSessionidRouteImport } from './routes/session/$sessionid'
+import { Route as SessionsSessionidRouteImport } from './routes/sessions/$sessionid'
 import { Route as AuthServerRouteImport } from './routes/_auth/server'
 import { Route as AuthClientOnlyRouteImport } from './routes/_auth/client-only'
 import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
@@ -56,9 +56,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SessionSessionidRoute = SessionSessionidRouteImport.update({
-  id: '/session/$sessionid',
-  path: '/session/$sessionid',
+const SessionsSessionidRoute = SessionsSessionidRouteImport.update({
+  id: '/sessions/$sessionid',
+  path: '/sessions/$sessionid',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthServerRoute = AuthServerRouteImport.update({
@@ -162,7 +162,7 @@ export interface FileRoutesByFullPath {
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
   '/server': typeof AuthServerRoute
-  '/session/$sessionid': typeof SessionSessionidRoute
+  '/sessions/$sessionid': typeof SessionsSessionidRoute
   '/analysis/$id': typeof AppAnalysisIdRoute
   '/questionnaires/$id': typeof AppQuestionnairesIdRoute
   '/verifications/$id': typeof AppVerificationsIdRoute
@@ -185,7 +185,7 @@ export interface FileRoutesByTo {
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
   '/server': typeof AuthServerRoute
-  '/session/$sessionid': typeof SessionSessionidRoute
+  '/sessions/$sessionid': typeof SessionsSessionidRoute
   '/analysis/$id': typeof AppAnalysisIdRoute
   '/questionnaires/$id': typeof AppQuestionnairesIdRoute
   '/verifications/$id': typeof AppVerificationsIdRoute
@@ -211,7 +211,7 @@ export interface FileRoutesById {
   '/_app/workflow': typeof AppWorkflowRoute
   '/_auth/client-only': typeof AuthClientOnlyRoute
   '/_auth/server': typeof AuthServerRoute
-  '/session/$sessionid': typeof SessionSessionidRoute
+  '/sessions/$sessionid': typeof SessionsSessionidRoute
   '/_app/analysis/$id': typeof AppAnalysisIdRoute
   '/_app/questionnaires/$id': typeof AppQuestionnairesIdRoute
   '/_app/verifications/$id': typeof AppVerificationsIdRoute
@@ -236,7 +236,7 @@ export interface FileRouteTypes {
     | '/workflow'
     | '/client-only'
     | '/server'
-    | '/session/$sessionid'
+    | '/sessions/$sessionid'
     | '/analysis/$id'
     | '/questionnaires/$id'
     | '/verifications/$id'
@@ -259,7 +259,7 @@ export interface FileRouteTypes {
     | '/workflow'
     | '/client-only'
     | '/server'
-    | '/session/$sessionid'
+    | '/sessions/$sessionid'
     | '/analysis/$id'
     | '/questionnaires/$id'
     | '/verifications/$id'
@@ -284,7 +284,7 @@ export interface FileRouteTypes {
     | '/_app/workflow'
     | '/_auth/client-only'
     | '/_auth/server'
-    | '/session/$sessionid'
+    | '/sessions/$sessionid'
     | '/_app/analysis/$id'
     | '/_app/questionnaires/$id'
     | '/_app/verifications/$id'
@@ -299,7 +299,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
-  SessionSessionidRoute: typeof SessionSessionidRoute
+  SessionsSessionidRoute: typeof SessionsSessionidRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -340,11 +340,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/session/$sessionid': {
-      id: '/session/$sessionid'
-      path: '/session/$sessionid'
-      fullPath: '/session/$sessionid'
-      preLoaderRoute: typeof SessionSessionidRouteImport
+    '/sessions/$sessionid': {
+      id: '/sessions/$sessionid'
+      path: '/sessions/$sessionid'
+      fullPath: '/sessions/$sessionid'
+      preLoaderRoute: typeof SessionsSessionidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/server': {
@@ -523,7 +523,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
-  SessionSessionidRoute: SessionSessionidRoute,
+  SessionsSessionidRoute: SessionsSessionidRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

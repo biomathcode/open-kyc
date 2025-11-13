@@ -26,7 +26,7 @@ function ProgressStepper({
 
     return (
         <div className="mx-auto flex w-full max-w-md justify-center pt-6 md:pt-12 [@media(max-height:700px)]:pt-4">
-            <div className="flex justify-between items-center gap-10 w-full">
+            <div className="flex justify-between items-center gap-4 w-full">
                 <Button
                     intent="plain"
                     className="text-start"

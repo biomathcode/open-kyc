@@ -100,15 +100,16 @@ export default defineSchema({
       v.literal("failed"),
       v.literal("expired")
     ),
+    step: v.optional(v.string()),
     first_name: v.optional(v.string()),
     last_name: v.optional(v.string()),
     dob: v.optional(v.string()), // ISO date
-    gender: v.union(
+    gender: v.optional(v.union(
       v.literal("male"),
       v.literal("female"),
       v.literal("other"),
       v.literal("unspecified")
-    ),
+    )),
     nationality: v.optional(v.string()),
     issuing_state: v.optional(v.string()),
     address: v.optional(v.string()),
