@@ -88,7 +88,57 @@ export default defineSchema({
     analysis: v.string(),
   }).index("by_workflowId", ["workflowId"]),
 
+  sessions: defineTable({
+    username: v.optional(v.string()),
+    email: v.optional(v.string()),
+
+    workflowId: v.id("workflows"),
+    status: v.union(
+      v.literal("initiated"),
+      v.literal("in_progress"),
+      v.literal("completed"),
+      v.literal("failed"),
+      v.literal("expired")
+    ),
+    first_name: v.optional(v.string()),
+    last_name: v.optional(v.string()),
+    dob: v.optional(v.string()), // ISO date
+    gender: v.union(
+      v.literal("male"),
+      v.literal("female"),
+      v.literal("other"),
+      v.literal("unspecified")
+    ),
+    nationality: v.optional(v.string()),
+    issuing_state: v.optional(v.string()),
+    address: v.optional(v.string()),
+    document_number: v.optional(v.string()),
+
+    document_type: v.optional(v.string()),
+
+
+    front_image: v.optional(v.id("_storage")),
+    back_image: v.optional(v.id("_storage")),
+    person_image: v.optional(v.id("_storage")),
+
+
+    device: v.optional(v.string()), // e.g., "iPhone 14", "MacBook Pro"
+    browser: v.optional(v.string()), // e.g., "Chrome", "Safari"
+    os: v.optional(v.string()), // e.g., "iOS", "Windows"
+    ipAddress: v.optional(v.string()),
+    geolocation: v.optional(
+      v.object({
+        latitude: v.number(),
+        longitude: v.number(),
+        country: v.optional(v.string()),
+        city: v.optional(v.string()),
+      })
+    ),
+    ip: v.optional(v.string()),
+    userAgent: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+
+  })
+
 });
-
-
-

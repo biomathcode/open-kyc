@@ -33,6 +33,7 @@ export default function AppSidebarNav() {
     const currentNavItem = NavItem.find((item) =>
         currentPath.startsWith(item.href)
     )
+    console.log("currentNavItem", currentNavItem)
     return (
         <SidebarNav>
             <span className="flex items-center gap-x-4">

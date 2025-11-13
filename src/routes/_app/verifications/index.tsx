@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline"
+import { EllipsisVerticalIcon, PlusIcon } from "@heroicons/react/24/outline"
 import { use, useMemo } from "react"
 import { Autocomplete, AutocompleteStateContext, useFilter } from "react-aria-components"
+import { Button } from '~/components/ui/button'
 import { CardDescription, CardHeader, CardTitle } from "~/components/ui/card"
 import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "~/components/ui/menu"
 import { SearchField, SearchInput } from "~/components/ui/search-field"
@@ -14,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table"
+import { Modal, ModalContent, ModalTrigger } from '~/components/ui/modal'
 
 export function VerificationTable() {
   const { contains } = useFilter({
@@ -198,6 +200,24 @@ export const Route = createFileRoute('/_app/verifications/')({
 
 function RouteComponent() {
   return <div>
+    <div className="flex justify-between  items-center pb-4 px-2">
+      <div className="text-xl font-semibold">
+        Verification
+      </div>
+      <Modal>
+        <ModalTrigger>
+          <Button intent="primary"> + Session</Button>
+        </ModalTrigger>
+
+        <ModalContent className="p-6" size="4xl">
+
+          <div>
+            Add Create Session Modal here
+          </div>
+        </ModalContent>
+
+      </Modal>
+    </div>
 
     <VerificationTable />
   </div>

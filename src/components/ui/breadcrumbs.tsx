@@ -5,6 +5,7 @@ import { createContext, use } from "react"
 import { Breadcrumb, Breadcrumbs as BreadcrumbsPrimitive } from "react-aria-components"
 import { twMerge } from "tailwind-merge"
 import { Link } from "./link"
+import type { ReactNode } from "react";
 import type { BreadcrumbProps, BreadcrumbsProps, LinkProps } from "react-aria-components"
 import { cx } from "~/lib/primitive"
 
@@ -26,12 +27,14 @@ const Breadcrumbs = <T extends object>({
 
 interface BreadcrumbsItemProps extends BreadcrumbProps, BreadcrumbsContextProps {
   href?: string
+  children?: ReactNode
 }
 
 const BreadcrumbsItem = ({
   href,
   separator = true,
   className,
+  children,
   ...props
 }: BreadcrumbsItemProps & Partial<Omit<LinkProps, "className">>) => {
   const { separator: contextSeparator } = use(BreadcrumbsProvider)
@@ -55,7 +58,9 @@ const BreadcrumbsItem = ({
               isCurrent: false,
               isDisabled: false // explicitly set to boolean
             }) : className}
-          />
+          >
+            {children}
+          </Link>
           {!isCurrent && separator !== false && <Separator separator={separatorValue} />}
         </>
       )}
