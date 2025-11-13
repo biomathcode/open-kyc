@@ -41,7 +41,7 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
             <SearchInput />
           </SearchField>
         </div>
-        <Table className="mt-4" aria-label="Users">
+        <Table className="mt-4" aria-label="Sessions">
           <TableHeader>
             <TableColumn className="w-0">#</TableColumn>
             <TableColumn isRowHeader>Username</TableColumn>
@@ -132,9 +132,6 @@ export const Route = createFileRoute('/_app/verifications/')({
 
 function RouteComponent() {
   const { data } = useSuspenseQuery(convexQuery(api.sessions.getSessions, {}));
-
-  console.log('data', data)
-
   return <div>
     <div className="flex justify-between  items-center pb-4 px-2">
       <div className="text-xl font-semibold">

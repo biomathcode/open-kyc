@@ -4,8 +4,8 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "convex/_generated/api";
 import { Form } from "react-aria-components";
 import { useState } from "react";
-
-import { toast } from "sonner"; // optional if you use sonner for toasts
+import { toast } from "sonner";
+import type { Id } from "convex/_generated/dataModel";
 import { Button } from "~/components/ui/button";
 import {
     Description,
@@ -31,9 +31,13 @@ export function SessionForm() {
             email: "",
         },
         onSubmit: async ({ value }) => {
+            if (!value.workflowId) {
+                toast.error("Please select a workflow");
+                return;
+            }
             try {
                 const { sessionId } = await createSession({
-                    workflowId: value.workflowId as any, // Convex expects Id<"workflows">
+                    workflowId: value.workflowId as Id<"workflows">,
                     username: value.username || undefined,
                     email: value.email || undefined,
                 });

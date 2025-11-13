@@ -38,14 +38,9 @@ export const getSessions = query({
         ),
     },
     handler: async (ctx, args) => {
-        let sessions = await ctx.db.query("sessions").collect();
+        const sessions = await ctx.db.query("sessions").collect();
 
-        if (args.workflowId)
-            sessions = sessions.filter((s) => s.workflowId === args.workflowId);
-        if (args.status)
-            sessions = sessions.filter((s) => s.status === args.status);
-
-        return sessions.sort((a, b) => b.createdAt - a.createdAt);
+        return sessions;
     },
 });
 

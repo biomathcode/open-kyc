@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
+import { convexQuery } from "@convex-dev/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 
+
+
+import { api } from "convex/_generated/api";
 import type { flowStates } from "~/components/session";
+import type { Id } from "convex/_generated/dataModel";
 import { CameraFeed } from "~/components/session/CameraFeed";
 import { StartKycWelcome } from "~/components/session/StartKycWelcome";
 import { DocumentStep } from "~/components/session/DocumentStep";
@@ -16,9 +22,21 @@ import ProgressStepper from "~/components/session/ProgressStepper";
 
 export const Route = createFileRoute("/sessions/$sessionid")({
     component: RouteComponent,
+    loader: async ({ context: { queryClient }, params }) => {
+        await queryClient.ensureQueryData(convexQuery(api.sessions.getSessionById, { sessionId: params.sessionid as Id<"sessions"> }))
+    },
+    pendingComponent: () => (<div>Loading...</div>),
+
 });
 
 function RouteComponent() {
+
+
+    const { sessionid } = Route.useParams()
+
+    const { data: session } = useSuspenseQuery(convexQuery(api.sessions.getSessionById, { sessionId: sessionid as Id<"sessions"> }))
+
+
     const [flow, setFlow] = useState<flowStates>("start");
 
     // 🔹 Define camera steps declaratively
@@ -79,6 +97,7 @@ function RouteComponent() {
                 data-testid="start-kyc-welcome"
                 className=" flex flex-col w-fit h-full md:max-h-fit bg-transparent shadow-card rounded-none md:rounded-pnl-xl overflow-hidden"
             >
+
                 <div className="px-2">
                     {flow !== "start" && <ProgressStepper flow={flow} setFlow={setFlow} />}
 
