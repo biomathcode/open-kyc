@@ -241,4 +241,4 @@ export const country = [
 ]
 
 
-export type flowStates = 'start' | 'document' | 'camera' | 'frontSide' | 'liveliness' | 'backSide' | 'success' 
+export type flowStates = 'start' | 'document' | 'camera' | 'frontSide' | 'backSide' | 'liveliness' | 'success' 

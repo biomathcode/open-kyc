@@ -4,8 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-
-
+import { useMutation } from "convex/react";
 
 import { api } from "convex/_generated/api";
 import type { flowStates } from "~/components/session";
@@ -37,7 +36,33 @@ function RouteComponent() {
     const { data: session } = useSuspenseQuery(convexQuery(api.sessions.getSessionById, { sessionId: sessionid as Id<"sessions"> }))
 
 
-    const [flow, setFlow] = useState<flowStates>("start");
+    const updateSession = useMutation(api.sessions.updateSession);
+
+
+
+    const [flow, setFlowState] = useState<flowStates>("start");
+
+    const setFlow = async (newFlow: flowStates) => {
+        setFlowState(newFlow);
+        try {
+            // Update backend when step changes
+            await updateSession({
+                sessionId: sessionid as Id<"sessions">,
+
+                updates: {
+                    step: newFlow,
+                    status:
+                        newFlow === "success"
+                            ? "completed"
+                            : newFlow === "start"
+                                ? "initiated"
+                                : "in_progress",
+                },
+            });
+        } catch (err) {
+            console.error("Failed to update session:", err);
+        }
+    };
 
     // 🔹 Define camera steps declaratively
     const cameraSteps = [
@@ -84,6 +109,7 @@ function RouteComponent() {
                     title={step.title}
                     flow={step.key}
                     setFlow={() => setFlow(step.next)}
+                    sessionId={sessionid as Id<"sessions">}
                 />
             );
 

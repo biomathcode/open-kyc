@@ -1,16 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { useEffect, useRef, useState } from "react";
+import { useMutation } from "convex/react";
+import { api } from "convex/_generated/api";
+
 import { Button } from "../ui/button";
 import type { flowStates } from "./index";
+import type { Id } from "convex/_generated/dataModel";
+
+
 
 interface CameraFeedProps {
     setFlow: (flow: flowStates) => void;
     title: string;
     lottieUrl?: string;
     flow: flowStates;
+    sessionId: Id<"sessions">;
+
 }
 
-export function CameraFeed({ setFlow, title, lottieUrl, flow }: CameraFeedProps) {
+export function CameraFeed({ setFlow, title, lottieUrl, flow, sessionId }: CameraFeedProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [devices, setDevices] = useState<Array<MediaDeviceInfo>>([]);
@@ -19,6 +27,10 @@ export function CameraFeed({ setFlow, title, lottieUrl, flow }: CameraFeedProps)
     const [error, setError] = useState<string | null>(null);
     const [screenshot, setScreenshot] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+
+
+    const generateUploadUrl = useMutation(api.documents.generateUploadUrl); // assuming you already have this in convex
+    const updateSession = useMutation(api.sessions.updateSession);
 
     // 🔹 Reset state when flow changes
     useEffect(() => {
@@ -117,7 +129,7 @@ export function CameraFeed({ setFlow, title, lottieUrl, flow }: CameraFeedProps)
         setCurrentDeviceId(nextDevice.deviceId);
     }
 
-    function captureScreenshot() {
+    async function captureScreenshot() {
         const video = videoRef.current;
         const canvas = canvasRef.current;
         if (!video || !canvas) return;
@@ -132,8 +144,51 @@ export function CameraFeed({ setFlow, title, lottieUrl, flow }: CameraFeedProps)
         if (!ctx) return;
 
         ctx.drawImage(video, 0, 0, width, height);
-        const imageData = canvas.toDataURL("image/png");
-        setScreenshot(imageData);
+        const dataUrl = canvas.toDataURL("image/png");
+        setScreenshot(dataUrl);
+
+        try {
+            // Convert base64 to Blob
+            const res = await fetch(dataUrl);
+            const blob = await res.blob();
+
+            // Generate upload URL
+            const uploadUrl = await generateUploadUrl();
+
+            // Upload to Convex storage
+            const uploadRes = await fetch(uploadUrl, {
+                method: "POST",
+                headers: { "Content-Type": blob.type },
+                body: blob,
+            });
+            const { storageId } = await uploadRes.json();
+
+            // Update session based on flow
+            const imageFieldMap: Record<flowStates, keyof Omit<Parameters<typeof updateSession>[0]["updates"], "step">> = {
+                frontSide: "front_image",
+                backSide: "back_image",
+                liveliness: "person_image",
+                start: "front_image",
+                document: "front_image",
+                camera: "front_image",
+                success: "person_image",
+            };
+
+            const field = imageFieldMap[flow];
+            if (field) {
+                await updateSession({
+                    sessionId,
+                    updates: {
+                        [field]: storageId,
+                        step: flow,
+                        status: "in_progress",
+                    },
+                });
+            }
+        } catch (err) {
+            console.error("❌ Upload failed:", err);
+            setError("Failed to upload image.");
+        }
     }
 
     function handleContinue() {

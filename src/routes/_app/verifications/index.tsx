@@ -46,7 +46,7 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
             <TableColumn className="w-0">#</TableColumn>
             <TableColumn isRowHeader>Username</TableColumn>
             <TableColumn>Email</TableColumn>
-            {/* <TableColumn>Role</TableColumn> */}
+            <TableColumn>Step</TableColumn>
             <TableColumn>Status</TableColumn>
             <TableColumn>Joined</TableColumn>
             <TableColumn />
@@ -61,9 +61,9 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
                 <TableCell textValue={item.email}>
                   <AutocompleteHighlight>{item.email || ' '}</AutocompleteHighlight>
                 </TableCell>
-                {/* <TableCell textValue={item.status}>
-                  <AutocompleteHighlight>{item.status}</AutocompleteHighlight>
-                </TableCell> */}
+                <TableCell textValue={item.step}>
+                  <AutocompleteHighlight>{item.step || ' '}</AutocompleteHighlight>
+                </TableCell>
                 <TableCell textValue={item.status}>
                   <AutocompleteHighlight>{item.status}</AutocompleteHighlight>
                 </TableCell>
