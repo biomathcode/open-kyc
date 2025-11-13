@@ -1,12 +1,42 @@
-## Open KYC
+## OpenKYC
+![OpenKYC logo](./public/logo.png)
 
-KYC platform powered by Convex, tanstack start, react-aria, 
+Build for the Tanstack Start [Hackathon](https://www.convex.dev/hackathons/tanstack)
+
+KYC platform powered by Convex, tanstack start, [react-aria](http://intentui.com/), netlify, cloudflare, better-auth, autumn, resend, gemini. 
+
+
+![OpenKYC ShowCase](./public/showcase.png)
+
+
+
+
+
+
+### Deployment
+
+- `npx convex dev`
+- `npx convex deploy`
+
+### Environment Variables
+
+- `CONVEX_DEPLOYMENT`
+- `VITE_CONVEX_URL`
+- `VITE_CONVEX_SITE_URL`
+- `BASE_URL`
+- `GITHUB_CLIENT_ID`
+- `GITHUB_CLIENT_SECRET`
+- `SITE_URL`
+- `FIRECRAWL_API_KEY`
+- `SENTRY_AUTH_TOKEN`
+- `BETTER_AUTH_SECRET`
+- `RESEND_API_KEY`
+- `GEMINI_API_KEY`
+- `AUTUMN_SECRET_KEY`
+
+
 
 ### Features
-
-
-
-### Home 
 
 - Dashboard
 - Verifications
@@ -21,6 +51,9 @@ KYC platform powered by Convex, tanstack start, react-aria,
 
 
 ## Convex Workflows
+
+* Background check powered by firecrawl 
+* Id verification powered by gemini 
 
 
 
@@ -43,3 +76,14 @@ Edge function Logs: https://app.netlify.com/projects/open-kyc/logs/edge-function
 - https://github.com/get-convex/better-auth/tree/main/examples/tanstack
 - https://github.com/abhik-99/Liveness-Detection
 - https://modal.com/docs/examples/doc_ocr_jobs
+
+
+### FAQ
+
+<details>
+  <summary><b>Why Open Source?</b></summary>
+  <p>
+    People keep asking me why open sourced this project because I wanted to use 
+    <a href="https://www.coderabbit.ai" target="_blank">Coderabbit</a>
+  </p>
+</details>
