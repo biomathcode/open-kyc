@@ -7,7 +7,6 @@ export const autumn = new Autumn(components.autumn, {
         const user = await ctx.auth.getUserIdentity();
         if (!user) return null
 
-        console.log("user", user)
 
         return {
             customerId: user.subject,

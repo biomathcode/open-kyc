@@ -10,6 +10,7 @@ KYC platform powered by Convex, tanstack start, [react-aria](http://intentui.com
 
 
 
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/biomathcode/open-kyc?utm_source=oss&utm_medium=github&utm_campaign=biomathcode%2Fopen-kyc&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 
 
