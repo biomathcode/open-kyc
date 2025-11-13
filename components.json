@@ -19,6 +19,7 @@
     "hooks": "~/hooks"
   },
   "registries": {
-    "@intentui": "https://intentui.com/r/{name}"
+    "@intentui": "https://intentui.com/r/{name}",
+    "@svgl": "https://svgl.app/r/{name}.json"
   }
 }
