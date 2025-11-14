@@ -1,5 +1,8 @@
+import type { Id } from "convex/_generated/dataModel";
+
 import type { flowStates } from "."
 import { QRCode } from "~/components/kibo-ui/qr-code";
+
 
 import { Button } from "~/components/ui/button";
 import { Avatar } from "~/components/ui/avatar";
@@ -8,7 +11,9 @@ import { Link } from "~/components/ui/link";
 
 
 
-export const StartKycWelcome = ({ setFlow }: { setFlow: (flow: flowStates) => void }) => {
+export const StartKycWelcome = ({ setFlow, sessionId }: { setFlow: (flow: flowStates) => void; sessionId: Id<"sessions"> }) => {
+
+    const url = process.env.VITE_BASE_URL || 'http://localhost:3000'
     return <div className=" h-full flex-col justify-between grow overflow-auto rounded-b-pnl-xl bg-bc-background p-2 pb-4 text-center mt-4 ">
 
         <div className="flex flex-col gap-6 justify-between h-full">
@@ -37,7 +42,7 @@ export const StartKycWelcome = ({ setFlow }: { setFlow: (flow: flowStates) => vo
                         ">
                                 <QRCode
                                     className="size-48 rounded border bg-white p-4 shadow-xs"
-                                    data="https://www.haydenbleasel.com/"
+                                    data={url + "/sessions/" + sessionId}
                                 />
                             </div>
                         </div>

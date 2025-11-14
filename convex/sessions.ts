@@ -49,8 +49,28 @@ export const getSessionById = query({
     args: { sessionId: v.id("sessions") },
     handler: async (ctx, { sessionId }) => {
         const session = await ctx.db.get(sessionId);
+
         if (!session) throw new Error("Session not found");
-        return session;
+
+        // Get storage URLs (if IDs exist)
+        const frontImageUrl = session.front_image
+            ? await ctx.storage.getUrl(session.front_image)
+            : undefined;
+
+        const backImageUrl = session.back_image
+            ? await ctx.storage.getUrl(session.back_image)
+            : undefined;
+
+        const personImageUrl = session.person_image
+            ? await ctx.storage.getUrl(session.person_image)
+            : undefined;
+
+        return {
+            ...session,
+            front_image: frontImageUrl,
+            back_image: backImageUrl,
+            person_image: personImageUrl,
+        };
     },
 });
 

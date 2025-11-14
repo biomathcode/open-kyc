@@ -117,6 +117,8 @@ export default defineSchema({
 
     document_type: v.optional(v.string()),
 
+    phone_number: v.optional(v.string()),
+
 
     front_image: v.optional(v.id("_storage")),
     back_image: v.optional(v.id("_storage")),
