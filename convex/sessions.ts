@@ -15,6 +15,7 @@ export const createSession = mutation({
         const sessionId = await ctx.db.insert("sessions", {
             ...args,
             status: "initiated",
+            step: "start",
             createdAt: now,
             updatedAt: now,
         });
@@ -37,7 +38,7 @@ export const getSessions = query({
             )
         ),
     },
-    handler: async (ctx, args) => {
+    handler: async (ctx) => {
         const sessions = await ctx.db.query("sessions").collect();
 
         return sessions;

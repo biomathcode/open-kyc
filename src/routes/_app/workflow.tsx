@@ -5,17 +5,11 @@ import { api } from 'convex/_generated/api'
 import { PlusIcon, TrashIcon } from 'lucide-react'
 import { WorkflowForm } from '~/components/forms/WorkflowForm'
 import { Button } from '~/components/ui/button'
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '~/components/ui/card'
+import { Card, CardAction, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 
 import {
     Modal,
-    ModalBody,
-    ModalClose,
     ModalContent,
-    ModalDescription,
-    ModalFooter,
-    ModalHeader,
-    ModalTitle,
     ModalTrigger,
 } from "~/components/ui/modal"
 

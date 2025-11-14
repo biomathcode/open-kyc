@@ -10,15 +10,14 @@ import type { Id } from "convex/_generated/dataModel";
 
 
 interface CameraFeedProps {
-    setFlow: (flow: flowStates) => void;
+    setFlow: () => void;
     title: string;
-    lottieUrl?: string;
     flow: flowStates;
     sessionId: Id<"sessions">;
 
 }
 
-export function CameraFeed({ setFlow, title, lottieUrl, flow, sessionId }: CameraFeedProps) {
+export function CameraFeed({ setFlow, title, flow, sessionId }: CameraFeedProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [devices, setDevices] = useState<Array<MediaDeviceInfo>>([]);
@@ -28,6 +27,7 @@ export function CameraFeed({ setFlow, title, lottieUrl, flow, sessionId }: Camer
     const [screenshot, setScreenshot] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
+    const [uploading, setUploading] = useState(false);
 
     const generateUploadUrl = useMutation(api.documents.generateUploadUrl); // assuming you already have this in convex
     const updateSession = useMutation(api.sessions.updateSession);
@@ -146,6 +146,7 @@ export function CameraFeed({ setFlow, title, lottieUrl, flow, sessionId }: Camer
         ctx.drawImage(video, 0, 0, width, height);
         const dataUrl = canvas.toDataURL("image/png");
         setScreenshot(dataUrl);
+        setUploading(true);
 
         try {
             // Convert base64 to Blob
@@ -188,20 +189,15 @@ export function CameraFeed({ setFlow, title, lottieUrl, flow, sessionId }: Camer
         } catch (err) {
             console.error("❌ Upload failed:", err);
             setError("Failed to upload image.");
+        } finally {
+            setUploading(false);
+
         }
     }
 
     function handleContinue() {
-        const nextFlowMap: Record<flowStates, flowStates> = {
-            start: "document",
-            document: "camera",
-            camera: "frontSide",
-            frontSide: "backSide",
-            backSide: "liveliness",
-            liveliness: "success",
-            success: "success",
-        };
-        setFlow(nextFlowMap[flow]);
+
+        setFlow();
     }
 
     return (
@@ -271,7 +267,9 @@ export function CameraFeed({ setFlow, title, lottieUrl, flow, sessionId }: Camer
                     {screenshot && (
                         <div className="flex flex-col items-center gap-6 w-full pb-4">
                             <img src={screenshot} alt="Captured" className="w-full rounded-lg shadow-md" />
-                            <Button intent="primary" className="w-full" onClick={handleContinue}>
+                            <Button
+                                isDisabled={uploading}
+                                intent="primary" className="w-full" onClick={handleContinue}>
                                 Continue
                             </Button>
                         </div>

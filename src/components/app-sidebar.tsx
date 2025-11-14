@@ -6,7 +6,6 @@ import {
     ArrowRightStartOnRectangleIcon,
     Cog6ToothIcon,
     HomeIcon,
-    MusicalNoteIcon,
     ShieldCheckIcon,
 } from "@heroicons/react/24/solid"
 import { useSuspenseQuery } from "@tanstack/react-query"
