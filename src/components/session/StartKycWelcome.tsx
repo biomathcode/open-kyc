@@ -13,7 +13,7 @@ import { Link } from "~/components/ui/link";
 
 export const StartKycWelcome = ({ setFlow, sessionId }: { setFlow: (flow: flowStates) => void; sessionId: Id<"sessions"> }) => {
 
-    const url = process.env.VITE_BASE_URL || 'http://localhost:3000'
+    const url = import.meta.env.VITE_BASE_URL || 'http://localhost:3000'
     return <div className=" h-full flex-col justify-between grow overflow-auto rounded-b-pnl-xl bg-bc-background p-2 pb-4 text-center mt-4 ">
 
         <div className="flex flex-col gap-6 justify-between h-full">
