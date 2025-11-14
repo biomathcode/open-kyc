@@ -201,7 +201,7 @@ export function CameraFeed({ setFlow, title, flow, sessionId }: CameraFeedProps)
     }
 
     return (
-        <div className="flex flex-col items-center max-w-md w-full h-full justify-between">
+        <div className="flex flex-col items-center w-full h-full justify-between max-w-xs">
             {/* 🔹 Permission Request */}
             {permissionGranted === null && (
                 <div className="flex flex-col items-center text-center max-w-sm p-6 border rounded-lg shadow bg-gray-50 dark:bg-gray-900">
@@ -268,8 +268,9 @@ export function CameraFeed({ setFlow, title, flow, sessionId }: CameraFeedProps)
                         <div className="flex flex-col items-center gap-6 w-full pb-4">
                             <img src={screenshot} alt="Captured" className="w-full rounded-lg shadow-md" />
                             <Button
+                                className="absolute bottom-10 w-fit"
                                 isDisabled={uploading}
-                                intent="primary" className="w-full" onClick={handleContinue}>
+                                intent="primary" onClick={handleContinue}>
                                 Continue
                             </Button>
                         </div>

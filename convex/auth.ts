@@ -22,6 +22,10 @@ export const createAuth = (
     return betterAuth({
         // disable logging when createAuth is called just to generate options.
         // this is not required, but there's a lot of noise in logs without it.
+        trustedOrigins: [
+            "http://localhost:3000",
+            "https://open-kyc.netlify.app"
+        ],
         logger: {
             disabled: optionsOnly,
         },

@@ -4,7 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "convex/_generated/api";
 import type { Id } from "convex/_generated/dataModel";
 import type { flowStates } from "~/components/session";
@@ -31,27 +31,34 @@ export const Route = createFileRoute("/sessions/$sessionid")({
 function RouteComponent() {
     const { sessionid } = Route.useParams();
 
-    // Suspense query: session is available synchronously
-    const { data: session } = useSuspenseQuery(
-        convexQuery(api.sessions.getSessionById, { sessionId: sessionid as Id<"sessions"> })
-    );
+    // LIVE Convex query
+    const session = useQuery(api.sessions.getSessionById, {
+        sessionId: sessionid as Id<"sessions">
+    });
 
     const updateSession = useMutation(api.sessions.updateSession);
 
-    // Initial flow comes ONLY from backend
-    const [flow, setFlowState] = useState<flowStates>(session.step as flowStates);
+    // Local UI state mirrors backend "step"
+    const [flow, setFlowState] = useState<flowStates | null>(null);
 
-    // Keep local state in sync with backend session updates (live updates)
+    /**
+     * Sync local "flow" with backend once session loads or updates.
+     * This guarantees no stale value, no flicker.
+     */
     useEffect(() => {
         if (session?.step && session.step !== flow) {
             setFlowState(session.step as flowStates);
         }
     }, [session?.step]);
 
-    // setFlow: update local state + backend only (no URL)
+    // While live query is still loading
+    if (!session || !flow) {
+        return <div className="p-4">Loading...</div>;
+    }
+
+    // Update backend + instantly update UI
     const setFlow = async (newFlow: flowStates) => {
-        // update UI instantly
-        setFlowState(newFlow);
+        setFlowState(newFlow); // instant UI update
 
         try {
             await updateSession({
@@ -71,11 +78,10 @@ function RouteComponent() {
         }
     };
 
-    // render the correct flow UI
     const renderFlow = () => {
         switch (flow) {
             case "start":
-                return <StartKycWelcome setFlow={setFlow} sessionId={sessionid as Id<"sessions">} />;
+                return <StartKycWelcome setFlow={setFlow} />;
 
             case "document":
                 return <DocumentStep setFlow={setFlow} />;
@@ -84,26 +90,29 @@ function RouteComponent() {
                 return <CameraView setFlow={setFlow} />;
 
             case "frontSide":
-                return <CameraFeed
-                    title="Front Side of the Document"
-                    flow={flow}
-                    setFlow={() => setFlow("backSide")}
-                    sessionId={sessionid as Id<"sessions">}
+                return (
+                    <CameraFeed
+                        title="Front Side of the Document"
+                        flow={flow}
+                        setFlow={() => setFlow("backSide")}
+                        sessionId={sessionid as Id<"sessions">}
+                    />
+                );
 
-                />
             case "backSide":
-                return <CameraFeed
-                    title="Back Side of the Document"
-                    flow={flow}
-                    setFlow={() => setFlow("liveliness")}
-                    sessionId={sessionid as Id<"sessions">}
-
-                />
+                return (
+                    <CameraFeed
+                        title="Back Side of the Document"
+                        flow={flow}
+                        setFlow={() => setFlow("liveliness")}
+                        sessionId={sessionid as Id<"sessions">}
+                    />
+                );
 
             case "liveliness":
                 return (
                     <CameraFeed
-                        title={"Please Click a Selfie"}
+                        title="Please Click a Selfie"
                         flow={flow}
                         setFlow={() => setFlow("success")}
                         sessionId={sessionid as Id<"sessions">}
