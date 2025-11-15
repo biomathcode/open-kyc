@@ -68,11 +68,28 @@ export const extractInformationWorkflow = workflow.define({
             }
         )
 
-        console.log("got the News", getNews)
+        if (!getNews.web || getNews.web.length === 0) {
+            throw new Error("No News Result found");
+        }
 
-        // TODO: save the news from the data 
+        // Normalize all results to your schema type
+        const formatted = getNews.web.map((item, index) => ({
+            url: (item as any).url ?? "",
+            title: (item as any).title ?? "",
+            description: (item as any).description ?? "",
+            position: index + 1,
+        }));
 
 
+        await step.runMutation(
+            internal.helpers.internalUpdateSession,
+            {
+                sessionId: sessionId,
+                updates: {
+                    news_results: formatted
+                },
+            }
+        );
 
         return extracted;
     }

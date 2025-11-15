@@ -139,6 +139,20 @@ export default defineSchema({
     ),
     ip: v.optional(v.string()),
     userAgent: v.optional(v.string()),
+
+
+
+    news_results: v.optional(
+      v.array(
+        v.object({
+          url: v.string(),
+          title: v.string(),
+          description: v.string(),
+          position: v.number(),
+        })
+      )
+    ),
+
     createdAt: v.number(),
     updatedAt: v.number(),
 

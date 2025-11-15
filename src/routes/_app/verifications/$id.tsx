@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router'
 import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
@@ -13,6 +13,7 @@ import {
     DescriptionList,
     DescriptionTerm,
 } from "~/components/ui/description-list"
+import { CardContent } from '~/components/ui/card';
 
 
 export const Route = createFileRoute('/_app/verifications/$id')({
@@ -158,6 +159,21 @@ function ContactDetails({
 }
 
 
+function InTheNews() {
+    return (
+        <div className=" overflow-hidden border rounded-2xl w-full">
+            <div className="py-2 bg-accent z-10 text-md font-semibold px-2 text-neutral-700">
+                ID Verification
+            </div>
+
+            <div className="flex  gap-4 px-2 py-4">
+
+            </div>
+        </div>
+    )
+}
+
+
 
 function IdVerification({
     front_image,
@@ -168,9 +184,6 @@ function IdVerification({
     back_image?: string | null;
     person_image?: string | null;
 }) {
-
-
-
     return (
         <div className=" overflow-hidden border rounded-2xl w-full">
             <div className="py-2 bg-accent z-10 text-md font-semibold px-2 text-neutral-700">
@@ -261,6 +274,8 @@ function RouteComponent() {
             />
 
 
+
+
         </div>
 
         <IdVerification
@@ -268,6 +283,32 @@ function RouteComponent() {
             back_image={session.back_image}
             person_image={session.person_image}
         />
+
+        <div>
+
+            <div className=" overflow-hidden border rounded-2xl w-full">
+                <div className="py-2 bg-accent z-10 text-md font-semibold px-2 text-neutral-700">
+                    In The News
+                </div>
+
+                <CardContent className="space-y-4 p-4">
+                    {session.news_results?.map((item) => (
+                        <div key={item.url} className="border-b pb-3">
+                            <Link
+                                to={item.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-semibold hover:underline"
+                            >
+                                {item.title}
+                            </Link>
+                            <p className="text-sm text-muted-foreground">{item.description}</p>
+                        </div>
+                    ))}
+                </CardContent>
+            </div>
+
+        </div>
 
     </div>
 }

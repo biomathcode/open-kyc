@@ -117,6 +117,9 @@ export const updateSession = mutation({
             back_image: v.optional(v.id("_storage")),
             person_image: v.optional(v.id("_storage")),
 
+
+
+
             // Analytics
             device: v.optional(v.string()),
             browser: v.optional(v.string()),

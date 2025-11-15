@@ -13,6 +13,7 @@ import { StartKycWelcome } from "~/components/session/StartKycWelcome";
 import { DocumentStep } from "~/components/session/DocumentStep";
 import { CameraView } from "~/components/session/CameraView";
 import ProgressStepper from "~/components/session/ProgressStepper";
+import { useSyncSessionClientInfo } from "~/hooks/useSyncSessionClientInfo";
 
 
 export const Route = createFileRoute("/sessions/$sessionid")({
@@ -34,6 +35,9 @@ function RouteComponent() {
     const session = useQuery(api.sessions.getSessionById, {
         sessionId: sessionid as Id<"sessions">
     });
+
+    useSyncSessionClientInfo(sessionid as Id<"sessions">, session);
+
 
     const updateSession = useMutation(api.sessions.updateSession);
 
