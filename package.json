@@ -52,6 +52,7 @@
     "react-aria-components": "^1.13.0",
     "react-dom": "^19.1.1",
     "react-lottie-player": "^2.1.0",
+    "react-markdown": "^10.1.0",
     "react-qr-code": "^2.0.18",
     "recharts": "^3.4.1",
     "resend": "^6.4.2",

@@ -34,13 +34,13 @@ function Home() {
     }
 
     return (
-        <main className="min-h-screen bg-white text-black font-mono">
+        <main className="min-h-screen bg-white text-black ">
             <div className="max-w-4xl mx-auto px-4 py-10 space-y-8">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div className="space-y-1">
-                        <h1 className="text-3xl font-semibold tracking-tight uppercase">Website Analyzer</h1>
-                        <p className="text-xs text-neutral-500 uppercase">Convex workflow experiment</p>
+                        <h1 className="text-3xl font-semibold tracking-tight uppercase">AML Checker</h1>
+                        <p className="text-xs text-neutral-500 uppercase">Search the business details of a company</p>
                     </div>
 
                 </div>

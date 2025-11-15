@@ -1,5 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { useQuery } from 'convex/react'
+import ReactMarkdown from 'react-markdown';
+
 import { api } from 'convex/_generated/api'
 import type { Id } from 'convex/_generated/dataModel'
 
@@ -56,17 +58,12 @@ function AnalysisDetail() {
 
     return (
         <main className="min-h-screen bg-white text-black font-mono">
-            <div className="max-w-4xl mx-auto px-4 py-10 space-y-8">
+            <div className=" mx-auto px-4 py-10 space-y-8">
                 {/* Header */}
                 <div className="space-y-1">
-                    <Link
-                        to="/"
-                        className="text-xs uppercase tracking-wide text-neutral-500 hover:text-black transition"
-                    >
-                        ← Back
-                    </Link>
+
                     <h1 className="text-3xl font-semibold tracking-tight uppercase">
-                        Analysis
+                        AML Analysis
                     </h1>
                 </div>
 
@@ -84,8 +81,8 @@ function AnalysisDetail() {
 
                     {/* Analysis Content */}
                     <div className="px-5 py-4">
-                        <div className="prose prose-neutral prose-sm max-w-none font-mono leading-relaxed">
-                            <pre className="scroll ">{markdownContent}</pre>
+                        <div className="prose prose-neutral prose-xs max-w-none ">
+                            <ReactMarkdown>{markdownContent}</ReactMarkdown>
                         </div>
                     </div>
                 </article>
