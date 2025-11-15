@@ -68,7 +68,7 @@ export default function SignUp() {
     }
 
     return (
-        <Container>
+        <Container className='w-full flex justify-center h-full flex-col items-center'>
             <Card className="max-w-md">
                 <CardHeader>
                     <CardTitle className="text-lg md:text-xl">Sign Up</CardTitle>

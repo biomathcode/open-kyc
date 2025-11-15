@@ -5,7 +5,14 @@
 - [x] List Documents
 - [ ] Add Service/CRON to get data from documents
 - [ ] UI for showing data from documents
-- [ ] Workflow schema
-- [ ] 
+- [ ] Add Analytics 
+- [ ] Add Dashboard UI 
+- [ ] List out UI Fix
+- [ ] Add Customization options as well
+- [ ] Data segregation by authed_user
+- [ ] Update Readme With the Inspiration, vision, how it works 
+- [ ] Add Autumn track features
+- [ ] Deploy the application on cloudflare as well 
+- [ ] Add Document Search 
 
 

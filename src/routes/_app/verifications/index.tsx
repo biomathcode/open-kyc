@@ -1,10 +1,10 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline"
 import { use, useMemo } from "react"
 import { Autocomplete, AutocompleteStateContext, useFilter } from "react-aria-components"
 import { api } from 'convex/_generated/api'
-import { convexQuery } from '@convex-dev/react-query'
+import { convexQuery, useConvexMutation } from '@convex-dev/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { Doc } from 'convex/_generated/dataModel'
 
@@ -23,6 +23,7 @@ import {
 } from "~/components/ui/table"
 import { Modal, ModalContent, ModalTrigger } from '~/components/ui/modal'
 import { SessionForm } from '~/components/forms/SessionForm'
+import { toast } from 'sonner'
 
 
 export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'>> }) {
@@ -30,8 +31,11 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
     sensitivity: "base",
   })
 
-  const navigator = useNavigate();
 
+
+  const navigate = useNavigate();
+
+  const deleteSession = useConvexMutation(api.sessions.deleteSession);
 
 
   return (
@@ -39,7 +43,7 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
       <Autocomplete filter={contains}>
         <CardHeader>
           <CardTitle>Sessions</CardTitle>
-          <CardDescription>Click on the Session to get more information</CardDescription>
+          <CardDescription>Click on the Session three dots to either view or delete sessions</CardDescription>
         </CardHeader>
         <div className="flex justify-end">
           <SearchField aria-label="Search">
@@ -48,7 +52,7 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
         </div>
         <Table className="mt-4" aria-label="Sessions">
           <TableHeader>
-            <TableColumn className="w-0">#</TableColumn>
+            <TableColumn className="w-0">Session Link</TableColumn>
             <TableColumn isRowHeader>Username</TableColumn>
             <TableColumn>Email</TableColumn>
             <TableColumn>Step</TableColumn>
@@ -58,8 +62,28 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
           </TableHeader>
           <TableBody items={sessions}>
             {(item: Doc<'sessions'>) => (
+
+
               <TableRow id={item._id}>
-                <TableCell>{item._id}</TableCell>
+
+                <TableCell
+                  className=" cursor-pointer"
+
+                  onClick={() => {
+                    const url = `${window.location.origin}/sessions/${item._id}`;
+
+                    navigator.clipboard.writeText(url)
+                      .then(() => {
+                        toast.success("Copied to clipboard!");
+                      })
+                      .catch(() => {
+                        toast.error("Failed to copy");
+                      });
+                  }}
+                >
+
+                  {item._id}
+                </TableCell>
                 <TableCell textValue={item.username}>
                   <AutocompleteHighlight>{item.username || ' '}</AutocompleteHighlight>
                 </TableCell>
@@ -72,7 +96,7 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
                 <TableCell textValue={item.status}>
                   <AutocompleteHighlight>{item.status}</AutocompleteHighlight>
                 </TableCell>
-                <TableCell>{item.createdAt}</TableCell>
+                <TableCell>{(new Date(item.createdAt)).toLocaleString()}</TableCell>
                 <TableCell>
                   <div className="flex justify-end">
                     <Menu>
@@ -81,21 +105,26 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
                       </MenuTrigger>
                       <MenuContent aria-label="Actions" placement="left top">
                         <MenuItem onClick={() => {
-                          navigator({
+                          navigate({
                             to: "/verifications/$id",
                             params: {
                               id: item._id
                             }
                           })
                         }}>View</MenuItem>
-                        <MenuItem>Edit</MenuItem>
+
                         <MenuSeparator />
-                        <MenuItem intent="danger">Delete</MenuItem>
+                        <MenuItem
+                          onClick={() => {
+                            deleteSession({ sessionId: item._id })
+                          }}
+                          intent="danger">Delete</MenuItem>
                       </MenuContent>
                     </Menu>
                   </div>
                 </TableCell>
               </TableRow>
+
             )}
           </TableBody>
         </Table>
