@@ -87,7 +87,7 @@ function RouteComponent() {
                 return <StartKycWelcome setFlow={setFlow} />;
 
             case "document":
-                return <DocumentStep setFlow={setFlow} />;
+                return <DocumentStep sessionId={sessionid as Id<"sessions">} setFlow={setFlow} />;
 
             case "camera":
                 return <CameraView setFlow={setFlow} />;

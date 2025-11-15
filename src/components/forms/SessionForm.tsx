@@ -5,6 +5,7 @@ import { api } from "convex/_generated/api";
 import { Form } from "react-aria-components";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Link } from "@tanstack/react-router";
 import type { Id } from "convex/_generated/dataModel";
 import { Button } from "~/components/ui/button";
 import {
@@ -139,7 +140,15 @@ export function SessionForm() {
                 {sessionLink && (
                     <div className="mt-6 p-3 bg-muted rounded-lg">
                         <Label>Session Link</Label>
-                        <p className="break-all text-sm mt-1">{sessionLink}</p>
+                        <Link
+                            to={sessionLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold hover:underline"
+                        >
+                            <p className="break-all text-sm mt-1">{sessionLink}</p>
+                        </Link>
+
                         <Button
                             type="button"
                             intent="outline"
