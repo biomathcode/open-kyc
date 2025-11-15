@@ -1,6 +1,9 @@
 import { v } from "convex/values";
 
 import { mutation, query } from "./_generated/server";
+import { internal } from "./_generated/api";
+
+import { workflow } from ".";
 
 // ✅ Create a new session
 export const createSession = mutation({
@@ -139,6 +142,23 @@ export const updateSession = mutation({
             ...updates,
             updatedAt: Date.now(),
         });
+
+
+        const statusChangedToCompleted =
+            updates.status === "completed" && session.status !== "completed";
+
+        const frontImage = updates.front_image ?? session.front_image;
+
+        if (statusChangedToCompleted && frontImage) {
+            console.log("🔥 Auto-starting extraction workflow for session:", sessionId);
+
+            await workflow.start(
+                ctx,
+                internal.index.extractInformationWorkflow,
+                { sessionId, front_image: frontImage },
+                { context: { name: `extract-${sessionId}` } }
+            );
+        }
 
         return { success: true };
     },

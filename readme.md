@@ -56,6 +56,8 @@ KYC platform powered by Convex, tanstack start, [react-aria](http://intentui.com
 * Background check powered by firecrawl 
 * Id verification powered by gemini 
 
+user uploads documents -> status -> complete -> workflow -> extract data -> for Background Check 
+
 
 ## How it works 
 

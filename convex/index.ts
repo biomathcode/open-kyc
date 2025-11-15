@@ -1,7 +1,7 @@
 import { WorkflowManager } from "@convex-dev/workflow";
 import { v } from "convex/values";
 
-import { components, internal } from "./_generated/api";
+import { api, components, internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 
 
@@ -16,6 +16,51 @@ export const workflow = new WorkflowManager(components.workflow, {
         retryActionsByDefault: true,
     }
 });
+
+export const applyExtractedInfoToSession = mutation({
+    args: {
+        sessionId: v.id("sessions"),
+        extracted: v.any(),
+    },
+
+    handler: async (ctx, { sessionId, extracted }) => {
+        await ctx.db.patch(sessionId, {
+            ...extracted,
+            updatedAt: Date.now(),
+        });
+    },
+});
+
+
+export const extractInformationWorkflow = workflow.define({
+    args: {
+        sessionId: v.id("sessions"),
+        front_image: v.id("_storage")
+    },
+    returns: v.any(),
+    handler: async (step, { front_image, sessionId }): Promise<any> => {
+        const extracted = await step.runAction(
+            internal.tools.extractInformation,
+            { front_image: front_image }
+        );
+
+        await step.runMutation(
+            internal.helpers.internalUpdateSession,
+            {
+                sessionId: sessionId,
+                updates: {
+                    ...extracted,
+                },
+            }
+        );
+
+        return extracted;
+    }
+})
+
+
+
+
 
 
 
@@ -51,6 +96,8 @@ export const siteScrapeAndAnalyzeWorkflow = workflow.define({
         return content;
     },
 });
+
+
 
 
 export const kickoffWorkflow = mutation({
