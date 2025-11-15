@@ -1,11 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { convexQuery } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
+
 
 import { api } from "convex/_generated/api";
 import type { Doc, Id } from "convex/_generated/dataModel";
 import { Label } from '~/components/ui/field';
 
+import {
+    DescriptionDetails,
+    DescriptionList,
+    DescriptionTerm,
+} from "~/components/ui/description-list"
 
 
 export const Route = createFileRoute('/_app/verifications/$id')({
@@ -32,52 +39,35 @@ function Analytics({
     ipAddress?: string;
     geolocation?: Doc<"sessions">["geolocation"];
     userAgent?: string;
-    createdAt?: number;
+    createdAt: number;
 }) {
     return (
-        <div className="max-w-sm overflow-hidden border rounded-2xl">
+        <div className="w-full  overflow-hidden border rounded-2xl">
             <div className="py-2 bg-accent z-10 text-md font-semibold px-2 text-neutral-700">
                 Analytics
             </div>
+            <DescriptionList className="px-4">
+                <DescriptionTerm> Device</DescriptionTerm>
+                <DescriptionDetails> {device || '-'}</DescriptionDetails>
 
-            <div className="flex flex-col gap-2 items-start px-2 py-4">
+                <DescriptionTerm> Browser</DescriptionTerm>
+                <DescriptionDetails>{browser || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Device</Label>
-                    <div>{device || '-'}</div>
-                </div>
+                <DescriptionTerm> Operating System</DescriptionTerm>
+                <DescriptionDetails>{os || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Browser</Label>
-                    <div>{browser || '-'}</div>
-                </div>
+                <DescriptionTerm> IP Address</DescriptionTerm>
+                <DescriptionDetails>{ipAddress || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Operating System</Label>
-                    <div>{os || '-'}</div>
-                </div>
+                <DescriptionTerm> Geolocation</DescriptionTerm>
+                <DescriptionDetails>{geolocation?.country || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>IP Address</Label>
-                    <div>{ipAddress || '-'}</div>
-                </div>
+                <DescriptionTerm> User Agent</DescriptionTerm>
+                <DescriptionDetails>{userAgent || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Geolocation</Label>
-                    <div>{geolocation?.country || '-'}</div>
-                </div>
-
-                <div className="flex flex-col gap-0">
-                    <Label>User Agent</Label>
-                    <div className="break-all">{userAgent || '-'}</div>
-                </div>
-
-                <div className="flex flex-col gap-0">
-                    <Label>Created At</Label>
-                    <div>{createdAt || '-'}</div>
-                </div>
-
-            </div>
+                <DescriptionTerm> Created At</DescriptionTerm>
+                <DescriptionDetails>{format(new Date(createdAt), "dd MMM yyyy, hh:mm a") || '-'}</DescriptionDetails>
+            </DescriptionList>
         </div>
     );
 }
@@ -103,89 +93,68 @@ function PersonInformation({
     document_number?: string;
 }) {
     return (
-        <div className="max-w-sm overflow-hidden border rounded-2xl w-full">
+        <div className="max-w-sm w-full overflow-hidden border rounded-2xl">
             <div className="py-2 bg-accent z-10 text-md font-semibold px-2 text-neutral-700">
-                Analytics
+                Person Information
             </div>
 
-            <div className="flex flex-col gap-2 items-start px-2 py-4">
-                <div className="flex flex-col gap-0">
-                    <Label>First Name</Label>
-                    <div>{first_name || '-'}</div>
-                </div>
+            <DescriptionList className="px-4 py-2">
+                <DescriptionTerm>First Name</DescriptionTerm>
+                <DescriptionDetails>{first_name || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Last Name</Label>
-                    <div>{last_name || '-'}</div>
-                </div>
+                <DescriptionTerm>Last Name</DescriptionTerm>
+                <DescriptionDetails>{last_name || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Nationality</Label>
-                    <div>{nationality || '-'}</div>
-                </div>
+                <DescriptionTerm>Nationality</DescriptionTerm>
+                <DescriptionDetails>{nationality || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Issuing State</Label>
-                    <div>{issuing_state || '-'}</div>
-                </div>
+                <DescriptionTerm>Issuing State</DescriptionTerm>
+                <DescriptionDetails>{issuing_state || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Date of Birth</Label>
-                    <div>{dob || '-'}</div>
-                </div>
+                <DescriptionTerm>Date of Birth</DescriptionTerm>
+                <DescriptionDetails>{dob || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Address</Label>
-                    <div>{address || '-'}</div>
-                </div>
+                <DescriptionTerm>Address</DescriptionTerm>
+                <DescriptionDetails>{address || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Gender</Label>
-                    <div>{gender || '-'}</div>
-                </div>
+                <DescriptionTerm>Gender</DescriptionTerm>
+                <DescriptionDetails>{gender || '-'}</DescriptionDetails>
 
-                <div className="flex flex-col gap-0">
-                    <Label>Document Number</Label>
-                    <div>{document_number || '-'}</div>
-                </div>
-            </div>
+                <DescriptionTerm>Document Number</DescriptionTerm>
+                <DescriptionDetails>{document_number || '-'}</DescriptionDetails>
+            </DescriptionList>
         </div>
     );
 }
 
 
-function ContactDetails({ email, phone, issuing_state }: { email?: string, phone?: string, issuing_state?: string }) {
+function ContactDetails({
+    email,
+    phone,
+    issuing_state,
+}: {
+    email?: string;
+    phone?: string;
+    issuing_state?: string;
+}) {
     return (
-
-        <div className=" max-w-sm overflow-hidden border rounded-2xl w-full ">
-            <div className="  py-2  bg-accent z-10 text-md font-semibold px-2 text-neutral-700  ">
+        <div className="max-w-sm w-full overflow-hidden border rounded-2xl">
+            <div className="py-2 bg-accent z-10 text-md font-semibold px-2 text-neutral-700">
                 Contact Details
             </div>
-            <div className="flex flex-col gap-2 items-start px-2 py-4">
-                <div className="flex flex-col gap-0">
-                    <Label>
-                        Issuing state
-                    </Label>
-                    <div>
-                        {issuing_state || '-'}</div>
-                </div>
-                <div className="flex flex-col gap-0">
 
-                    <Label>Email</Label>
-                    <div>
-                        {email || '-'}
-                    </div>
-                </div>
-                <div className="flex flex-col gap-0">
-                    <Label>Phone Number</Label>
-                    <div>
-                        {phone || '-'}
-                    </div>
-                </div>
-            </div>
+            <DescriptionList className="px-4 py-2">
+                <DescriptionTerm>Issuing State</DescriptionTerm>
+                <DescriptionDetails>{issuing_state || '-'}</DescriptionDetails>
+
+                <DescriptionTerm>Email</DescriptionTerm>
+                <DescriptionDetails>{email || '-'}</DescriptionDetails>
+
+                <DescriptionTerm>Phone Number</DescriptionTerm>
+                <DescriptionDetails>{phone || '-'}</DescriptionDetails>
+            </DescriptionList>
         </div>
-
-    )
+    );
 }
 
 
@@ -203,12 +172,12 @@ function IdVerification({
 
 
     return (
-        <div className="max-w-sm overflow-hidden border rounded-2xl">
+        <div className=" overflow-hidden border rounded-2xl w-full">
             <div className="py-2 bg-accent z-10 text-md font-semibold px-2 text-neutral-700">
                 ID Verification
             </div>
 
-            <div className="flex flex-col gap-4 px-2 py-4">
+            <div className="flex  gap-4 px-2 py-4">
 
                 {/* Front Image */}
                 <div className="flex flex-col gap-1">
@@ -266,12 +235,9 @@ function RouteComponent() {
 
 
 
-    return <div className="w-full h-full ">
-        <h1>Verification</h1>
-        <div className="max-w-fit ">
-            {JSON.stringify(session)}
-        </div>
-        <div className="flex w-full gap-2 min-w-fit">
+    return <div className="w-full h-full flex flex-col gap-4 flex-wrap max-w-[1500px] ">
+
+        <div className="flex w-full gap-4 min-w-fit">
             <ContactDetails email={session.email} phone={session.phone_number} issuing_state={session.issuing_state} />
 
             <PersonInformation

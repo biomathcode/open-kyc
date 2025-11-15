@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline"
 import { use, useMemo } from "react"
@@ -29,6 +29,11 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
   const { contains } = useFilter({
     sensitivity: "base",
   })
+
+  const navigator = useNavigate();
+
+
+
   return (
     <div className="rounded-lg border p-4">
       <Autocomplete filter={contains}>
@@ -75,7 +80,14 @@ export function VerificationTable({ sessions }: { sessions: Array<Doc<'sessions'
                         <EllipsisVerticalIcon />
                       </MenuTrigger>
                       <MenuContent aria-label="Actions" placement="left top">
-                        <MenuItem>View</MenuItem>
+                        <MenuItem onClick={() => {
+                          navigator({
+                            to: "/verifications/$id",
+                            params: {
+                              id: item._id
+                            }
+                          })
+                        }}>View</MenuItem>
                         <MenuItem>Edit</MenuItem>
                         <MenuSeparator />
                         <MenuItem intent="danger">Delete</MenuItem>

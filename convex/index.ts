@@ -35,13 +35,14 @@ export const applyExtractedInfoToSession = mutation({
 export const extractInformationWorkflow = workflow.define({
     args: {
         sessionId: v.id("sessions"),
-        front_image: v.id("_storage")
+        front_image: v.id("_storage"),
+        back_image: v.id("_storage"),
     },
     returns: v.any(),
-    handler: async (step, { front_image, sessionId }): Promise<any> => {
+    handler: async (step, { front_image, back_image, sessionId }): Promise<any> => {
         const extracted = await step.runAction(
             internal.tools.extractInformation,
-            { front_image: front_image }
+            { front_image: front_image, back_image: back_image }
         );
 
         await step.runMutation(
@@ -54,9 +55,62 @@ export const extractInformationWorkflow = workflow.define({
             }
         );
 
+        if (!extracted.first_name && !extracted.last_name) {
+            throw new Error("No extracted data found")
+        }
+
+        const name = `${extracted.first_name} ${extracted.last_name}`
+
+        const getNews = await step.runAction(
+            internal.tools.searchName,
+            {
+                name
+            }
+        )
+
+        console.log("got the News", getNews)
+
+        // TODO: save the news from the data 
+
+
+
         return extracted;
     }
 })
+
+
+export const extractPersonGenderWorkflow = workflow.define({
+    args: {
+        sessionId: v.id("sessions"),
+        person_image: v.id("_storage"),
+    },
+    returns: v.any(),
+    handler: async (step, args): Promise<any> => {
+        const genderInfo = await step.runAction(
+            internal.tools.extractPersonGender,
+            {
+                person_image: args.person_image,
+            }
+        );
+
+        await step.runMutation(
+            internal.helpers.internalUpdateSession,
+            {
+                sessionId: args.sessionId,
+                updates: {
+                    ...genderInfo
+                },
+            }
+        );
+
+
+
+        return genderInfo;
+    },
+});
+
+
+
 
 
 

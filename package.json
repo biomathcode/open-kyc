@@ -42,6 +42,7 @@
     "clsx": "^2.1.1",
     "convex": "^1.28.0",
     "culori": "^4.0.2",
+    "date-fns": "^4.1.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.552.0",
     "motion": "^12.23.24",

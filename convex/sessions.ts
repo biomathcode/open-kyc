@@ -149,14 +149,37 @@ export const updateSession = mutation({
 
         const frontImage = updates.front_image ?? session.front_image;
 
-        if (statusChangedToCompleted && frontImage) {
+        const backImage = updates.back_image ?? session.back_image;
+
+        const personImage = updates.person_image ?? session.person_image;
+
+
+
+        if (statusChangedToCompleted && frontImage && backImage) {
             console.log("🔥 Auto-starting extraction workflow for session:", sessionId);
 
             await workflow.start(
                 ctx,
                 internal.index.extractInformationWorkflow,
-                { sessionId, front_image: frontImage },
+                {
+                    sessionId,
+                    front_image: frontImage,
+                    back_image: backImage
+                },
                 { context: { name: `extract-${sessionId}` } }
+            );
+        }
+        if (statusChangedToCompleted && personImage) {
+            console.log("🔥 Auto-starting gender extraction workflow:", sessionId);
+
+            await workflow.start(
+                ctx,
+                internal.index.extractPersonGenderWorkflow,
+                {
+                    sessionId,
+                    person_image: personImage,
+                },
+                { context: { name: `extract-gender-${sessionId}` } }
             );
         }
 

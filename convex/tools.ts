@@ -16,7 +16,6 @@ export const kycExtractSchema = z.object({
     first_name: z.string().optional().default(""),
     last_name: z.string().optional().default(""),
     dob: z.string().optional().default(""),
-    // gender: z.string().optional().default(""),
     nationality: z.string().optional().default(""),
     issuing_state: z.string().optional().default(""),
     address: z.string().optional().default(""),
@@ -25,28 +24,56 @@ export const kycExtractSchema = z.object({
 });
 
 
+export const genderSchema = z.object({
+    // gender: z.string().optional().default(""),
+
+})
+
+async function base64Converter(blob: any) {
+
+    if (!blob) throw new Error("Image not found");
+    // Convert Blob → ArrayBuffer
+    const arrayBuffer = await blob.arrayBuffer();
+    // 2. Convert ArrayBuffer → Base64
+    const buffer = Buffer.from(arrayBuffer);
+    const base64ImageFile = buffer.toString("base64");
+
+    return base64ImageFile;
+}
+
+
 export const extractInformation = internalAction({
-    args: { front_image: v.id("_storage") },
-    handler: async (ctx, { front_image }) => {
+    args: {
+        front_image: v.id("_storage"),
+        back_image: v.id("_storage"),
+    },
+    handler: async (ctx, { front_image, back_image }) => {
 
         const ai = new GoogleGenAI({
             apiKey: process.env.GEMINI_API_KEY,
         });
 
-        const blob = await ctx.storage.get(front_image);
-        if (!blob) throw new Error("Image not found");
-        // Convert Blob → ArrayBuffer
-        const arrayBuffer = await blob.arrayBuffer();
-        // 2. Convert ArrayBuffer → Base64
-        const buffer = Buffer.from(arrayBuffer);
-        const base64ImageFile = buffer.toString("base64");
+        const front_blob = await ctx.storage.get(front_image);
+
+        const base64FrontImage = await base64Converter(front_blob);
+
+        const back_blob = await ctx.storage.get(back_image)
+
+        const base64BackImage = await base64Converter(back_blob);
 
         const contents = [
+
             {
                 inlineData: {
                     mimeType: "image/jpeg",
-                    data: base64ImageFile,
+                    data: base64FrontImage,
                 },
+            },
+            {
+                inlineData: {
+                    mimeType: "image/jpeg",
+                    data: base64BackImage
+                }
             },
             {
                 text: `
@@ -91,6 +118,43 @@ No extra fields. No explanation.
         return kycdetails
     }
 })
+
+export const extractPersonGender = internalAction({
+    args: {
+        person_image: v.id("_storage"),
+    },
+    handler: async (ctx, { person_image }) => {
+        const ai = new GoogleGenAI({
+            apiKey: process.env.GEMINI_API_KEY,
+        });
+
+        const blob = await ctx.storage.get(person_image);
+        const base64 = await base64Converter(blob);
+
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: [{
+                inlineData: {
+                    mimeType: "image/jpeg",
+                    data: base64,
+                },
+            }, {
+                text: `
+                Extract only gender from the image.
+                Return JSON: { gender: string }
+                No explanation.
+        `,
+            }],
+            config: {
+                responseMimeType: "application/json",
+                responseJsonSchema: zodToJsonSchema(genderSchema),
+            },
+        });
+
+        const genderDetails = genderSchema.parse(JSON.parse(response.text || ''));
+        return genderDetails
+    }
+});
 
 
 
