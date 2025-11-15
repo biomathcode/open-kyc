@@ -1,24 +1,26 @@
 "use client"
 
-import { type ComponentProps, Fragment, useId } from "react"
+import { Fragment, useId } from "react"
 import { Area, AreaChart as AreaChartPrimitive } from "recharts"
-import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent"
 import { twMerge } from "tailwind-merge"
 import {
-  type BaseChartProps,
+
   CartesianGrid,
   Chart,
   ChartLegend,
   ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-  constructCategoryColors,
   DEFAULT_COLORS,
-  getColorValue,
-  valueToPercent,
   XAxis,
   YAxis,
+  constructCategoryColors,
+  getColorValue,
+  valueToPercent
 } from "./chart"
+import type { BaseChartProps } from "./chart";
+import type { ComponentProps } from "react";
+import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent"
 
 interface AreaChartProps<TValue extends ValueType, TName extends NameType>
   extends BaseChartProps<TValue, TName> {
@@ -168,50 +170,50 @@ export const AreaChart = <TValue extends ValueType, TName extends NameType>({
 
           {!children
             ? Object.entries(config).map(([category, values]) => {
-                const categoryId = `${areaId}-${category.replace(/[^a-zA-Z0-9]/g, "")}`
+              const categoryId = `${areaId}-${category.replace(/[^a-zA-Z0-9]/g, "")}`
 
-                const strokeOpacity = selectedLegend && selectedLegend !== category ? 0.1 : 1
+              const strokeOpacity = selectedLegend && selectedLegend !== category ? 0.1 : 1
 
-                return (
-                  <Fragment key={categoryId}>
-                    <defs>
-                      <linearGradient
-                        style={{
-                          color: getColorValue(values.color || categoryColors.get(category)),
-                        }}
-                        id={categoryId}
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        {getFillContent({
-                          fillType,
-                          activeLegend: selectedLegend,
-                          category: category,
-                        })}
-                      </linearGradient>
-                    </defs>
-                    <Area
-                      dot={false}
-                      name={category}
-                      dataKey={category}
-                      stroke={getColorValue(values.color || categoryColors.get(category))}
+              return (
+                <Fragment key={categoryId}>
+                  <defs>
+                    <linearGradient
                       style={{
-                        strokeWidth: 2,
-                        strokeOpacity,
+                        color: getColorValue(values.color || categoryColors.get(category)),
                       }}
-                      strokeLinejoin="round"
-                      strokeLinecap="round"
-                      isAnimationActive={true}
-                      connectNulls={connectNulls}
-                      stackId={stacked ? "stack" : undefined}
-                      fill={`url(#${categoryId})`}
-                      {...areaProps}
-                    />
-                  </Fragment>
-                )
-              })
+                      id={categoryId}
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      {getFillContent({
+                        fillType,
+                        activeLegend: selectedLegend,
+                        category: category,
+                      })}
+                    </linearGradient>
+                  </defs>
+                  <Area
+                    dot={false}
+                    name={category}
+                    dataKey={category}
+                    stroke={getColorValue(values.color || categoryColors.get(category))}
+                    style={{
+                      strokeWidth: 2,
+                      strokeOpacity,
+                    }}
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    isAnimationActive={true}
+                    connectNulls={connectNulls}
+                    stackId={stacked ? "stack" : undefined}
+                    fill={`url(#${categoryId})`}
+                    {...areaProps}
+                  />
+                </Fragment>
+              )
+            })
             : children}
         </AreaChartPrimitive>
       )}
