@@ -19,6 +19,8 @@ export const workflow = new WorkflowManager(components.workflow, {
 
 
 
+
+
 export const siteScrapeAndAnalyzeWorkflow = workflow.define({
     args: { siteUrl: v.string() },
     returns: v.any(),

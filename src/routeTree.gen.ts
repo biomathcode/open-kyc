@@ -19,6 +19,7 @@ import { Route as AuthServerRouteImport } from './routes/_auth/server'
 import { Route as AuthClientOnlyRouteImport } from './routes/_auth/client-only'
 import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppSearchRouteImport } from './routes/_app/search'
 import { Route as AppDocumentsRouteImport } from './routes/_app/documents'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppCustomizationRouteImport } from './routes/_app/customization'
@@ -79,6 +80,11 @@ const AppWorkflowRoute = AppWorkflowRouteImport.update({
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSearchRoute = AppSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => AppRoute,
 } as any)
 const AppDocumentsRoute = AppDocumentsRouteImport.update({
@@ -158,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
   '/documents': typeof AppDocumentsRoute
+  '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
   '/documents': typeof AppDocumentsRoute
+  '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
@@ -207,6 +215,7 @@ export interface FileRoutesById {
   '/_app/customization': typeof AppCustomizationRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/documents': typeof AppDocumentsRoute
+  '/_app/search': typeof AppSearchRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/workflow': typeof AppWorkflowRoute
   '/_auth/client-only': typeof AuthClientOnlyRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/customization'
     | '/dashboard'
     | '/documents'
+    | '/search'
     | '/settings'
     | '/workflow'
     | '/client-only'
@@ -255,6 +265,7 @@ export interface FileRouteTypes {
     | '/customization'
     | '/dashboard'
     | '/documents'
+    | '/search'
     | '/settings'
     | '/workflow'
     | '/client-only'
@@ -280,6 +291,7 @@ export interface FileRouteTypes {
     | '/_app/customization'
     | '/_app/dashboard'
     | '/_app/documents'
+    | '/_app/search'
     | '/_app/settings'
     | '/_app/workflow'
     | '/_auth/client-only'
@@ -373,6 +385,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/search': {
+      id: '/_app/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AppSearchRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/documents': {
@@ -477,6 +496,7 @@ interface AppRouteChildren {
   AppCustomizationRoute: typeof AppCustomizationRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppDocumentsRoute: typeof AppDocumentsRoute
+  AppSearchRoute: typeof AppSearchRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppWorkflowRoute: typeof AppWorkflowRoute
   AppAnalysisIdRoute: typeof AppAnalysisIdRoute
@@ -494,6 +514,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppCustomizationRoute: AppCustomizationRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppDocumentsRoute: AppDocumentsRoute,
+  AppSearchRoute: AppSearchRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppWorkflowRoute: AppWorkflowRoute,
   AppAnalysisIdRoute: AppAnalysisIdRoute,
