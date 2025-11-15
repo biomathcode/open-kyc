@@ -159,19 +159,6 @@ function ContactDetails({
 }
 
 
-function InTheNews() {
-    return (
-        <div className=" overflow-hidden border rounded-2xl w-full">
-            <div className="py-2 bg-accent z-10 text-md font-semibold px-2 text-neutral-700">
-                ID Verification
-            </div>
-
-            <div className="flex  gap-4 px-2 py-4">
-
-            </div>
-        </div>
-    )
-}
 
 
 

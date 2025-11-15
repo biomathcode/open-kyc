@@ -1,7 +1,7 @@
 import { WorkflowManager } from "@convex-dev/workflow";
 import { v } from "convex/values";
 
-import { api, components, internal } from "./_generated/api";
+import { components, internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 
 
@@ -183,12 +183,12 @@ export const kickoffWorkflow = mutation({
             },
         );
 
-        // Store a placeholder entry immediately so we can track the workflow
-        // even before it completes and stores results
+        //  Store a placeholder entry immediately so we can track the workflow
+        //  even before it completes and stores results
         await ctx.db.insert("siteAnalysis", {
             siteUrl: args.siteUrl,
             workflowId: workflowId as string,
-            analysis: "", // Empty placeholder, will be updated when workflow completes
+            analysis: "", //  Empty placeholder, will be updated when workflow completes
         });
 
         return workflowId;
@@ -231,14 +231,14 @@ export const getWorkflowStatus = query({
     },
 });
 
-// Get all active workflow IDs from results
+//  Get all active workflow IDs from results
 export const getActiveWorkflowIds = query({
     args: {},
     handler: async (ctx) => {
         const results = await ctx.db.query("siteAnalysis").collect();
         const workflowIds = new Set<string>();
 
-        // Check which workflows are still active
+        //  Check which workflows are still active
         for (const result of results) {
             try {
                 const status = await ctx.runQuery(components.workflow.journal.load, {
@@ -249,7 +249,7 @@ export const getActiveWorkflowIds = query({
                     workflowIds.add(result.workflowId);
                 }
             } catch {
-                // If we can't load the workflow, skip it
+                //  If we can't load the workflow, skip it
             }
         }
 
