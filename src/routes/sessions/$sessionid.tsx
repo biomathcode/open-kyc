@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { convexQuery } from "@convex-dev/react-query";
-import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useMutation, useQuery } from "convex/react";
 import { api } from "convex/_generated/api";

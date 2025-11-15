@@ -258,7 +258,6 @@ function RouteComponent() {
                 geolocation={session.geolocation}
                 userAgent={session.userAgent}
                 createdAt={session.createdAt}
-
             />
 
 
