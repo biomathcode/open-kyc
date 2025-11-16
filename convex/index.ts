@@ -138,7 +138,6 @@ export const siteScrapeAndAnalyzeWorkflow = workflow.define({
                 siteUrl: args.siteUrl,
             });
 
-            console.log("foundURLS", foundUrls)
 
             // ensure unique & include root URL
             const targetUrls = Array.from(
@@ -205,7 +204,6 @@ export const siteScrapeAndAnalyzeWorkflow = workflow.define({
                 siteUrl: args.siteUrl,
             });
 
-            console.log("details", details)
 
             // 4) AML check
             const aml = await step.runAction(internal.tools.amlCheck, {
@@ -214,14 +212,6 @@ export const siteScrapeAndAnalyzeWorkflow = workflow.define({
                 siteUrl: args.siteUrl,
             });
 
-
-            const newJson = {
-                companyName: details.companyName,
-                incorporationNumber: details.incorporationNumber,
-
-            }
-
-            console.log("aml Details", newJson)
 
 
 
