@@ -68,6 +68,7 @@
     "@cloudflare/vite-plugin": "^1.14.2",
     "@convex-dev/eslint-plugin": "^1.0.0",
     "@netlify/vite-plugin-tanstack-start": "^1.1.12",
+    "@sentry/cli": "^2.58.2",
     "@tailwindcss/vite": "^4.1.13",
     "@tanstack/eslint-config": "^0.3.2",
     "@types/culori": "^4.0.1",
