@@ -30,6 +30,8 @@ export default defineSchema({
       v.literal("pending"),
       v.literal("archived")
     ),
+    betterAuthUserId: v.string(),
+
     steps: v.array(
       v.object({
         id: v.string(), // unique ID per step
@@ -46,7 +48,7 @@ export default defineSchema({
     ),
     createdAt: v.number(),
     updatedAt: v.number(),
-  }).index("status", ["status"]),
+  }).index("status", ["status"]).index("betterAuthUserId", ["betterAuthUserId"]),
 
   documents: defineTable({
     name: v.string(),
@@ -139,6 +141,7 @@ export default defineSchema({
   sessions: defineTable({
     username: v.optional(v.string()),
     email: v.optional(v.string()),
+    betterAuthUserId: v.string(),
 
     workflowId: v.id("workflows"),
     status: v.union(
@@ -198,7 +201,6 @@ export default defineSchema({
 
     createdAt: v.number(),
     updatedAt: v.number(),
-
-  })
+  }).index("betterAuthUserId", ["betterAuthUserId"]),
 
 });

@@ -11,7 +11,6 @@
 import type * as auth from "../auth.js";
 import type * as autumn from "../autumn.js";
 import type * as documents from "../documents.js";
-import type * as functions_backgroundCheck from "../functions/backgroundCheck.js";
 import type * as functions_users from "../functions/users.js";
 import type * as functions_workflows from "../functions/workflows.js";
 import type * as helpers from "../helpers.js";
@@ -41,7 +40,6 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   autumn: typeof autumn;
   documents: typeof documents;
-  "functions/backgroundCheck": typeof functions_backgroundCheck;
   "functions/users": typeof functions_users;
   "functions/workflows": typeof functions_workflows;
   helpers: typeof helpers;

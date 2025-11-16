@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 
+import { authComponent } from "../auth";
 import { mutation, query } from "./../_generated/server";
 
 
@@ -14,12 +15,23 @@ export const getWorkflows = query({
         ),
     },
     handler: async (ctx, args) => {
+
+
+        const authUser = await authComponent.getAuthUser(ctx);
+        if (!authUser._id) {
+            throw new Error("User must be authenticated to create a draft");
+
+        }
+
+        const betterAuthUserId = authUser._id;
+
         const table = ctx.db.query("workflows");
 
         const status = args.status;
         if (status) {
             return await table
                 .withIndex("status", (q) => q.eq("status", status))
+                .filter((q) => q.eq(q.field("betterAuthUserId"), betterAuthUserId))
                 .collect();
         }
 
@@ -64,8 +76,17 @@ export const createWorkflow = mutation({
     handler: async (ctx, args) => {
         const now = Date.now();
 
+
+        const authUser = await authComponent.getAuthUser(ctx);
+        if (!authUser._id) {
+            throw new Error("User must be authenticated to create a draft");
+        }
+
+        const betterAuthUserId = authUser._id;
+
         const id = await ctx.db.insert("workflows", {
             ...args,
+            betterAuthUserId: betterAuthUserId,
             createdAt: now,
             updatedAt: now,
         });

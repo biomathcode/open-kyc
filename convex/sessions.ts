@@ -3,6 +3,7 @@ import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 
+import { authComponent } from "./auth";
 import { workflow } from ".";
 
 // ✅ Create a new session
@@ -15,12 +16,21 @@ export const createSession = mutation({
     handler: async (ctx, args) => {
         const now = Date.now();
 
+        const authUser = await authComponent.getAuthUser(ctx);
+        if (!authUser._id) {
+            throw new Error("User must be authenticated to create a draft");
+        }
+
+        const betterAuthUserId = authUser._id;
+
+
         const sessionId = await ctx.db.insert("sessions", {
             ...args,
             status: "initiated",
             step: "start",
             createdAt: now,
             updatedAt: now,
+            betterAuthUserId: betterAuthUserId,
         });
 
         return { sessionId };
@@ -42,7 +52,17 @@ export const getSessions = query({
         ),
     },
     handler: async (ctx) => {
-        const sessions = await ctx.db.query("sessions").collect();
+
+        const authUser = await authComponent.getAuthUser(ctx);
+        if (!authUser._id) {
+            return []
+        }
+
+        const betterAuthUserId = authUser._id;
+
+        const sessions = await ctx.db.query("sessions")
+            .withIndex("betterAuthUserId", (q) => q.eq("betterAuthUserId", betterAuthUserId))
+            .collect();
 
         return sessions;
     },
