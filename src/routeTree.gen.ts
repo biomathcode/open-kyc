@@ -19,14 +19,14 @@ import { Route as AuthServerRouteImport } from './routes/_auth/server'
 import { Route as AuthClientOnlyRouteImport } from './routes/_auth/client-only'
 import { Route as AppWorkflowRouteImport } from './routes/_app/workflow'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
-import { Route as AppSearchRouteImport } from './routes/_app/search'
 import { Route as AppDocumentsRouteImport } from './routes/_app/documents'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppCustomizationRouteImport } from './routes/_app/customization'
 import { Route as AppBlocklistRouteImport } from './routes/_app/blocklist'
 import { Route as AppBillingRouteImport } from './routes/_app/billing'
-import { Route as AppBackgroundcheckRouteImport } from './routes/_app/backgroundcheck'
+import { Route as AppBackgroundsearchRouteImport } from './routes/_app/backgroundsearch'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
+import { Route as AppAmlRouteImport } from './routes/_app/aml'
 import { Route as AppVerificationsIndexRouteImport } from './routes/_app/verifications/index'
 import { Route as AppQuestionnairesIndexRouteImport } from './routes/_app/questionnaires/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -82,11 +82,6 @@ const AppSettingsRoute = AppSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
-const AppSearchRoute = AppSearchRouteImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppDocumentsRoute = AppDocumentsRouteImport.update({
   id: '/documents',
   path: '/documents',
@@ -112,14 +107,19 @@ const AppBillingRoute = AppBillingRouteImport.update({
   path: '/billing',
   getParentRoute: () => AppRoute,
 } as any)
-const AppBackgroundcheckRoute = AppBackgroundcheckRouteImport.update({
-  id: '/backgroundcheck',
-  path: '/backgroundcheck',
+const AppBackgroundsearchRoute = AppBackgroundsearchRouteImport.update({
+  id: '/backgroundsearch',
+  path: '/backgroundsearch',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAmlRoute = AppAmlRouteImport.update({
+  id: '/aml',
+  path: '/aml',
   getParentRoute: () => AppRoute,
 } as any)
 const AppVerificationsIndexRoute = AppVerificationsIndexRouteImport.update({
@@ -157,14 +157,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/aml': typeof AppAmlRoute
   '/analytics': typeof AppAnalyticsRoute
-  '/backgroundcheck': typeof AppBackgroundcheckRoute
+  '/backgroundsearch': typeof AppBackgroundsearchRoute
   '/billing': typeof AppBillingRoute
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
   '/documents': typeof AppDocumentsRoute
-  '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
@@ -181,14 +181,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/aml': typeof AppAmlRoute
   '/analytics': typeof AppAnalyticsRoute
-  '/backgroundcheck': typeof AppBackgroundcheckRoute
+  '/backgroundsearch': typeof AppBackgroundsearchRoute
   '/billing': typeof AppBillingRoute
   '/blocklist': typeof AppBlocklistRoute
   '/customization': typeof AppCustomizationRoute
   '/dashboard': typeof AppDashboardRoute
   '/documents': typeof AppDocumentsRoute
-  '/search': typeof AppSearchRoute
   '/settings': typeof AppSettingsRoute
   '/workflow': typeof AppWorkflowRoute
   '/client-only': typeof AuthClientOnlyRoute
@@ -208,14 +208,14 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
+  '/_app/aml': typeof AppAmlRoute
   '/_app/analytics': typeof AppAnalyticsRoute
-  '/_app/backgroundcheck': typeof AppBackgroundcheckRoute
+  '/_app/backgroundsearch': typeof AppBackgroundsearchRoute
   '/_app/billing': typeof AppBillingRoute
   '/_app/blocklist': typeof AppBlocklistRoute
   '/_app/customization': typeof AppCustomizationRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/documents': typeof AppDocumentsRoute
-  '/_app/search': typeof AppSearchRoute
   '/_app/settings': typeof AppSettingsRoute
   '/_app/workflow': typeof AppWorkflowRoute
   '/_auth/client-only': typeof AuthClientOnlyRoute
@@ -234,14 +234,14 @@ export interface FileRouteTypes {
     | '/'
     | '/sign-in'
     | '/sign-up'
+    | '/aml'
     | '/analytics'
-    | '/backgroundcheck'
+    | '/backgroundsearch'
     | '/billing'
     | '/blocklist'
     | '/customization'
     | '/dashboard'
     | '/documents'
-    | '/search'
     | '/settings'
     | '/workflow'
     | '/client-only'
@@ -258,14 +258,14 @@ export interface FileRouteTypes {
     | '/'
     | '/sign-in'
     | '/sign-up'
+    | '/aml'
     | '/analytics'
-    | '/backgroundcheck'
+    | '/backgroundsearch'
     | '/billing'
     | '/blocklist'
     | '/customization'
     | '/dashboard'
     | '/documents'
-    | '/search'
     | '/settings'
     | '/workflow'
     | '/client-only'
@@ -284,14 +284,14 @@ export interface FileRouteTypes {
     | '/_auth'
     | '/sign-in'
     | '/sign-up'
+    | '/_app/aml'
     | '/_app/analytics'
-    | '/_app/backgroundcheck'
+    | '/_app/backgroundsearch'
     | '/_app/billing'
     | '/_app/blocklist'
     | '/_app/customization'
     | '/_app/dashboard'
     | '/_app/documents'
-    | '/_app/search'
     | '/_app/settings'
     | '/_app/workflow'
     | '/_auth/client-only'
@@ -387,13 +387,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/search': {
-      id: '/_app/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof AppSearchRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/documents': {
       id: '/_app/documents'
       path: '/documents'
@@ -429,11 +422,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBillingRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/backgroundcheck': {
-      id: '/_app/backgroundcheck'
-      path: '/backgroundcheck'
-      fullPath: '/backgroundcheck'
-      preLoaderRoute: typeof AppBackgroundcheckRouteImport
+    '/_app/backgroundsearch': {
+      id: '/_app/backgroundsearch'
+      path: '/backgroundsearch'
+      fullPath: '/backgroundsearch'
+      preLoaderRoute: typeof AppBackgroundsearchRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/analytics': {
@@ -441,6 +434,13 @@ declare module '@tanstack/react-router' {
       path: '/analytics'
       fullPath: '/analytics'
       preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/aml': {
+      id: '/_app/aml'
+      path: '/aml'
+      fullPath: '/aml'
+      preLoaderRoute: typeof AppAmlRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/verifications/': {
@@ -489,14 +489,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteChildren {
+  AppAmlRoute: typeof AppAmlRoute
   AppAnalyticsRoute: typeof AppAnalyticsRoute
-  AppBackgroundcheckRoute: typeof AppBackgroundcheckRoute
+  AppBackgroundsearchRoute: typeof AppBackgroundsearchRoute
   AppBillingRoute: typeof AppBillingRoute
   AppBlocklistRoute: typeof AppBlocklistRoute
   AppCustomizationRoute: typeof AppCustomizationRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppDocumentsRoute: typeof AppDocumentsRoute
-  AppSearchRoute: typeof AppSearchRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppWorkflowRoute: typeof AppWorkflowRoute
   AppAnalysisIdRoute: typeof AppAnalysisIdRoute
@@ -507,14 +507,14 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAmlRoute: AppAmlRoute,
   AppAnalyticsRoute: AppAnalyticsRoute,
-  AppBackgroundcheckRoute: AppBackgroundcheckRoute,
+  AppBackgroundsearchRoute: AppBackgroundsearchRoute,
   AppBillingRoute: AppBillingRoute,
   AppBlocklistRoute: AppBlocklistRoute,
   AppCustomizationRoute: AppCustomizationRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppDocumentsRoute: AppDocumentsRoute,
-  AppSearchRoute: AppSearchRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppWorkflowRoute: AppWorkflowRoute,
   AppAnalysisIdRoute: AppAnalysisIdRoute,

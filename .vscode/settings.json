@@ -6,5 +6,6 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "**/node_modules": true
-    }
+    },
+    "svg.preview.background": "custom"
 }

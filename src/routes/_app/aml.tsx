@@ -4,9 +4,14 @@ import { useEffect, useState } from 'react'
 import { Trash } from 'lucide-react'
 import { api } from 'convex/_generated/api'
 
-export const Route = createFileRoute('/_app/backgroundcheck')({
+export const Route = createFileRoute('/_app/aml')({
     component: Home,
 })
+
+// TODO: Anti-money-laundering search 
+// Get the Business details from the search
+// Use and search those business if they are in news 
+// 
 
 function Home() {
     const [input, setInput] = useState('')

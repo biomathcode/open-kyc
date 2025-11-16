@@ -14,5 +14,6 @@
 - [ ] Add Autumn track features
 - [ ] Deploy the application on cloudflare as well 
 - [ ] Add Document Search 
+- [ ] Add Customize options -> App Public Name, Privacy Policy url, logo, 
 
 

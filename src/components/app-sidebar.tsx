@@ -62,6 +62,7 @@ type AllowedRoutes =
     | "/documents"
     | "/backgroundcheck"
     | "/billing"
+    | "/backgroundsearch"
 
 interface NavItemType {
     href: AllowedRoutes
@@ -125,10 +126,10 @@ export const NavItem: Array<NavItemType> = [
 
     },
     {
-        href: "/backgroundcheck",
+        href: "/backgroundsearch",
         icon: ScanFaceIcon,
         description: "Perform background checks on users",
-        label: "Background Check",
+        label: "Background Search",
     },
     {
         href: "/billing",

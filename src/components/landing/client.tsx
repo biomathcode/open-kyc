@@ -5,6 +5,7 @@ import { CodeRabbit } from "../ui/svgs/codeRabbit";
 import { Convex } from "../ui/svgs/convex";
 import { Netlify } from "../ui/svgs/netlify";
 import { Tanstack } from "../ui/svgs/tanstack";
+import { Sentry } from "../ui/svgs/sentry";
 
 const Companies = [
     { name: "Convex", url: "https://convex.dev", logo: Convex },
@@ -13,6 +14,7 @@ const Companies = [
     { name: "CodeRabbit", url: "https://coderabbit.io", logo: CodeRabbit },
     { name: "Autumn", url: "https://useautumn.com/", logo: "/autumn.avif" },
     { name: "Cloudflare", url: "https://cloudflare.com", logo: Cloudflare },
+    { name: "Sentry", url: "https://sentry.io", logo: Sentry }
 ];
 
 export default function Client() {
