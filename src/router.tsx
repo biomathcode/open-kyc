@@ -73,7 +73,7 @@ export function getRouter() {
 
   if (!router.isServer) {
     Sentry.init({
-      dsn: "https://b1728c20e4ac827cae3162eaf89aad7c@o4504789994373120.ingest.us.sentry.io/4510331224129536",
+      dsn: process.env.SENTRY_DSN,
       sendDefaultPii: true,
       integrations: [
       ],

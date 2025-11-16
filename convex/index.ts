@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { WorkflowManager } from "@convex-dev/workflow";
 import { v } from "convex/values";
 
@@ -127,46 +128,192 @@ export const extractPersonGenderWorkflow = workflow.define({
 });
 
 
-
-
-
-
-
-
-
-
-
-
 export const siteScrapeAndAnalyzeWorkflow = workflow.define({
     args: { siteUrl: v.string() },
     returns: v.any(),
     handler: async (step, args): Promise<any> => {
-        const actionResult = await step.runAction(
-            internal.tools.scrapeSite,
-            { siteUrl: args.siteUrl },
-        );
+        try {
+            // 1) Search for related pages
+            const foundUrls = await step.runAction(internal.tools.searchPages, {
+                siteUrl: args.siteUrl,
+            });
 
-        const siteContent = actionResult.markdown;
+            console.log("foundURLS", foundUrls)
 
-        if (!siteContent) {
-            throw new Error('No site content found');
+            // ensure unique & include root URL
+            const targetUrls = Array.from(
+                new Set([args.siteUrl, ...foundUrls])
+            ).slice(0, 8);
+
+            // 2) Scrape all pages
+            let aggregatedMarkdown = await step.runAction(
+                internal.tools.scrapeMulti,
+                { urls: targetUrls }
+            );
+
+
+            // Fallback: scrape root
+            if (!aggregatedMarkdown || aggregatedMarkdown.trim().length < 20) {
+                const rootDoc = await step.runAction(internal.tools.scrapeRoot, {
+                    siteUrl: args.siteUrl,
+                });
+                aggregatedMarkdown = rootDoc.markdown ?? rootDoc.html ?? "";
+            }
+
+
+
+            // store stage
+            await step.runMutation(internal.helpers.storeScrapeResult, {
+                siteUrl: args.siteUrl,
+                workflowId: step.workflowId,
+                analysis: { stage: "scraped", ts: Date.now() },
+
+                companyName: "",
+                incorporationNumber: "",
+                jurisdiction: "",
+                registeredAddress: "",
+                operationalAddresses: [],
+                emails: [],
+                phones: [],
+                websites: [],
+
+                directors: [],
+                ownership: "",
+                businessActivities: [],
+                paymentMethods: [],
+
+                privacyPolicyText: "",
+                termsText: "",
+                socialLinks: [],
+
+                registrationDates: {
+                    incorporationDate: "",
+                },
+
+                amlRiskScore: 1,
+                amlRiskCategory: "",
+                amlRecommendedState: "",
+                detectedIssues: [],
+                suggestedNextSteps: [],
+                amlNotes: "",
+
+                status: "pending",
+            });
+            // 3) Extract business details
+            const details = await step.runAction(internal.tools.extractBusinessDetails, {
+                siteContent: aggregatedMarkdown,
+                siteUrl: args.siteUrl,
+            });
+
+            console.log("details", details)
+
+            // 4) AML check
+            const aml = await step.runAction(internal.tools.amlCheck, {
+                businessDetails: details,
+                siteContent: aggregatedMarkdown,
+                siteUrl: args.siteUrl,
+            });
+
+
+            const newJson = {
+                companyName: details.companyName,
+                incorporationNumber: details.incorporationNumber,
+
+            }
+
+            console.log("aml Details", newJson)
+
+
+
+            // 5) Persist final result
+            await step.runMutation(internal.helpers.storeScrapeResult, {
+                siteUrl: args.siteUrl,
+                workflowId: step.workflowId,
+                analysis: JSON.stringify({ stage: "complete", ts: Date.now() }),
+                companyName: details.companyName || "",
+                incorporationNumber: details.incorporationNumber || "",
+                jurisdiction: details.jurisdiction || "",
+                registeredAddress: details.registeredAddress || "",
+                operationalAddresses: details.operationalAddresses,
+                emails: details.emails,
+                phones: details.phones,
+                websites: details.websites,
+                directors: details.directors.map((d) => ({
+                    name: d.name ?? "",
+                    role: d.role ?? "",
+                })),
+                ownership: details.ownership || "",
+                businessActivities: details.businessActivities,
+                paymentMethods: details.paymentMethods,
+                privacyPolicyText: details.privacyPolicyText || "",
+                termsText: details.termsText || "",
+                socialLinks: details.socialLinks,
+                registrationDates: {
+                    incorporationDate: details.registrationDates.incorporationDate ?? "",
+                },
+
+                amlRiskScore: aml.riskScore,
+                amlRiskCategory: aml.riskCategory,
+                amlRecommendedState: aml.recommendedState,
+                detectedIssues: aml.detectedIssues,
+                suggestedNextSteps: aml.suggestedNextSteps,
+                amlNotes: aml.notes || "",
+
+                status: aml.recommendedState,
+            });
+
+            return { businessDetails: details, aml };
+        } catch (err) {
+            // store failure
+            await step.runMutation(internal.helpers.storeScrapeResult, {
+                siteUrl: args.siteUrl,
+                workflowId: step.workflowId,
+                analysis: JSON.stringify({
+                    stage: "error",
+                    error: String(err),
+                    ts: Date.now(),
+                }),
+                status: "error",
+
+                // Business details placeholders
+                companyName: "",
+                incorporationNumber: "",
+                jurisdiction: "",
+                registeredAddress: "",
+                operationalAddresses: [],
+                emails: [],
+                phones: [],
+                websites: [],
+
+                directors: [],
+                ownership: "",
+                businessActivities: [],
+                paymentMethods: [],
+
+                privacyPolicyText: "",
+                termsText: "",
+                socialLinks: [],
+
+                registrationDates: {
+                    incorporationDate: "",
+                },
+                // AML placeholders
+                amlRiskScore: 1,
+                amlRiskCategory: "",
+                amlRecommendedState: "",
+                detectedIssues: [],
+                suggestedNextSteps: [],
+                amlNotes: "",
+
+
+            });
+
+            throw err;
         }
-
-        const analysisResult = await step.runAction(
-            internal.tools.analyzeSite,
-            { siteContent },
-        );
-
-        const content = analysisResult
-
-        await step.runMutation(internal.helpers.storeScrapeResult, {
-            siteUrl: args.siteUrl,
-            workflowId: step.workflowId,
-            analysis: JSON.stringify(content),
-        });
-        return content;
     },
 });
+
+
 
 
 
@@ -188,7 +335,39 @@ export const kickoffWorkflow = mutation({
         await ctx.db.insert("siteAnalysis", {
             siteUrl: args.siteUrl,
             workflowId: workflowId as string,
-            analysis: "", //  Empty placeholder, will be updated when workflow completes
+            analysis: "",
+            status: "",
+            companyName: "",
+            incorporationNumber: "",
+            jurisdiction: "",
+            registeredAddress: "",
+            operationalAddresses: [],
+            emails: [],
+            phones: [],
+            websites: [],
+
+            directors: [],
+            ownership: "",
+            businessActivities: [],
+            paymentMethods: [],
+
+            privacyPolicyText: "",
+            termsText: "",
+            socialLinks: [],
+
+            registrationDates: {
+                incorporationDate: "",
+            },
+
+
+
+            amlRiskScore: 1,
+            amlRiskCategory: "",
+            amlRecommendedState: "",
+            detectedIssues: [],
+            suggestedNextSteps: [],
+            amlNotes: "",
+
         });
 
         return workflowId;
@@ -216,7 +395,7 @@ export const getWorkflowStatus = query({
         const hasFailed = status.workflow.runResult?.kind === "failed";
         const error = status.workflow.runResult?.kind === "failed"
             ? status.workflow.runResult.error
-            : undefined;
+            : "";
         const isRunning = status.journalEntries.length > 0 && !isComplete;
 
         return {

@@ -1,9 +1,60 @@
 import { v } from "convex/values";
 import { internalMutation, mutation, query } from "./_generated/server";
-
+import type { Doc } from "./_generated/dataModel";
 
 export const storeScrapeResult = internalMutation({
-    args: { siteUrl: v.string(), workflowId: v.string(), analysis: v.string() },
+    args: v.object({
+        siteUrl: v.string(),
+        workflowId: v.string(),
+        analysis: v.any(),
+
+        companyName: v.string(),
+        incorporationNumber: v.string(),
+        jurisdiction: v.string(),
+
+        registeredAddress: v.string(),
+        operationalAddresses: v.array(v.string()),
+
+        emails: v.array(v.string()),
+        phones: v.array(v.string()),
+        websites: v.array(v.string()),
+
+        directors: v.array(
+            v.object({
+                name: v.string(),
+                role: v.string(),
+            })
+        ),
+
+        ownership: v.string(),
+        businessActivities: v.array(v.string()),
+        paymentMethods: v.array(v.string()),
+
+        privacyPolicyText: v.string(),
+        termsText: v.string(),
+        socialLinks: v.array(v.string()),
+
+        registrationDates: v.object({
+            incorporationDate: v.string(),
+        }),
+
+
+        amlRiskScore: v.number(),
+        amlRiskCategory: v.string(),      // low | medium | high
+        amlRecommendedState: v.string(),  // safe | review | flagged
+
+        detectedIssues: v.array(
+            v.object({
+                issue: v.string(),
+                confidence: v.number(),
+                evidence: v.string(),
+            })
+        ),
+
+        suggestedNextSteps: v.array(v.string()),
+        amlNotes: v.string(),
+        status: v.optional(v.string()),
+    }),
     handler: async (ctx, args): Promise<string> => {
         // Find existing entry by workflowId and update it, or create new one
         const existing = await ctx.db
@@ -14,15 +65,16 @@ export const storeScrapeResult = internalMutation({
         if (existing) {
             // Update existing placeholder entry
             await ctx.db.patch(existing._id, {
+                ...args,
                 analysis: args.analysis,
+
             });
             return existing._id;
         } else {
             // Create new entry if it doesn't exist (shouldn't happen, but safety)
             const result = await ctx.db.insert("siteAnalysis", {
-                siteUrl: args.siteUrl,
-                workflowId: args.workflowId,
-                analysis: args.analysis,
+                ...args,
+                status: args.status ?? "pending",
             });
             return result;
         }
@@ -51,19 +103,14 @@ export const internalUpdateSession = internalMutation({
             first_name: v.optional(v.string()),
             last_name: v.optional(v.string()),
             dob: v.optional(v.string()),
-            gender: v.optional(
-                v.union(
-                    v.literal("male"),
-                    v.literal("female"),
-                    v.literal("other"),
-                    v.literal("unspecified")
-                )
-            ),
+
             nationality: v.optional(v.string()),
             issuing_state: v.optional(v.string()),
             address: v.optional(v.string()),
             document_number: v.optional(v.string()),
             document_type: v.optional(v.string()),
+
+            gender: v.optional(v.string()),
 
             // Files
             front_image: v.optional(v.id("_storage")),

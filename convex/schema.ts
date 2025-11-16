@@ -85,8 +85,56 @@ export default defineSchema({
   siteAnalysis: defineTable({
     siteUrl: v.string(),
     workflowId: v.string(),
-    analysis: v.string(),
+    analysis: v.any(),
+
+    companyName: v.string(),
+    incorporationNumber: v.string(),
+    jurisdiction: v.string(),
+
+    registeredAddress: v.string(),
+    operationalAddresses: v.array(v.string()),
+
+    emails: v.array(v.string()),
+    phones: v.array(v.string()),
+    websites: v.array(v.string()),
+
+    directors: v.array(
+      v.object({
+        name: v.string(),
+        role: v.string(),
+      })
+    ),
+
+    ownership: v.string(),
+    businessActivities: v.array(v.string()),
+    paymentMethods: v.array(v.string()),
+
+    privacyPolicyText: v.string(),
+    termsText: v.string(),
+    socialLinks: v.array(v.string()),
+
+    registrationDates: v.object({
+      incorporationDate: v.string(),
+    }),
+
+
+    amlRiskScore: v.number(),
+    amlRiskCategory: v.string(),      // low | medium | high
+    amlRecommendedState: v.string(),  // safe | review | flagged
+
+    detectedIssues: v.array(
+      v.object({
+        issue: v.string(),
+        confidence: v.number(),
+        evidence: v.string(),
+      })
+    ),
+
+    suggestedNextSteps: v.array(v.string()),
+    amlNotes: v.string(),
+    status: v.string(),
   }).index("by_workflowId", ["workflowId"]),
+
 
   sessions: defineTable({
     username: v.optional(v.string()),
@@ -104,12 +152,7 @@ export default defineSchema({
     first_name: v.optional(v.string()),
     last_name: v.optional(v.string()),
     dob: v.optional(v.string()), // ISO date
-    gender: v.optional(v.union(
-      v.literal("male"),
-      v.literal("female"),
-      v.literal("other"),
-      v.literal("unspecified")
-    )),
+    gender: v.optional(v.string()),
     nationality: v.optional(v.string()),
     issuing_state: v.optional(v.string()),
     address: v.optional(v.string()),

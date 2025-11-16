@@ -13,6 +13,7 @@ import { useNavigate } from "@tanstack/react-router"
 import { api } from "convex/_generated/api"
 import {
     BanIcon, BookOpenIcon, ChartPieIcon, IdCardIcon, ListTodoIcon, LucideHome, ReceiptIcon, ScanFaceIcon, Settings2Icon,
+    ShieldAlert,
     SwatchBookIcon,
     WorkflowIcon
 } from 'lucide-react'
@@ -63,6 +64,7 @@ type AllowedRoutes =
     | "/backgroundcheck"
     | "/billing"
     | "/backgroundsearch"
+    | "/aml"
 
 interface NavItemType {
     href: AllowedRoutes
@@ -104,8 +106,15 @@ export const NavItem: Array<NavItemType> = [
         icon: ChartPieIcon,
         description: "Visualize and analyze key performance metrics",
         label: "Analytics",
-
     },
+
+    {
+        href: "/aml",
+        icon: ShieldAlert,
+        description: "Search Business Details & AML Detection",
+        label: "AML"
+    },
+
     {
         href: "/questionnaires",
         icon: ListTodoIcon,
@@ -118,13 +127,7 @@ export const NavItem: Array<NavItemType> = [
         description: "Search and File Uploaded Documents",
         label: "Documents",
     },
-    {
-        href: "/blocklist",
-        icon: BanIcon,
-        description: "Monitor and update restricted entities or users",
-        label: "Blocklist",
 
-    },
     {
         href: "/backgroundsearch",
         icon: ScanFaceIcon,
@@ -142,6 +145,13 @@ export const NavItem: Array<NavItemType> = [
         icon: Settings2Icon,
         description: "Adjust account and application configuration",
         label: "Settings",
+    },
+    {
+        href: "/blocklist",
+        icon: BanIcon,
+        description: "Monitor and update restricted entities or users",
+        label: "Blocklist",
+
     },
 ]
 
