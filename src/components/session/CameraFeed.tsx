@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "convex/_generated/api";
 
+import { SwitchCamera } from "lucide-react";
 import { Button } from "../ui/button";
 import type { flowStates } from "./index";
 import type { Id } from "convex/_generated/dataModel";
@@ -84,10 +85,16 @@ export function CameraFeed({ setFlow, title, flow, sessionId }: CameraFeedProps)
         try {
             const allDevices = await navigator.mediaDevices.enumerateDevices();
             const videoDevices = allDevices.filter((d) => d.kind === "videoinput");
+
             setDevices(videoDevices);
+
             if (videoDevices.length) {
-                const preferred =
-                    videoDevices.find((d) => /front|user/i.test(d.label)) ?? videoDevices[0];
+                // Prioritize back/environment cameras
+                const backCam = videoDevices.find((d) =>
+                    /back|rear|environment/i.test(d.label)
+                );
+
+                const preferred = backCam ?? videoDevices[0];
                 setCurrentDeviceId(preferred.deviceId);
             }
         } catch {
@@ -209,13 +216,13 @@ export function CameraFeed({ setFlow, title, flow, sessionId }: CameraFeedProps)
                     <p className="text-sm text-gray-500 mb-4">
                         Please grant permission to use your camera.
                     </p>
-                    <button
+                    <Button
                         onClick={requestPermission}
-                        disabled={loading}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition disabled:opacity-60"
+                        intent="plain"
+                        isDisabled={loading}
                     >
                         {loading ? "Requesting..." : "Enable Camera"}
-                    </button>
+                    </Button>
                 </div>
             )}
 
@@ -236,30 +243,20 @@ export function CameraFeed({ setFlow, title, flow, sessionId }: CameraFeedProps)
 
                     <div className="flex flex-wrap justify-center gap-2">
                         {devices.length > 1 && (
-                            <button
+                            <Button
                                 onClick={toggleCamera}
-                                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
+                                intent="plain"
                             >
-                                Switch Camera
-                            </button>
+                                <SwitchCamera size={14} />
+                            </Button>
                         )}
-                        <button
+                        <Button
                             onClick={captureScreenshot}
-                            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+                            intent="secondary"
                         >
                             Capture
-                        </button>
-                        <select
-                            value={currentDeviceId ?? ""}
-                            onChange={(e) => setCurrentDeviceId(e.target.value)}
-                            className="border rounded-md px-2 py-1 text-sm"
-                        >
-                            {devices.map((device, i) => (
-                                <option key={device.deviceId} value={device.deviceId}>
-                                    {device.label || `Camera ${i + 1}`}
-                                </option>
-                            ))}
-                        </select>
+                        </Button>
+
                     </div>
 
                     <div className="text-neutral-600 text-xl font-semibold text-center">{title}</div>

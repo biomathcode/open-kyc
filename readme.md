@@ -3,7 +3,7 @@
 
 Build for the Tanstack Start [Hackathon](https://www.convex.dev/hackathons/tanstack)
 
-KYC platform powered by Convex, tanstack start, [react-aria](http://intentui.com/), netlify, cloudflare, better-auth, autumn, resend, gemini. 
+KYC platform powered by Convex, tanstack start, [react-aria](http://intentui.com/), netlify, cloudflare, better-auth, autumn, gemini. 
 
 
 ![OpenKYC ShowCase](./public/showcase.png)
@@ -72,12 +72,95 @@ then for verification users you can create custom session with workflow types, t
 [DEMO URL](https://open-kyc.netlify.app)
 
 
-Build logs:         https://app.netlify.com/projects/open-kyc/deploys/691481d57606b96a7af7abcf
-Function logs:      https://app.netlify.com/projects/open-kyc/logs/functions
-Edge function Logs: https://app.netlify.com/projects/open-kyc/logs/edge-functions
-
 
 ## Cloudflare  -> 
+
+[DEMO_URL](https://tanstack-start-app.sharma-pratik2016.workers.dev)
+
+
+---
+
+# 🛠️ Tech Stack
+
+## **Frontend**
+
+| Technology                            | Version        | Purpose                          |
+| ------------------------------------- | -------------- | -------------------------------- |
+| React                                 | 19.1.1         | Core UI framework                |
+| React DOM                             | 19.1.1         | DOM renderer                     |
+| TanStack Start                        | 1.132.2        | Full-stack React framework (SSR) |
+| TanStack Router                       | 1.132.2        | File-based routing               |
+| TanStack React Query                  | 5.90.7         | Data fetching / caching          |
+| TanStack React Form                   | 1.23.8         | Form handling                    |
+| TanStack Table                        | 8.21.3         | Data tables                      |
+| Tailwind CSS v4                       | 4.1.13         | Styling                          |
+| shadcn/ui (via tailwind + react-aria) | Latest         | UI components                    |
+| React Aria Components                 | 1.13.0         | Accessible UI primitives         |
+| Lucide React                          | 0.552.0        | Icons                            |
+| Motion                                | 12.23.24       | Animations                       |
+| Recharts                              | 3.4.1          | Charts                           |
+| React Markdown                        | 10.1.0         | Render Markdown                  |
+| Input OTP                             | 1.4.2          | OTP UI input                     |
+| QR-Code / React-QR-Code               | 1.5.4 / 2.0.18 | QR generation                    |
+| Class Variance Authority              | 0.7.1          | Component variants               |
+| Tailwind Merge                        | 3.4.0          | Class merging                    |
+| Tailwind Variants                     | 3.1.1          | Variant utilities                |
+| Tailwindcss React Aria Components     | 2.0.1          | Theme for RAC                    |
+| Culori                                | 4.0.2          | Color utilities                  |
+---
+
+## **Backend**
+
+| Technology         | Purpose                          |
+| ------------------ | -------------------------------- |
+| Convex             | Primary backend (DB + functions) |
+| Convex Crons       | Scheduled jobs                   |
+| Convex Workflows   | Workflow orchestration           |
+| Convex Workpool    | Distributed batch processing     |
+| Convex Migrations  | Schema migration toolkit         |
+| Convex Better Auth | Authentication                   |
+| Better Auth        | Additional auth utilities        |
+| Autumn / atmn      | Subscription billing (Stripe)    |
+| Firecrawl          | Site crawling                    |
+| UUID               | ID generation                    |
+| Zod + Zod-to-JSON  | Schema + validation              |
+
+---
+
+## **External APIs**
+
+| Service             | Use Case                 | Cost          |
+| ------------------- | ------------------------ | ------------- |
+| Firecrawl           | Crawling / SERP scraping | Job-based     |
+| Google GenAI        | AI models                | Usage-based   |
+| Stripe (via Autumn) | Payments                 | Standard fees |
+
+---
+
+## **Infrastructure**
+
+| Layer           | Technology         |
+| --------------- | ------------------ |
+| Hosting         | Cloudflare Workers |
+| Backend Runtime | Convex Functions   |
+| Storage         | Convex Storage     |
+| Error Tracking  | Sentry             |
+
+---
+
+## **Development**
+
+| Tool              | Purpose                    |
+| ----------------- | -------------------------- |
+| pnpm              | Package manager            |
+| TypeScript        | Type safety                |
+| Vitest            | Testing                    |
+| Vite              | Build tool                 |
+| Wrangler          | Cloudflare dev/preview     |
+| ESLint + Prettier | Code quality               |
+| Concurrently      | Run multiple dev processes |
+
+---
 
 
 

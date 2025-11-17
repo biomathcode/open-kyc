@@ -1,6 +1,5 @@
 import { v } from "convex/values";
 import { internalMutation, mutation, query } from "./_generated/server";
-import type { Doc } from "./_generated/dataModel";
 
 export const storeScrapeResult = internalMutation({
     args: v.object({

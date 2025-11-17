@@ -1,7 +1,7 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 import { api } from 'convex/_generated/api'
-import { convexQuery, useConvexMutation } from '@convex-dev/react-query'
+import { convexQuery } from '@convex-dev/react-query'
 import { useSuspenseQuery } from '@tanstack/react-query'
 
 import {
@@ -27,7 +27,6 @@ export const Route = createFileRoute('/_app/dashboard')({
 
 export function GetStartedList() {
 
-  const { data } = useSuspenseQuery(convexQuery(api.sessions.getSessions, {}));
 
 
 
